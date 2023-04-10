@@ -1,4 +1,4 @@
-.menu {
+/* .menu {
   list-style: none;
   display: flex;
   flex-flow: column nowrap;
@@ -9,6 +9,7 @@
   width: 300px;
   padding-top: 3.5rem;
   background-color: #0d2538;
+  transform: translateX(-100%);
   transition: transform 0.3s ease-in-out;
 }
 
@@ -25,14 +26,13 @@
   color: #fff;
   z-index: 100;
   cursor: pointer;
-  display: none;
+}
+
+.hamburger-icon.open {
+  display: block;
 }
 
 @media (max-width: 768px) {
-  .menu {
-    transform: translateX(-100%);
-  }
-
   .menu.open {
     transform: translateX(0);
   }
@@ -40,4 +40,4 @@
   .hamburger-icon {
     display: block;
   }
-}
+} */

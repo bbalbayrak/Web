@@ -9,8 +9,8 @@ GET http://localhost:3001/users
 POST https://localhost:3001/login
 Content-Type: application/json
 {
-    "password": "1",
-    "email": "1@gmail.com"
+    "email": "13322@gmail.com",
+    "password": "1"
 }
 
 #EXAMPLES
@@ -20,7 +20,7 @@ POST http://localhost:3001/register
 Content-Type: application/json
 
 {
-    "email": "132@gmail.com",
+    "email": "emre@gmail.com",
     "password": "1"
 }
 
@@ -31,6 +31,6 @@ POST http://localhost:3001/login
 Content-Type: application/json
 
 {
-    "email": "132@gmail.com",
+    "email": "emre@gmail.com",
     "password": "1"
 }

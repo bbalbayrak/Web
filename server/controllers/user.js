@@ -30,14 +30,14 @@ exports.login = async (req, res) => {
     if (!user) {
       return res.status(404).send({
         status: "fail",
-        msg: "Bu e-posta adresine kayıtlı hesap yok."
+        msg: "E-mail adresi yanlış!"
       });
     }
 
     if (password !== user.password) {
       return res.status(400).send({
         status: "fail",
-        msg: "E-posta adresi veya şifre yanlış."
+        msg: "Şifre yanlış!"
       });
     }
 

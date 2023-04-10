@@ -1,14 +1,15 @@
-import React from "react";
-import Burger from "./Burger";
-import "./Navbar.css";
+// import React, { useState } from "react";
+// import Menu from "./Menu";
+// import "./Navbar.css";
 
-const Navbar = () => {
-  return (
-    <nav className="navbar">
-      <div className="navbar-logo">Nav Bar</div>
-      <Burger />
-    </nav>
-  );
-};
+// const Navbar = () => {
+//   const [open, setOpen] = useState(false);
 
-export default Navbar;
+//   return (
+//     <nav className="navbar">
+//       <Menu open={open} setOpen={setOpen} />
+//     </nav>
+//   );
+// };
+
+// export default Navbar;

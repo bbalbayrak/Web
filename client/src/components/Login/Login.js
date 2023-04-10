@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Axios kütüphanesini import edin
+import axios from 'axios';
 import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState(null); // Sunucudan gelen mesajı saklamak için yeni state
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -12,6 +13,7 @@ const Login = () => {
     axios
       .post('http://localhost:3001/login', { email, password })
       .then((response) => {
+        setMessage(response.data.msg); // Sunucudan gelen mesajı setMessage ile state'e kaydet
         if (response.status === 200) {
           console.log(response.status);
           localStorage.setItem('token', response.data.token);
@@ -23,12 +25,17 @@ const Login = () => {
       })
       .catch((error) => {
         console.log(error);
+        setPassword("");
+        if (error.response) {
+          setMessage(error.response.data.msg); // Hata mesajını setMessage ile state'e kaydet
+        }
       });
   };
 
   return (
     <div className="login-container">
       <h2>Giriş Yap</h2>
+      {message && <p className="message">{message}</p>} {/* Eğer message varsa ekrana yazdır */}
       <form onSubmit={handleSubmit}>
         <input
           type="email"
