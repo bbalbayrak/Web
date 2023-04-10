@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import Navbar from "./components/shared/navbar/Navbar"
 import HamburgerMenu from "./components/shared/navbar/HamburgerMenu";
 import Login from "./components/Login/Login"
 import Vendors from "./components/Vendors/Vendors";
