@@ -20,6 +20,7 @@ const Login = () => {
           console.log(response.status);
           localStorage.setItem('token', response.data.token);
           navigate('/home');
+          window.location.reload(); // Sayfayı yeniden yükle
         } else {
           console.log('Giriş başarısız');
         }

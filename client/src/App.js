@@ -9,6 +9,7 @@ import {BrowserRouter as Router, Route, Link, Routes, BrowserRouter} from 'react
 import Maintenance from "./components/Maintenance/Maintenance";
 import Home from "./components/Home/Home";
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +21,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/home' element={<Home />} />
             <Route path='/vendors' element={<Vendors />} />
+            <Route path='/logout' element={<Vendors />} />
 
           </Routes>
       </div>
