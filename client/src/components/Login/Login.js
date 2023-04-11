@@ -5,7 +5,7 @@ import './Login.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState(null); // Sunucudan gelen mesajı saklamak için yeni state
+  const [message, setMessage] = useState(null); 
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -13,12 +13,11 @@ const Login = () => {
     axios
       .post('http://localhost:3001/login', { email, password })
       .then((response) => {
-        setMessage(response.data.msg); // Sunucudan gelen mesajı setMessage ile state'e kaydet
+        setMessage(response.data.msg); 
         if (response.status === 200) {
           console.log(response.status);
           localStorage.setItem('token', response.data.token);
-          // auth.setIsLoggedIn(true);
-          // setShowPopup(true);
+
         } else {
           console.log('Giriş başarısız');
         }
@@ -27,7 +26,7 @@ const Login = () => {
         console.log(error);
         setPassword("");
         if (error.response) {
-          setMessage(error.response.data.msg); // Hata mesajını setMessage ile state'e kaydet
+          setMessage(error.response.data.msg);
         }
       });
   };
@@ -35,7 +34,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <h2>Giriş Yap</h2>
-      {message && <p className="message">{message}</p>} {/* Eğer message varsa ekrana yazdır */}
+      {message && <p className="message">{message}</p>} 
       <form onSubmit={handleSubmit}>
         <input
           type="email"
