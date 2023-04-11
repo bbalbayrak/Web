@@ -2,7 +2,17 @@ import React from 'react';
 import './Home.css';
 import { MapContainer, TileLayer, Marker} from 'react-leaflet';
 import { LatLngBounds } from 'leaflet';
+import Chart from '../Charts/Chart/Chart';
 
+const data = [
+  { name: 'Pazartesi', iş: 150, iptalEdilenİş: 50 },
+  { name: 'Salı', iş: 200, iptalEdilenİş: 50 },
+  { name: 'Çarşamba', iş: 100, iptalEdilenİş: 50 },
+  { name: 'Perşembe', iş: 250, iptalEdilenİş: 50 },
+  { name: 'Cuma', iş: 175, iptalEdilenİş: 50 },
+  { name: 'Cumartesi', iş: 50, iptalEdilenİş: 50 },
+  { name: 'Pazar', iş: 75, iptalEdilenİş: 50 },
+];
 const Home = () => {
   const maxBounds = new LatLngBounds(
     [-90, -180], // Güneybatı köşe koordinatları
@@ -94,7 +104,7 @@ const Home = () => {
       {/* İstatistikler */}
       <div className="statistics">
         <div className="weekly-statistics">
-          <h3>Haftalık İstatistik</h3>
+        <Chart data={data} />
           {/* İstatistik bileşeni buraya eklenecek */}
         </div>
         <div className="general-statistics">
