@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(null); 
+  let navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,7 +19,7 @@ const Login = () => {
         if (response.status === 200) {
           console.log(response.status);
           localStorage.setItem('token', response.data.token);
-
+          navigate('/home');
         } else {
           console.log('Giriş başarısız');
         }

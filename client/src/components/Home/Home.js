@@ -1,8 +1,13 @@
 import React from 'react';
 import './Home.css';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker} from 'react-leaflet';
+import { LatLngBounds } from 'leaflet';
 
 const Home = () => {
+  const maxBounds = new LatLngBounds(
+    [-90, -180], // Güneybatı köşe koordinatları
+    [90, 180]    // Kuzeydoğu köşe koordinatları
+  );
   return (
     <div className="home-container">
       {/* Filtreleme */}
@@ -73,13 +78,17 @@ const Home = () => {
       <div className="world-map">
           <MapContainer
               center={[51.505, -0.09]} // Başlangıç koordinatları
-              zoom={2} // Başlangıç yakınlaştırma seviyesi
+              zoom={1} // Başlangıç yakınlaştırma seviyesi
+              minZoom={2} // Minimum yakınlaştırma seviyesi
+              maxZoom={6} // Maksimum yakınlaştırma seviyesi
+              maxBounds={maxBounds} // Harita sınırlarını ayarlayın
+              maxBoundsViscosity={1} // Harita sınırlarına yapışkanlık (1: tam sınırlama)
+              
           >
               <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               />
-              <Marker position={[51.505, -0.09]} /> {/* İsteğe bağlı işaretçi */}
           </MapContainer>
       </div>
       {/* İstatistikler */}
