@@ -8,7 +8,7 @@ import Customers
 import {BrowserRouter as Router, Route, Link, Routes, BrowserRouter} from 'react-router-dom';
 import Maintenance from "./components/Maintenance/Maintenance";
 import Home from "./components/Home/Home";
-
+import ToleranceTable from "./components/ToleranceTable/ToleranceTable";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/home' element={<Home />} />
             <Route path='/vendors' element={<Vendors />} />
-            <Route path='/logout' element={<Vendors />} />
+            <Route path='/controltable' element={<ToleranceTable />} />
 
           </Routes>
       </div>
