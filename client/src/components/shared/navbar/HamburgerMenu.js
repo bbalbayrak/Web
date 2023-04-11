@@ -14,8 +14,35 @@ const HamburgerMenu = () => {
     setClosed(!closed);
   };
   useEffect(() => {
-    // ...
+    const checkLoggedInStatus = () => {
+      const token = localStorage.getItem('token');
+  
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        if (decodedToken.exp * 1000 > Date.now()) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+  
+    checkLoggedInStatus(); // İlk render'da çalıştır.
+  
+    const tokenListener = (e) => {
+      if (e.key === 'token') {
+        checkLoggedInStatus();
+      }
+    };
+  
+    window.addEventListener('storage', tokenListener); // Token değiştiğinde çalıştır.
+    return () => {
+      window.removeEventListener('storage', tokenListener); // İzleyiciyi temizle.
+    };
   }, []);
+  
 
   const handleLogout = () => {
     localStorage.removeItem('token');
