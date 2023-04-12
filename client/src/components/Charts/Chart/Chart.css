@@ -1,0 +1,15 @@
+.chart {
+    position: relative;
+  }
+  
+  .chart-tooltip {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    pointer-events: none;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  

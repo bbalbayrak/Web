@@ -5,13 +5,7 @@ GET http://localhost:3001/users
 //--------------------------------------------------------------------------------
 
 
-### 
-POST https://localhost:3001/login
-Content-Type: application/json
-{
-    "email": "13322@gmail.com",
-    "password": "1"
-}
+
 
 #EXAMPLES
 
