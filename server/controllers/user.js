@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
 // ------------------------------------------------------------------
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, phone } = req.body;
     if (!(password && email)) {
       res.status(400).send({
         status: "fail",
@@ -79,7 +79,7 @@ exports.register = async (req, res) => {
         msg: "Bu e-posta adresi zaten alınmış.",
       });
     }
-    const savedUser = await User.create(email, password);
+    const savedUser = await User.create(email, password, phone);
     const token = jwt.sign(
       {
         user_id: savedUser.id,
@@ -101,7 +101,7 @@ exports.register = async (req, res) => {
   }
 };
 
-  
+
 // ------------------------------------------------------------------
 
 function extractToken(req) {

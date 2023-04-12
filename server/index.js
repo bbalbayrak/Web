@@ -3,6 +3,8 @@ const fastify = require("fastify")({ logger: true });
 const fastifyCors = require("@fastify/cors");
 const PORT = process.env.PORT || 3001;
 const userRoutes = require("./routes/user");
+const productRoutes = require("./routes/product");
+
 
 const db = require('./config/db'); // Bağlantıyı buradan içe aktar
 
@@ -23,6 +25,9 @@ fastify.register(fastifyCors, {
   methods: "GET,POST,PUT,DELETE",
 });
 
+productRoutes.forEach((route) => {
+  fastify.route(route);
+});
 
 userRoutes.forEach((route, index) => {
   fastify.route(route);
