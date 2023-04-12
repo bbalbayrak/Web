@@ -1,11 +1,12 @@
 const db = require("../config/db");
 
 const User = {
-  tableName: "users2",
+  tableName: "users",
   columns: {
     id: "id",
     password: "password",
     email: "email",
+    phone: "phone",
   },
 
   findByEmail: async (email) => {
@@ -16,12 +17,16 @@ const User = {
     return result;
   },
 
-  create: async (email, password) => {
-    const result = await db.one("INSERT INTO ${table:name} (email, password) VALUES (${email}, ${password}) RETURNING *", {
-      table: User.tableName,
-      email,
-      password,
-    });
+  create: async (email, password, phone) => {
+    const result = await db.one(
+      "INSERT INTO ${table:name} (email, password, phone) VALUES (${email}, ${password}, ${phone}) RETURNING *",
+      {
+        table: User.tableName,
+        email,
+        password,
+        phone,
+      }
+    );
     return result;
   },
 };
