@@ -1,25 +1,50 @@
-// ProductTable.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getProducts, addProduct, updateProduct, deleteProduct } from '..//..//api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
-
-const initialData = [
-  // Örnek veriler
-  {
-    name: 'Örnek 1',
-    odooid: 'ODOO001',
-    customer: 'Müşteri A',
-    technicalDrawing: 'https://example.com/pdf1.pdf',
-    guide: 'https://example.com/guide1.jpg',
-  },
-  // Daha fazla örnek veri ekleyebilirsiniz...
-];
+import { faSave, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import './ProductTable.css';
 
 const ProductTable = () => {
-  const [data, setData] = useState(initialData);
+  const [products, setProducts] = useState([]);
+  const [addingProduct, setAddingProduct] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchField, setSearchField] = useState('');
-  const [editing, setEditing] = useState(false);
+
+  // input alanları için state'ler
+  const [newName, setNewName] = useState('');
+  const [newOdooid, setNewOdooid] = useState('');
+  const [newCustomer, setNewCustomer] = useState('');
+  const [newTechnicalDrawing, setNewTechnicalDrawing] = useState('');
+  const [newGuide, setNewGuide] = useState('');
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const data = await getProducts();
+      setProducts(data);
+    }
+
+    fetchProducts();
+  }, []);
+
+  const handleAddProduct = async (newProduct) => {
+    const addedProduct = await addProduct(newProduct);
+    setProducts([...products, addedProduct]);
+    setAddingProduct(false);
+  };
+
+  const handleUpdateProduct = async (id, updatedProduct) => {
+    const updatedProductData = await updateProduct(id, updatedProduct);
+    setProducts(
+      products.map((product) =>
+        product.id === id ? updatedProductData : product
+      )
+    );
+  };
+
+  const handleDeleteProduct = async (id) => {
+    await deleteProduct(id);
+    setProducts(products.filter((product) => product.id !== id));
+  };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -29,9 +54,9 @@ const ProductTable = () => {
     setSearchField(event.target.value);
   };
 
-  const filteredData = data.filter((item) => {
+  const filteredData = products.filter((product) => {
     if (!searchTerm || !searchField) return true;
-    return item[searchField]
+    return product[searchField]
       .toString()
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -48,7 +73,7 @@ const ProductTable = () => {
             <option value="name">İsim</option>
             <option value="odooid">Odooid</option>
             <option value="customer">Müşteri</option>
-            <option value="technicalDrawing">Teknik Çizim (PDF)</option>
+            <option type="file" value="technicalDrawing">Teknik Çizim (PDF)</option>
             <option value="guide">Kılavuz (PDF, JPG)</option>
           </select>
           <input
@@ -58,10 +83,12 @@ const ProductTable = () => {
             onChange={handleSearchChange}
           />
         </div>
-        <button onClick={() => setEditing(!editing)}>
-          <FontAwesomeIcon icon={editing ? faSave : faEdit} />
-          {editing ? ' Kaydet' : ' Düzenle'}
-        </button>
+        <div>
+          <button onClick={() => setAddingProduct(true)}>
+            <FontAwesomeIcon icon={faPlus} />
+            {' Ürün Ekle'}
+          </button>
+        </div>
       </div>
       <table className="product-table">
         <thead>
@@ -71,25 +98,96 @@ const ProductTable = () => {
             <th>Müşteri</th>
             <th>Teknik Çizim (PDF)</th>
             <th>Kılavuz (PDF, JPG)</th>
+            <th>İşlemler</th>
           </tr>
         </thead>
         <tbody>
-          {sortedData.map((item, index) => (
+          {addingProduct && (
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  placeholder="İsim"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Odooid"
+                  value={newOdooid}
+                  onChange={(e) => setNewOdooid(e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Müşteri"
+                  value={newCustomer}
+                  onChange={(e) => setNewCustomer(e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="file"
+                  accept=".pdf"
+                  placeholder="Teknik Çizim (PDF)"
+                  onChange={(e) => setNewTechnicalDrawing(e.target.files[0])}
+                />
+              </td>
+              <td>
+                <input
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg"
+                  placeholder="Kılavuz (PDF, JPG)"
+                  onChange={(e) => setNewGuide(e.target.files[0])}
+                />
+              </td>
+              <td>
+                <button
+                  onClick={() => {
+                    const newProduct = {
+                      name: newName,
+                      odooid: newOdooid,
+                      customer: newCustomer,
+                      technicalDrawing: newTechnicalDrawing,
+                      guide: newGuide,
+                    };
+                    handleAddProduct(newProduct);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSave} />
+                  {' Kaydet'}
+                </button>
+                <button onClick={() => setAddingProduct(false)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                  {' İptal'}
+                </button>
+              </td>
+            </tr>
+          )}
+          {sortedData.map((product, index) => (
             <tr key={index}>
-              {Object.keys(item).map((key) => (
-                <td key={key}>
-                  <input
-                    type="text"
-                    value={item[key]}
-                    disabled={!editing}
-                    onChange={(event) => {
-                      const newData = [...data];
-                      newData[index][key] = event.target.value;
-                      setData(newData);
-                    }}
-                  />
-                </td>
-              ))}
+              <td>{product.name}</td>
+              <td>{product.odooid}</td>
+              <td>{product.customer}</td>
+              <td>{product.technicalDrawing ? product.technicalDrawing.name : ''}</td>
+              <td>{product.guide ? product.guide.name : ''}</td>
+              <td>
+                <button
+                  onClick={() => handleUpdateProduct(product.id, product)}
+                >
+                  <FontAwesomeIcon icon={faSave} />
+                  {' Kaydet'}
+                </button>
+                <button
+                  onClick={() => handleDeleteProduct(product.id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                  {' Sil'}
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
