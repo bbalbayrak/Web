@@ -28,3 +28,28 @@ Content-Type: application/json
     "email": "emre@gmail.com",
     "password": "1"
 }
+
+###
+
+POST http://localhost:3001/products
+Content-Type: application/json
+{
+    "name": "matar",
+    "odooid": 313,
+    "customer":"alperen",
+    "technical_drawing":"SamplePDFdata",
+    "guide":"SampleJPGdata"
+}
+
+
+###
+POST http://localhost:3001/products
+Content-Type: application/json
+
+{
+    "name": "matar",
+    "odooid": 3132,
+    "customer":"alperen",
+    "technical_drawing":"SamplePDFdata",
+    "guide":"SampleJPGdata"
+}
