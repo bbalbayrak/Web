@@ -1,22 +1,38 @@
 const Product = require("../models/product");
+const Customer = require("../models/customer");
+const { uploadFile } = require("../utils/upload_azure");
 
-exports.createProduct = async (req, res) => {
+exports.createProduct = async (request) => {
   try {
-    const { name, odooid, customer, technical_drawing, guide } = req.body;
+    const { name, odooid, customerid } = request.body;
+    const technicaldrawingurl = request.body.technical_drawing;
+    const guideurl = request.body.guide;
+    
+    const customer = await Customer.findById(customerid);
+    if (!customer) {
+      return {
+        status: "fail",
+        statusCode: 400,
+        message: `Geçersiz müşteri ID'si. Müşteri ID: ${customerid}, İsim: ${name}, OdooID: ${odooid}, Rehber: ${guideurl ? 'Dosya var' : 'Dosya yok'}, Teknik Çizim: ${technicaldrawingurl ? 'Dosya var' : 'Dosya yok'}`,
+      };
+    }
 
-    const newProduct = await Product.create(name, odooid, customer, technical_drawing, guide);
+    const technical_drawing_url = technicaldrawingurl
+      ? await uploadFile(technicaldrawingurl.buffer, technicaldrawingurl.originalname)
+      : null;
+    const guide_url = guideurl ? 
+      await uploadFile(guideurl.buffer, guideurl.originalname) 
+      : null;
 
-    res.status(201).send({
+    const result = await Product.create(name, odooid, customerid, technical_drawing_url, guide_url);
+    return {
       status: "success",
-      message: "Ürün başarıyla oluşturuldu.",
-      data: newProduct,
-    });
+      statusCode: 201,
+      data: result,
+    };
   } catch (err) {
     console.error(err);
-    res.status(500).send({
-      status: "error",
-      message: "Ürün oluşturulurken bir hata oluştu.",
-    });
+    throw err;
   }
 };
 

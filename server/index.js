@@ -4,7 +4,9 @@ const fastifyCors = require("@fastify/cors");
 const PORT = process.env.PORT || 3001;
 const userRoutes = require("./routes/user");
 const productRoutes = require("./routes/product");
-
+const customerRoutes = require("./routes/customer");
+const vendorRoutes = require("./routes/vendor");
+const fastifyMulter = require('fastify-multer');
 
 const db = require('./config/db'); // Bağlantıyı buradan içe aktar
 
@@ -25,11 +27,19 @@ fastify.register(fastifyCors, {
   methods: "GET,POST,PUT,DELETE",
 });
 
-productRoutes.forEach((route) => {
+fastify.register(fastifyMulter.contentParser);
+
+fastify.register(productRoutes);
+
+userRoutes.forEach((route, index) => {
   fastify.route(route);
 });
 
-userRoutes.forEach((route, index) => {
+customerRoutes.forEach((route) => {
+  fastify.route(route);
+});
+
+vendorRoutes.forEach((route) => {
   fastify.route(route);
 });
 

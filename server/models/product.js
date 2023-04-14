@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const Customer = require('./customer'); // customer.js dosyasını dahil edin
 
 const Product = {
   tableName: "products",
@@ -7,14 +8,16 @@ const Product = {
     name: "name",
     odooid: "odooid",
     customer: "customer",
-    technical_drawing: "technical_drawing",
-    guide: "guide",
+    customerid: "customerid",
+    technicaldrawingurl: "technicaldrawingurl",
+    guideurl: "guideurl",
   },
 
-  create: async (name, odooid, customer, technical_drawing, guide) => {
+  create: async (name, odooid, customerid, technicaldrawingurl, guideurl) => {
+    const customer_name = await Customer.findById(customerid);
     const result = await db.one(
-      `INSERT INTO ${Product.tableName} (name, odooid, customer, technical_drawing, guide) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [name, odooid, customer, technical_drawing, guide]
+      `INSERT INTO ${Product.tableName} (name, odooid, customerid, customer, technicaldrawingurl, guideurl) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [name, odooid, customerid, customer_name, technicaldrawingurl, guideurl]
     );
     return result;
   },
