@@ -6,20 +6,20 @@ const userRoutes = require("./routes/user");
 const productRoutes = require("./routes/product");
 const customerRoutes = require("./routes/customer");
 const vendorRoutes = require("./routes/vendor");
+const itpRoutes = require('./routes/itp');
 const fastifyMulter = require('fastify-multer');
 
-const db = require('./config/db'); // Bağlantıyı buradan içe aktar
+const db = require('./config/db');
 
 db.connect()
   .then((obj) => {
     console.log('PostgreSQL bağlantısı başarılı');
-    obj.done(); // connection'i kapat
+    obj.done();
   })
   .catch((error) => {
     console.log('PostgreSQL bağlantısı başarısız', error);
   });
 
-// Fastify middleware setup
 fastify.register(fastifyCors, {
   origin: "*",
   allowedHeaders:
@@ -43,7 +43,10 @@ vendorRoutes.forEach((route) => {
   fastify.route(route);
 });
 
-// server
+itpRoutes.forEach((route) => {
+  fastify.route(route);
+});
+
 const start = async () => {
   try {
     await fastify.listen({ port: PORT, host: '0.0.0.0' });
