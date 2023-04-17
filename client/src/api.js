@@ -5,7 +5,13 @@ const API_URL = 'http://localhost:3001/products';
 export const getProducts = async () => {
   try {
     const response = await axios.get(API_URL);
-    return response.data.data;
+    const products = response.data.data;
+
+    return products.map(product => ({
+      ...product,
+      technicalDrawingUrl: product.technicalDrawingUrl,
+      guideUrl: product.guideUrl,
+    }));
   } catch (error) {
     console.error('Error fetching products:', error);
     throw error;

@@ -9,7 +9,7 @@ import {BrowserRouter as Router, Route, Link, Routes, BrowserRouter} from 'react
 import Maintenance from "./components/Maintenance/Maintenance";
 import Home from "./components/Home/Home";
 import ToleranceTable from "./components/ToleranceTable/ToleranceTable";
-import EditableTable from "./components/ProductPage/ProductPage";
+import ProductPage from "./components/ProductPage/ProductPage";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
             <Route path='/home' element={<Home />} />
             <Route path='/vendors' element={<Vendors />} />
             <Route path='/controltable' element={<ToleranceTable />} />
-            <Route path='/productpage' element={<EditableTable />} />
+            <Route path='/products' element={<ProductPage />} />
 
           </Routes>
       </div>

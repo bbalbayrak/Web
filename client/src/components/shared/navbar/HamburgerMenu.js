@@ -68,9 +68,13 @@ const HamburgerMenu = () => {
           <Link className="link" to="/controltable">
             Control Table
           </Link>
+          <Link className="link" to="/products">
+            Products
+          </Link>
           <Link className="link" to="/login">
             Login
           </Link>
+          
           {isLoggedIn && (
             <Link className="link" to="/" onClick={handleLogout}>
               Çıkış Yap
