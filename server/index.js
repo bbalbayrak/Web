@@ -7,6 +7,7 @@ const productRoutes = require("./routes/product");
 const customerRoutes = require("./routes/customer");
 const vendorRoutes = require("./routes/vendor");
 const itpRoutes = require('./routes/itp');
+const itpControlRoutes = require("./routes/itpControl");
 const fastifyMulter = require('fastify-multer');
 
 const db = require('./config/db');
@@ -44,6 +45,10 @@ vendorRoutes.forEach((route) => {
 });
 
 itpRoutes.forEach((route) => {
+  fastify.route(route);
+});
+
+itpControlRoutes.forEach((route) => {
   fastify.route(route);
 });
 

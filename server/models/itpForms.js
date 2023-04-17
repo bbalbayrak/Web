@@ -15,19 +15,6 @@ const ItpForm = {
     );
     return result;
   },
-
-  findById: async (id) => {
-    const result = await db.oneOrNone(
-      `SELECT * FROM ${ItpForm.tableName} WHERE id = $1`,
-      [id]
-    );
-    return result;
-  },
-
-  getAllItps: async () => {
-    const result = await db.any(`SELECT * FROM ${ItpForm.tableName}`);
-    return result;
-  },
 };
 
 module.exports = ItpForm;

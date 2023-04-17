@@ -1,174 +1,53 @@
 const ItpForm = require("../models/itpForms");
 const ItpStep = require("../models/itpStep");
-const ItpSubstep = require("../models/itpSubstep");
+const ItpControl = require("../models/itpControl");
 
-exports.createItpForm = async (req, res) => {
-    try {
-      const { product_id, vendor_id } = req.body;
-      const result = await ItpForm.create(product_id, vendor_id);
-      res.status(201).send({
-        status: "success",
-        data: result,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "ITP formu oluşturulurken bir hata oluştu.",
-      });
-    }
-  };
-  
-  exports.createItpStep = async (req, res) => {
-    try {
-      const { name, itp_form_id } = req.body;
-      const result = await ItpStep.create(name, itp_form_id);
-      res.status(201).send({
-        status: "success",
-        data: result,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "ITP step oluşturulurken bir hata oluştu.",
-      });
-    }
-  };
-  
-  exports.createItpSubstep = async (req, res) => {
-    try {
-      const {
-        name,
-        description,
-        status,
-        lower_tolerance,
-        upper_tolerance,
-        measurement,
-        type,
-        itp_step_id,
-      } = req.body;
-      const result = await ItpSubstep.create(
-        name,
-        description,
-        status,
-        lower_tolerance,
-        upper_tolerance,
-        measurement,
-        type,
-        itp_step_id
-      );
-      res.status(201).send({
-        status: "success",
-        data: result,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "ITP substep oluşturulurken bir hata oluştu.",
-      });
-    }
-  };
+exports.createItpWithSteps = async (req, res) => {
+  try {
+    const { product_id, vendor_id, steps } = req.body;
 
-  exports.getItpDetails = async (req, res) => {
-    try {
-      const itp_form_id = req.params.id;
-      
-      const itpForm = await ItpForm.findById(itp_form_id);
-      const itpSteps = await ItpStep.findByItpFormId(itp_form_id);
-  
-      for (let i = 0; i < itpSteps.length; i++) {
-        const step_id = itpSteps[i].id;
-        const substeps = await ItpSubstep.findByStepId(step_id);
-        itpSteps[i].substeps = substeps;
-      }
-  
-        itpForm.steps = itpSteps;
+    // ITP formu oluştur
+    const itpForm = await ItpForm.create(product_id, vendor_id);
 
-        res.status(200).send({
-        status: "success",
-        data: {
-            itpForm,
-        },
+    // Adımları oluştur
+    for (const step of steps) {
+      // ItpControl verilerini al
+      const itpControl = await ItpControl.findById(step.control_id);
+
+      if (!itpControl) {
+        return res.status(404).send({
+          status: "error",
+          message: `control_id: ${step.control_id} ile eşleşen bir ITP control kaydı bulunamadı.`,
         });
-    } catch (err) {
+      }
+      const control_name = itpControl.control_name;
+
+      await ItpStep.create(
+        step.name, 
+        itpControl.id,
+        control_name,
+        itpForm.id, 
+        step.technical_drawing_numbering, 
+        step.tools, 
+        step.description, 
+        step.actual_dimension, 
+        step.lower_tolerance, 
+        step.upper_tolerance, 
+        step.example_visual_url, 
+        step.status, 
+        step.type
+        );
+    }
+
+    res.status(201).send({
+      status: "success",
+      message: "ITP formu ve adımları başarıyla oluşturuldu.",
+    });
+  } catch (err) {
     console.error(err);
     res.status(500).send({
       status: "error",
-      message: "ITP detayları alınırken bir hata oluştu.",
+      message: "ITP formu ve adımları oluşturulurken bir hata oluştu.",
     });
   }
 };
-  
-exports.createItpWithStepsAndSubsteps = async (req, res) => {
-    try {
-      const { product_id, vendor_id, steps } = req.body;
-  
-      // ITP formu oluştur
-      const itpForm = await ItpForm.create(product_id, vendor_id);
-  
-      // Adımları ve alt adımları oluştur
-      for (const step of steps) {
-        const createdStep = await ItpStep.create(step.name, itpForm.id);
-  
-        for (const substep of step.substeps) {
-          await ItpSubstep.create(
-            substep.name,
-            substep.description,
-            substep.status,
-            substep.lower_tolerance,
-            substep.upper_tolerance,
-            substep.measurement,
-            substep.type,
-            createdStep.id
-          );
-        }
-      }
-  
-      res.status(201).send({
-        status: "success",
-        message: "ITP formu, adımları ve alt adımları başarıyla oluşturuldu.",
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "ITP formu, adımları ve alt adımları oluşturulurken bir hata oluştu.",
-      });
-    }
-  };
-  
-  exports.getAllItps = async (req, res) => {
-    try {
-      const itpForms = await ItpForm.getAllItps();
-  
-      for (const itpForm of itpForms) {
-        const itp_form_id = itpForm.id;
-        const itpSteps = await ItpStep.findByItpFormId(itp_form_id);
-  
-        for (let i = 0; i < itpSteps.length; i++) {
-          const step_id = itpSteps[i].id;
-          const substeps = await ItpSubstep.findByStepId(step_id);
-          itpSteps[i].substeps = substeps;
-        }
-  
-        itpForm.steps = itpSteps;
-      }
-  
-      res.status(200).send({
-        status: "success",
-        data: {
-          itpForms,
-        },
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "An error occurred while fetching all ITPs with details.",
-      });
-    }
-  };
-  
-  

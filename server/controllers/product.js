@@ -102,4 +102,3 @@ exports.getProductsByName = async (req, res) => {
       });
     }
   };
-// Diğer CRUD işlemleri (güncelleme, silme vb.) için gerekli fonksiyonları buraya ekleyebilirsin.
