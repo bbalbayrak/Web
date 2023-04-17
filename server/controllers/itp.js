@@ -6,10 +6,15 @@ exports.createItpWithSteps = async (req, res) => {
   try {
     const { product_id, vendor_id, steps } = req.body;
 
-    // ITP formu oluştur
-    const itpForm = await ItpForm.create(product_id, vendor_id);
+    // Mevcut ITP formunu kontrol et
+    let itpForm = await ItpForm.findByProductIdAndVendorId(product_id, vendor_id);
 
-    // Adımları oluştur
+    if (!itpForm) {
+      // ITP formu oluştur
+      itpForm = await ItpForm.create(product_id, vendor_id);
+    }
+
+    // Adımları güncelle
     for (const step of steps) {
       // ItpControl verilerini al
       const itpControl = await ItpControl.findById(step.control_id);
@@ -20,34 +25,56 @@ exports.createItpWithSteps = async (req, res) => {
           message: `control_id: ${step.control_id} ile eşleşen bir ITP control kaydı bulunamadı.`,
         });
       }
-      const control_name = itpControl.control_name;
 
-      await ItpStep.create(
-        step.name, 
-        itpControl.id,
-        control_name,
-        itpForm.id, 
-        step.technical_drawing_numbering, 
-        step.tools, 
-        step.description, 
-        step.actual_dimension, 
-        step.lower_tolerance, 
-        step.upper_tolerance, 
-        step.example_visual_url, 
-        step.status, 
-        step.type
+      // Mevcut adımı kontrol et
+      const existingStep = await ItpStep.findByFormIdAndControlId(itpForm.id, itpControl.id);
+
+      if (existingStep) {
+        // Adımı güncelle
+        await ItpStep.update(
+          existingStep.id,
+          step.name,
+          itpControl.id,
+          itpControl.control_name,
+          step.technical_drawing_numbering,
+          step.tools,
+          step.description,
+          step.actual_dimension,
+          step.lower_tolerance,
+          step.upper_tolerance,
+          step.example_visual_url,
+          step.status,
+          step.type
         );
+      } else {
+        // Yeni adımı oluştur
+        await ItpStep.create(
+          step.name,
+          itpControl.id,
+          itpControl.control_name,
+          itpForm.id,
+          step.technical_drawing_numbering,
+          step.tools,
+          step.description,
+          step.actual_dimension,
+          step.lower_tolerance,
+          step.upper_tolerance,
+          step.example_visual_url,
+          step.status,
+          step.type
+        );
+      }
     }
 
     res.status(201).send({
       status: "success",
-      message: "ITP formu ve adımları başarıyla oluşturuldu.",
+      message: "ITP formu ve adımları başarıyla oluşturuldu veya güncellendi.",
     });
   } catch (err) {
     console.error(err);
     res.status(500).send({
       status: "error",
-      message: "ITP formu ve adımları oluşturulurken bir hata oluştu.",
+      message: "ITP formu ve adımları oluşturulurken veya güncellenirken bir hata oluştu.",
     });
   }
 };

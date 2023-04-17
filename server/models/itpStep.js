@@ -54,6 +54,42 @@ const ItpStep = {
     );
     return result;
   },
+  
+  update: async (
+    id,
+    name,
+    control_id,
+    control_name,
+    technical_drawing_numbering,
+    tools,
+    description,
+    actual_dimension,
+    lower_tolerance,
+    upper_tolerance,
+    example_visual_url,
+    status,
+    type
+  ) => {
+    const result = await db.one(
+      `UPDATE ${ItpStep.tableName} SET name=$2, control_id=$3, control_name=$4, technical_drawing_numbering=$5, tools=$6, description=$7, actual_dimension=$8, lower_tolerance=$9, upper_tolerance=$10, example_visual_url=$11, status=$12, type=$13 WHERE id=$1 RETURNING *`,
+      [
+        id,
+        name,
+        control_id,
+        control_name,
+        technical_drawing_numbering,
+        tools,
+        description,
+        actual_dimension,
+        lower_tolerance,
+        upper_tolerance,
+        example_visual_url,
+        status,
+        type,
+      ]
+    );
+    return result;
+  },
 };
 
 module.exports = ItpStep;
