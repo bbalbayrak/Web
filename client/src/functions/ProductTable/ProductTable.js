@@ -165,29 +165,40 @@ const ProductTable = () => {
           )}
           
           {products.map((product, index) => (
-            <tr key={index}>
-              <td>{product.name}</td>
-              <td>{product.odooid}</td>
-              <td>{product.customer}</td>
-              <td>{product.technicaldrawingurl ? product.technicaldrawingurl : ''}</td>
-              <td>{product.guideUrl ? product.guideUrl : ''}</td>
-
-              <td>
-                <button
-                  onClick={() => handleUpdateProduct(product.id, product)}
-                >
-                  <FontAwesomeIcon icon={faSave} />
-                  {' Kaydet'}
-                </button>
-                <button
-                  onClick={() => handleDeleteProduct(product.id)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                  {' Sil'}
-                </button>
-              </td>
-            </tr>
-          ))}
+  <tr key={index}>
+    <td>{product.name}</td>
+    <td>{product.odooid}</td>
+    <td>{product.customer}</td>
+    <td>
+      {product.technicaldrawingurl ? (
+        <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer">
+          {product.technicaldrawingurl}
+        </a>
+      ) : (
+        ''
+      )}
+    </td>
+    <td>
+      {product.guideUrl ? (
+        <a href={product.guideUrl} target="_blank" rel="noopener noreferrer">
+          {product.guideUrl}
+        </a>
+      ) : (
+        ''
+      )}
+    </td>
+    <td>
+      <button onClick={() => handleUpdateProduct(product.id, product)}>
+        <FontAwesomeIcon icon={faSave} />
+        {' Kaydet'}
+      </button>
+      <button onClick={() => handleDeleteProduct(product.id)}>
+        <FontAwesomeIcon icon={faTrash} />
+        {' Sil'}
+      </button>
+    </td>
+  </tr>
+))}
         </tbody>
       </table>
     </div>
