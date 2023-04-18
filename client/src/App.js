@@ -10,6 +10,7 @@ import Maintenance from "./components/Maintenance/Maintenance";
 import Home from "./components/Home/Home";
 import ToleranceTable from "./components/ToleranceTable/ToleranceTable";
 import ProductPage from "./components/ProductPage/ProductPage";
+import Gallery from "./components/Gallery/gallery";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path='/vendors' element={<Vendors />} />
             <Route path='/controltable' element={<ToleranceTable />} />
             <Route path='/products' element={<ProductPage />} />
+            <Route path='/gallery' element={<Gallery />} />
 
           </Routes>
       </div>

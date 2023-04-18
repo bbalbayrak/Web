@@ -7,11 +7,12 @@ export const getProducts = async () => {
     const response = await axios.get(API_URL);
     const products = response.data.data;
 
-    return products.map(product => ({
+    return products.map((product) => ({
       ...product,
-      technicalDrawingUrl: product.technicalDrawingUrl,
+      technicaldrawingurl: product.technicalDrawingUrl,
       guideUrl: product.guideUrl,
     }));
+    
   } catch (error) {
     console.error('Error fetching products:', error);
     throw error;
@@ -20,13 +21,22 @@ export const getProducts = async () => {
 
 export const addProduct = async (product) => {
   try {
-    const response = await axios.post(API_URL, product);
+    const formData = new FormData();
+
+    for (const key in product) {
+      if (product.hasOwnProperty(key)) {
+        formData.append(key, product[key]);
+      }
+    }
+
+    const response = await axios.post(API_URL, formData);
     return response.data.data;
   } catch (error) {
     console.error('Error adding product:', error);
     throw error;
   }
 };
+
 
 export const updateProduct = async (id, updatedProduct) => {
   try {

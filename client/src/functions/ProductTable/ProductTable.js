@@ -3,6 +3,7 @@ import { getProducts, addProduct, updateProduct, deleteProduct } from '..//..//a
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './ProductTable.css';
+import axios from 'axios';
 
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
@@ -18,14 +19,16 @@ const ProductTable = () => {
   const [newGuide, setNewGuide] = useState('');
 
   useEffect(() => {
-    async function fetchProducts() {
-      const data = await getProducts();
-      setProducts(data);
-    }
-
-    fetchProducts();
+    axios.get('http://localhost:3001/products')
+      .then((res) => {
+        console.log("Products data:", res.data.data);
+        setProducts(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
-
+  
   const handleAddProduct = async (newProduct) => {
     const addedProduct = await addProduct(newProduct);
     setProducts([...products, addedProduct]);
@@ -48,21 +51,14 @@ const ProductTable = () => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    console.log("Search term:", event.target.value);
   };
-
+  
   const handleFieldChange = (event) => {
     setSearchField(event.target.value);
+    console.log("Search field:", event.target.value);
   };
-
-  const filteredData = products.filter((product) => {
-    if (!searchTerm || !searchField) return true;
-    return product[searchField]
-      .toString()
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-  });
-
-  const sortedData = filteredData.sort((a, b) => a.name.localeCompare(b.name));
+  
 
   return (
     <div className="product-table-container">
@@ -167,13 +163,15 @@ const ProductTable = () => {
               </td>
             </tr>
           )}
-          {sortedData.map((product, index) => (
+          
+          {products.map((product, index) => (
             <tr key={index}>
               <td>{product.name}</td>
               <td>{product.odooid}</td>
               <td>{product.customer}</td>
-              <td>{product.technicalDrawing ? product.technicalDrawing.name : ''}</td>
-              <td>{product.guide ? product.guide.name : ''}</td>
+              <td>{product.technicaldrawingurl ? product.technicaldrawingurl : ''}</td>
+              <td>{product.guideUrl ? product.guideUrl : ''}</td>
+
               <td>
                 <button
                   onClick={() => handleUpdateProduct(product.id, product)}
