@@ -26,8 +26,8 @@ const ProductTable = () => {
     fetchProducts();
   }, []);
 
-  const handleAddProduct = async (newProduct) => {
-    const addedProduct = await addProduct(newProduct);
+  const handleAddProduct = async (newProduct, technicalDrawingFile, guideFile) => {
+    const addedProduct = await addProduct(newProduct, technicalDrawingFile, guideFile);
     setProducts([...products, addedProduct]);
     setAddingProduct(false);
   };
@@ -145,16 +145,14 @@ const ProductTable = () => {
                 />
               </td>
               <td>
-                <button
+              <button
                   onClick={() => {
                     const newProduct = {
                       name: newName,
                       odooid: newOdooid,
                       customer: newCustomer,
-                      technicalDrawing: newTechnicalDrawing,
-                      guide: newGuide,
                     };
-                    handleAddProduct(newProduct);
+                    handleAddProduct(newProduct, newTechnicalDrawing, newGuide);
                   }}
                 >
                   <FontAwesomeIcon icon={faSave} />
@@ -172,8 +170,24 @@ const ProductTable = () => {
               <td>{product.name}</td>
               <td>{product.odooid}</td>
               <td>{product.customer}</td>
-              <td>{product.technicalDrawing ? product.technicalDrawing.name : ''}</td>
-              <td>{product.guide ? product.guide.name : ''}</td>
+              <td>
+                {product.technicalDrawingUrl ? (
+                  <a href={product.technicalDrawingUrl} target="_blank" rel="noopener noreferrer">
+                    {product.technicalDrawing ? product.technicalDrawing.name : 'Teknik Çizim'}
+                  </a>
+                ) : (
+                  ''
+                )}
+              </td>
+              <td>
+                {product.guideUrl ? (
+                  <a href={product.guideUrl} target="_blank" rel="noopener noreferrer">
+                    {product.guide ? product.guide.name : 'Kılavuz'}
+                  </a>
+                ) : (
+                  ''
+                )}
+              </td>
               <td>
                 <button
                   onClick={() => handleUpdateProduct(product.id, product)}

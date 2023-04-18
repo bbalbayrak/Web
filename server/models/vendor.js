@@ -28,7 +28,13 @@ const Vendor = {
     });
     return result;
   },
-  
+  findById: async (id) => {
+    const result = await db.oneOrNone("SELECT * FROM ${table:name} WHERE id = ${id}", {
+      table: Vendor.tableName,
+      id,
+    });
+    return result;
+  },
 };
 
 module.exports = Vendor;

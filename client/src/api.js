@@ -18,12 +18,27 @@ export const getProducts = async () => {
   }
 };
 
-export const addProduct = async (product) => {
+export const addProduct = async (product, technicalDrawingFile, guideFile) => {
   try {
-    const response = await axios.post(API_URL, product);
+    const formData = new FormData();
+    Object.keys(product).forEach((key) => {
+      formData.append(key, product[key]);
+    });
+    
+    if (technicalDrawingFile) {
+      formData.append("technicaldrawingurl", technicalDrawingFile);
+    }
+    if (guideFile) {
+      formData.append("guideurl", guideFile);
+    }
+    const response = await axios.post(API_URL, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data.data;
   } catch (error) {
-    console.error('Error adding product:', error);
+    console.error("Error adding product:", error);
     throw error;
   }
 };

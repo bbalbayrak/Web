@@ -9,22 +9,17 @@ const routes = [
   {
     method: "GET",
     path: "/forms",
-    handler: formControllers.getFormStepsAndSubsteps,
+    handler: formControllers.getFormTable,
   },
   {
-    method: "PUT",
-    path: "/forms/steps",
-    handler: formControllers.updateFormStep,
+    method: "GET",
+    path: "/forms/:id",
+    handler: formControllers.getForm,
   },
   {
     method: "PUT",
     path: "/forms/substeps",
-    handler: formControllers.updateFormSubstep,
-  },
-  {
-    method: "POST",
-    path: "/forms/substeps",
-    handler: formControllers.addFormSubstep,
+    handler: formControllers.updateMultipleSubsteps,
   },
   {
     method: "DELETE",
@@ -33,8 +28,8 @@ const routes = [
   },
   {
     method: "GET",
-    path: "/forms/by_product_vendor",
-    handler: formControllers.getFormByProductIdAndVendorId,
+    path: "/allforms/:id",
+    handler: formControllers.getAllForm,
   },
 ];
 

@@ -1,6 +1,8 @@
 const Form = require("../models/form");
-const FormStep = require("../models/form_step");
 const FormSubstep = require("../models/form_substep");
+const { FIXED_STEPS } = require("../utils/fixedsteps");
+const Product = require('../models/product');
+const Vendor = require('../models/vendor');
 
 exports.createForm = async (req, res) => {
   try {
@@ -8,12 +10,13 @@ exports.createForm = async (req, res) => {
 
     const newForm = await Form.create(product_id, vendor_id);
 
-    for (const step of steps) {
-      const newFormStep = await FormStep.create(newForm.id, step.name, step.order);
-
-      for (const substep of step.substeps) {
-        await FormSubstep.create(
-            newFormStep.id,
+    for (const fixedStep of FIXED_STEPS) {
+      const step = steps.find(step => step.name === fixedStep.name);
+      if (step) {
+        for (const substep of step.substeps) {
+          await FormSubstep.create(
+            newForm.id,
+            fixedStep.name,
             substep.name,
             substep.technical_drawing_numbering,
             substep.tools,
@@ -26,183 +29,139 @@ exports.createForm = async (req, res) => {
             substep.type
           );
         }
+      } else {
+        throw new Error(`Unable to find a matching step for fixed step: ${fixedStep.name}`);
       }
-  
-      res.status(201).send({ message: "Form successfully created", form: newForm });
-    } catch (error) {
-      res.status(500).send({ message: "Error creating form", error: error.message });
     }
-  };
-  
-  exports.getForm = async (req, res) => {
-    try {
-      const formId = req.params.id;
-      const form = await Form.findById(formId);
-  
-      if (!form) {
-        res.status(404).send({ message: "Form not found" });
-        return;
-      }
-  
-      const steps = await FormStep.findByFormId(formId);
-      for (const step of steps) {
-        step.substeps = await FormSubstep.findByFormStepId(step.id);
-      }
-  
-      form.steps = steps;
-      res.status(200).send({ form });
-    } catch (error) {
-      res.status(500).send({ message: "Error retrieving form", error: error.message });
+    res.status(201).send({ message: "Form successfully created", form: newForm });
+  } catch (error) {
+    res.status(500).send({ message: "Error creating form", error: error.message });
+  }
+};
+
+
+exports.getFormTable = async (req, res) => {
+  try {
+    const forms = await Form.getAll();
+    res.status(200).send({ data: forms });
+  } catch (error) {
+    res.status(500).send({ message: "Error retrieving forms", error: error.message });
+  }
+};
+
+exports.getForm = async (req, res) => {
+  try {
+    const formId = req.params.id;
+    const form = await Form.findById(formId);
+
+    if (!form) {
+      res.status(404).send({ message: "Form not found" });
+      return;
     }
-  };
+    const product = await Product.findById(form.product_id);
+    const vendor = await Vendor.findById(form.vendor_id);
+    res.status(200).send({
+      form: {
+        ...form,
+        product_name: product.name, 
+        vendor_name: vendor.name, 
+      },
+    });
+  } catch (error) {
+    res.status(500).send({ message: 'Error retrieving form', error: error.message });
+  }
+};
 
-  exports.updateFormStep = async (req, res) => {
-    try {
-      const { form_step_id, step_name, step_order } = req.body;
-  
-      const updatedStep = await FormStep.update(form_step_id, step_name, step_order);
-  
-      res.status(200).send({
-        status: "success",
-        message: "Form adımı başarıyla güncellendi.",
-        data: updatedStep,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "Form adımı güncellenirken bir hata oluştu.",
-      });
+exports.updateMultipleSubsteps = async (req, res) => {
+  try {
+    const substeps = req.body.substeps;
+    
+    for (const substep of substeps) {
+      const {
+        id,
+        step_name,
+        name,
+        technical_drawing_numbering,
+        tools,
+        description,
+        actual_dimension,
+        lower_tolerance,
+        upper_tolerance,
+        example_visual_url,
+        status,
+        type,
+      } = substep;
+
+      await FormSubstep.update(
+        id,
+        step_name,
+        name,
+        technical_drawing_numbering,
+        tools,
+        description,
+        actual_dimension,
+        lower_tolerance,
+        upper_tolerance,
+        example_visual_url,
+        status,
+        type
+      );
     }
-  };
-  
-  // form alt adımı güncelleme
-  exports.updateFormSubstep = async (req, res) => {
-    try {
-      const { form_substep_id, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type } = req.body;
-  
-      const updatedSubstep = await FormSubstep.update(form_substep_id, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type);
-  
-      res.status(200).send({
-        status: "success",
-        message: "Form alt adımı başarıyla güncellendi.",
-        data: updatedSubstep,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "Form alt adımı güncellenirken bir hata oluştu.",
-      });
+
+    res.status(200).json({ message: "Substeps updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
+exports.deleteFormSubstep = async (req, res) => {
+  try {
+    const { form_substep_id } = req.body;
+
+    await FormSubstep.delete(form_substep_id);
+
+    res.status(200).send({
+      status: "success",
+      message: "Form alt adımı başarıyla silindi.",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      status: "error",
+      message: "Form alt adımı silinirken bir hata oluştu.",
+    });
+  }
+};
+
+exports.getAllForm = async (req, res) => {
+  try {
+    const formId = req.params.id;
+    const form = await Form.findById(formId);
+
+    if (!form) {
+      res.status(404).send({ message: "Form not found" });
+      return;
     }
-  };
-  
-  // form alt adımı ekleme
-  exports.addFormSubstep = async (req, res) => {
-    try {
-      const { form_step_id, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type } = req.body;
-  
-      const newSubstep = await FormSubstep.create(form_step_id, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type);
-  
-      res.status(201).send({
-        status: "success",
-        message: "Form alt adımı başarıyla eklendi.",
-        data: newSubstep,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "Form alt adımı eklenirken bir hata oluştu.",
-      });
-    }
-  };
-  
-  // form alt adımı silme
-  exports.deleteFormSubstep = async (req, res) => {
-    try {
-      const { form_substep_id } = req.body;
+    const product = await Product.findById(form.product_id);
+    const vendor = await Vendor.findById(form.vendor_id);
 
-      await FormSubstep.delete(form_substep_id);
+    const formSubsteps = await FormSubstep.findAllByFormId(formId);
+    const stepsWithSubsteps = FIXED_STEPS.map((fixedStep) => {
+      return {
+        ...fixedStep,
+        substeps: formSubsteps.filter((substep) => substep.step_name === fixedStep.name),
+      };
+    });
 
-      res.status(200).send({
-        status: "success",
-        message: "Form alt adımı başarıyla silindi.",
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "Form alt adımı silinirken bir hata oluştu.",
-      });
-    }
-  };
-
-  // form adımı ve alt adımlarını getirme
-  exports.getFormStepsAndSubsteps = async (req, res) => {
-    try {
-      const { product_id, vendor_id } = req.query;
-
-      const form = await Form.findByProductIdAndVendorId(product_id, vendor_id);
-
-      if (!form) {
-        return res.status(404).send({
-          status: "error",
-          message: "Form bulunamadı.",
-        });
-      }
-
-      const steps = await FormStep.findByFormId(form.id);
-      const stepsWithSubsteps = [];
-
-      for (const step of steps) {
-        const substeps = await FormSubstep.findByFormStepId(step.id);
-        stepsWithSubsteps.push({ ...step, substeps });
-      }
-
-      res.status(200).send({
-        status: "success",
-        data: stepsWithSubsteps,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "Form adımları ve alt adımları getirilirken bir hata oluştu.",
-      });
-    }
-  };
-  exports.getFormByProductIdAndVendorId = async (req, res) => {
-    try {
-      const { product_id, vendor_id } = req.query;
-  
-      const form = await Form.findByProductIdAndVendorId(product_id, vendor_id);
-  
-      if (!form) {
-        return res.status(404).send({
-          status: "error",
-          message: "Form bulunamadı",
-        });
-      }
-  
-      const steps = await FormStep.findByFormId(form.id);
-  
-      for (const step of steps) {
-        step.substeps = await FormSubstep.findByFormStepId(step.id);
-      }
-  
-      res.status(200).send({
-        status: "success",
-        data: {
-          form,
-          steps,
-        },
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "error",
-        message: "Form ve adımları getirilemedi",
-      });
-    }
-  };
+    res.status(200).send({
+      id: form.id,
+      product_id: form.product_id,
+      vendor_id: form.vendor_id,
+      product_name: product.name,
+      vendor_name: vendor.name,
+      steps: stepsWithSubsteps,
+    });
+  } catch (error) {
+    res.status(500).send({ message: 'Error retrieving form', error: error.message });
+  }
+};

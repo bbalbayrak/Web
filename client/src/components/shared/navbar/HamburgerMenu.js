@@ -74,6 +74,9 @@ const HamburgerMenu = () => {
           <Link className="link" to="/login">
             Login
           </Link>
+          <Link className="link" to="/forms">
+            Forms
+          </Link>
           
           {isLoggedIn && (
             <Link className="link" to="/" onClick={handleLogout}>
