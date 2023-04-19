@@ -25,17 +25,33 @@ export const getFormById = async (id) => {
 };
 
 export const createOrUpdateForm = async (formData) => {
-  const response = await fetch('http://localhost:3001/forms', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData),
+  const apiUrl = 'http://localhost:3001/forms';
+
+  const promises = formData.steps.map(async (step) => {
+    if (step.substeps.length > 0) {
+      step.substeps = await Promise.all(step.substeps.map(async (substep,form_id) => {
+        if (substep.id) {
+          const response = await fetch(`${apiUrl}/${form_id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(substep),
+          });
+          return await response.json();
+        } else {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(substep),
+          });
+          return await response.json();
+        }
+      }));
+    }
   });
 
-  if (!response.ok) {
-    throw new Error(`Error creating or updating form: ${response.statusText}`);
-  }
-
-  return response.json();
-};
+  await Promise.all(promises);
+}

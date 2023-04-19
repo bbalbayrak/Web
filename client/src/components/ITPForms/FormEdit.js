@@ -45,7 +45,7 @@ const FormEdit = () => {
 
   const addRow = () => {
     const newRow = {
-      id: `new-${Date.now()}`,
+      id: null,
       name: '',
       technical_drawing_numbering: '',
       tools: '',
@@ -56,6 +56,7 @@ const FormEdit = () => {
     };
     setRows([...rows, newRow]);
   };
+  
 
   const handleInputChange = (event, rowId, field) => {
     const newValue = event.target.value;
@@ -111,6 +112,7 @@ const FormEdit = () => {
         order: segment.order,
         substeps: index === 1 ? rows.map(row => {
           const {
+            id,
             technical_drawing_numbering,
             tools,
             description,
@@ -121,6 +123,7 @@ const FormEdit = () => {
             status
           } = row;
           return {
+            id,
             technical_drawing_numbering,
             tools,
             description,
@@ -133,15 +136,15 @@ const FormEdit = () => {
         }) : [],
       })),
     };
-
+  
     try {
       await createOrUpdateForm(postData);
       console.log('Form kaydedildi');
-
     } catch (error) {
       console.error('Error saving form:', error);
     }
   };
+  
 
   const renderSubPartDimensiol = () => {
     return (
