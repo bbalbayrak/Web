@@ -4,40 +4,68 @@ const { FIXED_STEPS } = require("../utils/fixedsteps");
 const Product = require('../models/product');
 const Vendor = require('../models/vendor');
 
-exports.createForm = async (req, res) => {
+exports.createOrUpdateForm = async (req, res) => {
   try {
-    const { product_id, vendor_id, steps } = req.body;
-
-    const newForm = await Form.create(product_id, vendor_id);
+    const { form_id, product_id, vendor_id, steps } = req.body;
+    let form;
+    
+    if (form_id) {
+      form = await Form.findById(form_id);
+      if (!form) {
+        res.status(404).send({ message: "Form not found" });
+        return;
+      }
+    } else {
+      form = await Form.create(product_id, vendor_id);
+    }
 
     for (const fixedStep of FIXED_STEPS) {
       const step = steps.find(step => step.name === fixedStep.name);
       if (step) {
         for (const substep of step.substeps) {
-          await FormSubstep.create(
-            newForm.id,
-            fixedStep.name,
-            substep.name,
-            substep.technical_drawing_numbering,
-            substep.tools,
-            substep.description,
-            substep.actual_dimension,
-            substep.lower_tolerance,
-            substep.upper_tolerance,
-            substep.example_visual_url,
-            substep.status,
-            substep.type
-          );
+          if (substep.id) {
+            await FormSubstep.update(
+              substep.id,
+              fixedStep.name,
+              substep.name,
+              substep.technical_drawing_numbering,
+              substep.tools,
+              substep.description,
+              substep.actual_dimension,
+              substep.lower_tolerance,
+              substep.upper_tolerance,
+              substep.example_visual_url,
+              substep.status,
+              substep.type
+            );
+          } else {
+            await FormSubstep.create(
+              form.id,
+              fixedStep.name,
+              substep.name,
+              substep.technical_drawing_numbering,
+              substep.tools,
+              substep.description,
+              substep.actual_dimension,
+              substep.lower_tolerance,
+              substep.upper_tolerance,
+              substep.example_visual_url,
+              substep.status,
+              substep.type
+            );
+          }
         }
       } else {
         throw new Error(`Unable to find a matching step for fixed step: ${fixedStep.name}`);
       }
     }
-    res.status(201).send({ message: "Form successfully created", form: newForm });
+    res.status(201).send({ message: "Form successfully created or updated", form });
   } catch (error) {
-    res.status(500).send({ message: "Error creating form", error: error.message });
+    console.error("Error in createOrUpdateForm:", error);
+    res.status(500).send({ message: "Error creating or updating form", error: error.message });
   }
 };
+
 
 
 exports.getFormTable = async (req, res) => {
