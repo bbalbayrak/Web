@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getFormById } from './formapi';
+import { getFormById, createOrUpdateForm } from './formapi';
 
 const segments = [
   { name: 'Sub - Part Dimensiol', order: 1 },
@@ -56,7 +56,11 @@ const FormEdit = () => {
     };
     setRows([...rows, newRow]);
   };
-
+  const handleInputChange = (event, rowId, field) => {
+    const newValue = event.target.value;
+    setRows(rows.map(row => row.id === rowId ? {...row, [field]: newValue} : row));
+  };
+  
   const handleDragOver = (e) => {
     e.preventDefault();
   };
@@ -93,6 +97,48 @@ const FormEdit = () => {
         return renderQoatingReport();
       default:
         return null;
+    }
+  };
+
+  const saveForm = async () => {
+    const postData = {
+      id: form.id,
+      product_name: form.product_name,
+      vendor_name: form.vendor_name,
+      steps: segments.map((segment, index) => ({
+        name: segment.name,
+        order: segment.order,
+        substeps: index === 1 ? rows.map(row => {
+          const {
+            technical_drawing_numbering,
+            tools,
+            description,
+            actual_dimension,
+            lower_tolerance,
+            upper_tolerance,
+            example_visual_url,
+            status
+          } = row;
+          return {
+            technical_drawing_numbering,
+            tools,
+            description,
+            actual_dimension,
+            lower_tolerance,
+            upper_tolerance,
+            example_visual_url,
+            status
+          };
+        }) : [],
+      })),
+    };
+
+    try {
+      await createOrUpdateForm(postData);
+      console.log('Form kaydedildi');
+
+    } catch (error) {
+      console.error('Error saving form:', error);
     }
   };
 
@@ -134,25 +180,25 @@ const FormEdit = () => {
           {rows.map((row) => (
             <tr key={row.id}>
                 <td>
-                  <input type="text" value={row.name} />
+                <input type="text" value={row.name} onChange={(e) => handleInputChange(e, row.id, 'name')} />
                 </td>
                 <td>
-                  <input type="text" value={row.technical_drawing_numbering} />
+                  <input type="text" value={row.technical_drawing_numbering} onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')} />
                 </td>
                 <td>
-                  <input type="text" value={row.tools} />
+                  <input type="text" value={row.tools} onChange={(e) => handleInputChange(e, row.id, 'tools')} />
                 </td>
                 <td>
-                  <input type="text" value={row.description} />
+                  <input type="text" value={row.description} onChange={(e) => handleInputChange(e, row.id, 'description')} />
                 </td>
                 <td>
-                  <input type="text" value={row.actual_dimension} />
+                  <input type="text" value={row.actual_dimension} onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')} />
                 </td>
                 <td>
-                  <input type="text" value={row.lower_tolerance} />
+                  <input type="text" value={row.lower_tolerance} onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')} />
                 </td>
                 <td>
-                  <input type="text" value={row.upper_tolerance} />
+                  <input type="text" value={row.upper_tolerance} onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')} />
                 </td>
                 <td>
                 <div
@@ -172,6 +218,8 @@ const FormEdit = () => {
           </tbody>
         </table>
         <button onClick={addRow}>Satır Ekle</button>
+        <button onClick={saveForm}>Kaydet</button>
+
       </div>
     );
   };
