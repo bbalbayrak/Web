@@ -56,10 +56,11 @@ const FormEdit = () => {
     };
     setRows([...rows, newRow]);
   };
+
   const handleInputChange = (event, rowId, field) => {
     const newValue = event.target.value;
     setRows(rows.map(row => row.id === rowId ? {...row, [field]: newValue} : row));
-  };
+  };  
   
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -180,27 +181,56 @@ const FormEdit = () => {
           {rows.map((row) => (
             <tr key={row.id}>
                 <td>
-                <input type="text" value={row.name} onChange={(e) => handleInputChange(e, row.id, 'name')} />
-                </td>
-                <td>
-                  <input type="text" value={row.technical_drawing_numbering} onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')} />
-                </td>
-                <td>
-                  <input type="text" value={row.tools} onChange={(e) => handleInputChange(e, row.id, 'tools')} />
-                </td>
-                <td>
-                  <input type="text" value={row.description} onChange={(e) => handleInputChange(e, row.id, 'description')} />
-                </td>
-                <td>
-                  <input type="text" value={row.actual_dimension} onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')} />
-                </td>
-                <td>
-                  <input type="text" value={row.lower_tolerance} onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')} />
-                </td>
-                <td>
-                  <input type="text" value={row.upper_tolerance} onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')} />
-                </td>
-                <td>
+              <input
+                type="text"
+                value={row.name || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'name')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.technical_drawing_numbering || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.tools || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'tools')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.description || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'description')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.actual_dimension || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.lower_tolerance || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.upper_tolerance || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
+              />
+            </td>
+
+              <td>
                 <div
                   className="dropzone"
                   onDragOver={handleDragOver}
@@ -213,12 +243,12 @@ const FormEdit = () => {
                   />
                 </div>
               </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <button onClick={addRow}>Satır Ekle</button>
-        <button onClick={saveForm}>Kaydet</button>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <button onClick={addRow}>Satır Ekle</button>
+      <button onClick={saveForm}>Kaydet</button>
 
       </div>
     );
