@@ -25,7 +25,7 @@ export const getFormById = async (id) => {
 };
 
 export const createOrUpdateForm = async (formData) => {
-  const response = await fetch('http://localhost:3001/forms', { // '/api/forms' yerine '/forms' kullanın
+  const response = await fetch('http://localhost:3001/forms', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
