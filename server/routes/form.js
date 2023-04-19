@@ -4,7 +4,7 @@ const routes = [
   {
     method: "POST",
     path: "/forms",
-    handler: formControllers.createForm,
+    handler: formControllers.createOrUpdateForm,
   },
   {
     method: "GET",
