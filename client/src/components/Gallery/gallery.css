@@ -1,0 +1,57 @@
+.gallery-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.gallery-image {
+  width: 100%;
+  cursor: pointer;
+}
+
+.gallery-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-image {
+  max-height: 80vh;
+  max-width: 80vw;
+}
+
+.modal-arrows {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-arrow {
+  font-size: 40px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-arrow:hover {
+  transform: scale(1.2);
+}
+
+.modal-arrow-left {
+  margin-left: 10px;
+}
+
+.modal-arrow-right {
+  margin-right: 10px;
+}

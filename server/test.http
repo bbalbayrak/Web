@@ -44,12 +44,32 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3001/products
-Content-Type: application/json
+Content-Type: multipart/form-data; boundary=----boundary
 
-{
-    "name": "matar",
-    "odooid": 3132,
-    "customer":"alperen",
-    "technical_drawing":"SamplePDFdata",
-    "guide":"SampleJPGdata"
-}
+------boundary
+Content-Disposition: form-data; name="name"
+
+12321321
+------boundary
+Content-Disposition: form-data; name="odooid"
+
+3132132132132
+------boundary
+Content-Disposition: form-data; name="customer"
+
+alp231321321eren
+------boundary
+Content-Disposition: form-data; name="technicaldrawingurl"; filename="aaaa.pdf"
+Content-Type: application/pdf
+
+< aaaa.pdf
+------boundary
+Content-Disposition: form-data; name="guideurl"; filename="aaaa.pdf"
+Content-Type: image/jpeg
+
+< aaaa.pdf
+------boundary--
+
+1
+------boundary
+Content-Disposition: form-data; name="customerid"

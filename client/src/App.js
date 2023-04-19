@@ -12,6 +12,7 @@ import ProductPage from "./components/ProductPage/ProductPage";
 import FormsPage from "./components/FormsPage/FormsPage";
 import FormEdit from "./components/FormsPage/FormEdit";
 import UploadForm from './components/FormsPage/UploadForm';
+import Gallery from "./components/Gallery/gallery";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/forms" element={<FormsPage />} />
           <Route path="/forms/:id" element={<FormEdit />} />
           <Route path="/upload" element={<UploadForm />}/>
+          <Route path='/gallery' element={<Gallery />} />
         </Routes>
       </div>
     </BrowserRouter>

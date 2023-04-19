@@ -3,6 +3,7 @@ import { getProducts, addProduct, updateProduct, deleteProduct } from '..//..//a
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './ProductTable.css';
+import axios from 'axios';
 
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
@@ -18,16 +19,18 @@ const ProductTable = () => {
   const [newGuide, setNewGuide] = useState('');
 
   useEffect(() => {
-    async function fetchProducts() {
-      const data = await getProducts();
-      setProducts(data);
-    }
-
-    fetchProducts();
+    axios.get('http://localhost:3001/products')
+      .then((res) => {
+        console.log("Products data:", res.data.data);
+        setProducts(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
-
-  const handleAddProduct = async (newProduct, technicalDrawingFile, guideFile) => {
-    const addedProduct = await addProduct(newProduct, technicalDrawingFile, guideFile);
+  
+  const handleAddProduct = async (newProduct) => {
+    const addedProduct = await addProduct(newProduct);
     setProducts([...products, addedProduct]);
     setAddingProduct(false);
   };
@@ -48,21 +51,14 @@ const ProductTable = () => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    console.log("Search term:", event.target.value);
   };
-
+  
   const handleFieldChange = (event) => {
     setSearchField(event.target.value);
+    console.log("Search field:", event.target.value);
   };
-
-  const filteredData = products.filter((product) => {
-    if (!searchTerm || !searchField) return true;
-    return product[searchField]
-      .toString()
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-  });
-
-  const sortedData = filteredData.sort((a, b) => a.name.localeCompare(b.name));
+  
 
   return (
     <div className="product-table-container">
@@ -165,45 +161,42 @@ const ProductTable = () => {
               </td>
             </tr>
           )}
-          {sortedData.map((product, index) => (
-            <tr key={index}>
-              <td>{product.name}</td>
-              <td>{product.odooid}</td>
-              <td>{product.customer}</td>
-              <td>
-                {product.technicalDrawingUrl ? (
-                  <a href={product.technicalDrawingUrl} target="_blank" rel="noopener noreferrer">
-                    {product.technicalDrawing ? product.technicalDrawing.name : 'Teknik Çizim'}
-                  </a>
-                ) : (
-                  ''
-                )}
-              </td>
-              <td>
-                {product.guideUrl ? (
-                  <a href={product.guideUrl} target="_blank" rel="noopener noreferrer">
-                    {product.guide ? product.guide.name : 'Kılavuz'}
-                  </a>
-                ) : (
-                  ''
-                )}
-              </td>
-              <td>
-                <button
-                  onClick={() => handleUpdateProduct(product.id, product)}
-                >
-                  <FontAwesomeIcon icon={faSave} />
-                  {' Kaydet'}
-                </button>
-                <button
-                  onClick={() => handleDeleteProduct(product.id)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                  {' Sil'}
-                </button>
-              </td>
-            </tr>
-          ))}
+          
+          {products.map((product, index) => (
+  <tr key={index}>
+    <td>{product.name}</td>
+    <td>{product.odooid}</td>
+    <td>{product.customer}</td>
+    <td>
+      {product.technicaldrawingurl ? (
+        <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer">
+          {product.technicaldrawingurl}
+        </a>
+      ) : (
+        ''
+      )}
+    </td>
+    <td>
+      {product.guideUrl ? (
+        <a href={product.guideUrl} target="_blank" rel="noopener noreferrer">
+          {product.guideUrl}
+        </a>
+      ) : (
+        ''
+      )}
+    </td>
+    <td>
+      <button onClick={() => handleUpdateProduct(product.id, product)}>
+        <FontAwesomeIcon icon={faSave} />
+        {' Kaydet'}
+      </button>
+      <button onClick={() => handleDeleteProduct(product.id)}>
+        <FontAwesomeIcon icon={faTrash} />
+        {' Sil'}
+      </button>
+    </td>
+  </tr>
+))}
         </tbody>
       </table>
     </div>

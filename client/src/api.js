@@ -7,11 +7,12 @@ export const getProducts = async () => {
     const response = await axios.get(API_URL);
     const products = response.data.data;
 
-    return products.map(product => ({
+    return products.map((product) => ({
       ...product,
-      technicalDrawingUrl: product.technicalDrawingUrl,
+      technicaldrawingurl: product.technicalDrawingUrl,
       guideUrl: product.guideUrl,
     }));
+    
   } catch (error) {
     console.error('Error fetching products:', error);
     throw error;
@@ -42,6 +43,7 @@ export const addProduct = async (product, technicalDrawingFile, guideFile) => {
     throw error;
   }
 };
+
 
 export const updateProduct = async (id, updatedProduct) => {
   try {
