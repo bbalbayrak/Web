@@ -9,8 +9,8 @@ import Maintenance from "./components/Maintenance/Maintenance";
 import Home from "./components/Home/Home";
 import ToleranceTable from "./components/ToleranceTable/ToleranceTable";
 import ProductPage from "./components/ProductPage/ProductPage";
-import FormsPage from "./components/FormsPage/FormsPage";
-import FormEdit from "./components/FormsPage/FormEdit";
+import FormsPage from "./components/ITPForms/FormsPage";
+import FormEdit from "./components/ITPForms/FormEdit";
 import UploadForm from './components/FormsPage/UploadForm';
 import Gallery from "./components/Gallery/gallery";
 

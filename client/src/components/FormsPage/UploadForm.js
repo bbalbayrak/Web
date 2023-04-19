@@ -63,8 +63,13 @@ const UploadForm = () => {
       </form>
       {response && (
         <div>
-          <h3>Response:</h3>
-          <pre>{JSON.stringify(response, null, 2)}</pre>
+          <h3>Response:{response.data.name}</h3>
+          <h3>Response:{response.data.customerid}</h3>
+          <h3>Response:{response.data.guideurl}</h3>
+          <h3>Response:{response.data.technicaldrawingurl}</h3>
+
+
+
         </div>
       )}
     </div>
