@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const UploadForm = () => {
@@ -8,7 +8,20 @@ const UploadForm = () => {
   const [technicalDrawingFile, setTechnicalDrawingFile] = useState(null);
   const [guideFile, setGuideFile] = useState(null);
   const [response, setResponse] = useState(null);
+  const [customers, setCustomers] = useState([]);
 
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:3001/customers');
+        setCustomers(data.data);
+      } catch (error) {
+        console.error('Error fetching customers:', error);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -45,8 +58,15 @@ const UploadForm = () => {
         </label>
         <br />
         <label>
-          Müşteri ID:
-          <input type="text" value={customerId} onChange={(e) => setCustomerId(e.target.value)} />
+          Müşteri İsimleri:
+          <select value={customerId} onChange={(e) => setCustomerId(e.target.value)}>
+            <option value="">Müşteri seçin</option>
+            {customers.map((customer) => (
+              <option key={customer.id} value={customer.id}>
+                {customer.name}
+              </option>
+            ))}
+          </select>
         </label>
         <br />
         <label>
@@ -67,9 +87,6 @@ const UploadForm = () => {
           <h3>Response:{response.data.customerid}</h3>
           <h3>Response:{response.data.guideurl}</h3>
           <h3>Response:{response.data.technicaldrawingurl}</h3>
-
-
-
         </div>
       )}
     </div>
