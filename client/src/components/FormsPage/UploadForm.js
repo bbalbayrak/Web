@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "./UploadForm.css"
+
 
 const UploadForm = () => {
   const [name, setName] = useState('');
@@ -9,6 +11,7 @@ const UploadForm = () => {
   const [guideFile, setGuideFile] = useState(null);
   const [response, setResponse] = useState(null);
   const [customers, setCustomers] = useState([]);
+  const [products, setProducts] = useState([])
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -19,8 +22,18 @@ const UploadForm = () => {
         console.error('Error fetching customers:', error);
       }
     };
+    const fetchProducts = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:3001/products');
+        setProducts(data.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
 
     fetchCustomers();
+    fetchProducts();
+
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,40 +59,53 @@ const UploadForm = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          İsim:
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-        </label>
-        <br />
-        <label>
-          Odooid:
-          <input type="text" value={odooid} onChange={(e) => setOdooid(e.target.value)} />
-        </label>
-        <br />
-        <label>
-          Müşteri İsimleri:
-          <select value={customerId} onChange={(e) => setCustomerId(e.target.value)}>
-            <option value="">Müşteri seçin</option>
-            {customers.map((customer) => (
-              <option key={customer.id} value={customer.id}>
-                {customer.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <br />
-        <label>
-          Teknik Çizim (PDF):
-          <input type="file" accept=".pdf" onChange={(e) => setTechnicalDrawingFile(e.target.files[0])} />
-        </label>
-        <br />
-        <label>
-          Kılavuz (PDF, JPG):
-          <input type="file" accept=".pdf,.jpg,.jpeg" onChange={(e) => setGuideFile(e.target.files[0])} />
-        </label>
-        <br />
-        <button type="submit">Kaydet</button>
+      <form className='products-form' onSubmit={handleSubmit}>
+        <table>
+          <tbody>
+            <tr>
+              <td>İsim:</td>
+              <td>
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>Odooid:</td>
+              <td>
+                <input type="text" value={odooid} onChange={(e) => setOdooid(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>Müşteri İsimleri:</td>
+              <td>
+                <select value={customerId} onChange={(e) => setCustomerId(e.target.value)}>
+                  <option value="">Müşteri seçin</option>
+                  {customers.map((customer) => (
+                    <option key={customer.id} value={customer.id}>
+                      {customer.name}
+                    </option>
+                  ))}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>Teknik Çizim (PDF):</td>
+              <td>
+                <input type="file" accept=".pdf" onChange={(e) => setTechnicalDrawingFile(e.target.files[0])} />
+              </td>
+            </tr>
+            <tr>
+              <td>Kılavuz (PDF, JPG):</td>
+              <td>
+                <input type="file" accept=".pdf,.jpg,.jpeg" onChange={(e) => setGuideFile(e.target.files[0])} />
+              </td>
+            </tr>
+            <tr>
+              <td colSpan="2">
+                <button type="submit">Kaydet</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </form>
       {response && (
         <div>
@@ -89,6 +115,39 @@ const UploadForm = () => {
           <h3>Response:{response.data.technicaldrawingurl}</h3>
         </div>
       )}
+      <h2>Ürün Listesi</h2>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>İsim</th>
+            <th>Odooid</th>
+            <th>Müşteri ID</th>
+            <th>Teknik Çizim URL</th>
+            <th>Kılavuz URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product) => (
+            <tr key={product.id}>
+              <td>{product.id}</td>
+              <td>{product.name}</td>
+              <td>{product.odooid}</td>
+              <td>{product.customerid}</td>
+              <td>
+                <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer">
+                  Teknik Çizim
+                </a>
+              </td>
+              <td>
+                <a href={product.guideurl} target="_blank" rel="noopener noreferrer">
+                  Kılavuz
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

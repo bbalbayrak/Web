@@ -26,10 +26,9 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/controltable" element={<ToleranceTable />} />
-          <Route path="/products" element={<ProductPage />} />
+          <Route path="/products" element={<UploadForm />} />
           <Route path="/forms" element={<FormsPage />} />
           <Route path="/forms/:id" element={<FormEdit />} />
-          <Route path="/upload" element={<UploadForm />}/>
           <Route path='/gallery' element={<Gallery />} />
         </Routes>
       </div>
