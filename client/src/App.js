@@ -13,13 +13,15 @@ import FormsPage from "./components/ITPForms/FormsPage";
 import FormEdit from "./components/ITPForms/FormEdit";
 import UploadForm from './components/FormsPage/UploadForm';
 import Gallery from "./components/Gallery/gallery";
-import TestPage1 from "./components/testpages/testpage1";
-import TestPage2 from "./components/testpages/testpage2";
-import TestPage3 from "./components/testpages/testpage3";
-import TestPage4 from "./components/testpages/testpage4";
-import TestPage5 from "./components/testpages/testpage5";
-import TestPage6 from "./components/testpages/testpage6";
-
+import WorkOrders from "./components/Works/WorkOrders";
+import CreateWorkOrder from "./components/Works/CreateWorkOrder";
+import QRControl from "./components/Works/QRControl";
+import QMControl from "./components/Works/QMControl";
+import VendorControl from "./components/Works/VendorControl";
+import QRReview from "./components/Works/QRReview";
+import Certificate from "./components/Works/Certificate";
+import QRCertificate from "./components/Works/QRCertificate";
+import QualityControl from "./components/Works/QualityControl";
 
 function App() {
   return (
@@ -37,17 +39,22 @@ function App() {
           <Route path="/forms" element={<FormsPage />} />
           <Route path="/forms/:id" element={<FormEdit />} />
           <Route path='/gallery' element={<Gallery />} />
-          <Route path='/testpage1' element={<TestPage1 />} />
-          <Route path='/testpage2' element={<TestPage2 />} />
-          <Route path='/testpage3' element={<TestPage3 />} />
-          <Route path='/testpage4' element={<TestPage4 />} />
-          <Route path='/testpage5' element={<TestPage5 />} />
-          <Route path='/testpage6' element={<TestPage6 />} />
+          <Route path='/workorders' element={<WorkOrders />} />
+          <Route path='/create-work-order' element={<CreateWorkOrder />} />
+          <Route path='/qr-control' element={<QRControl />} />
+          <Route path='/vendor-control' element={<VendorControl />} />
+          <Route path='/qr-review' element={<QRReview />} />
+          <Route path='/qr-certificate' element={<QRCertificate />} />
+          <Route path='/qm-control' element={<QMControl />} />
+          <Route path='/certificate' element={<Certificate />} />
+          <Route path='/quality-control' element={<QualityControl />} />
+
+
+          
 
         </Routes>
       </div>
     </BrowserRouter>
-    //xx
   );
 }
 
