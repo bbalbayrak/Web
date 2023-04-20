@@ -15,6 +15,7 @@ const FormEdit = () => {
   const { id } = useParams();
   const [form, setForm] = useState(null);
   const [activeSegment, setActiveSegment] = useState(1);
+  const [formSaved, setFormSaved] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +30,24 @@ const FormEdit = () => {
     fetchData();
   }, [id]);
 
+
   const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    if (formSaved) {
+      const fetchData = async () => {
+        try {
+          const formData = await getFormById(id);
+          setForm(formData);
+          setFormSaved(false);
+        } catch (error) {
+          console.error('Error fetching form:', error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [formSaved, id]);
 
   useEffect(() => {
     if (form) {
@@ -105,8 +123,8 @@ const FormEdit = () => {
   const saveForm = async () => {
     const postData = {
       id: form.id,
-      product_name: form.product_name,
-      vendor_name: form.vendor_name,
+      product_id: form.product_id,
+      vendor_id: form.vendor_id,
       steps: segments.map((segment, index) => ({
         name: segment.name,
         order: segment.order,
@@ -123,7 +141,7 @@ const FormEdit = () => {
             status
           } = row;
           return {
-            id,
+            ...(id && { id }),
             technical_drawing_numbering,
             tools,
             description,
@@ -136,14 +154,16 @@ const FormEdit = () => {
         }) : [],
       })),
     };
-  
+    
     try {
       await createOrUpdateForm(postData);
       console.log('Form kaydedildi');
+      setFormSaved(true); // Form başarıyla kaydedildiğini bildirin
     } catch (error) {
       console.error('Error saving form:', error);
     }
   };
+  
   
 
   const renderSubPartDimensiol = () => {

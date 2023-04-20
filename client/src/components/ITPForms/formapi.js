@@ -27,31 +27,33 @@ export const getFormById = async (id) => {
 export const createOrUpdateForm = async (formData) => {
   const apiUrl = 'http://localhost:3001/forms';
 
-  const promises = formData.steps.map(async (step) => {
-    if (step.substeps.length > 0) {
-      step.substeps = await Promise.all(step.substeps.map(async (substep,form_id) => {
-        if (substep.id) {
-          const response = await fetch(`${apiUrl}/${form_id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(substep),
-          });
-          return await response.json();
-        } else {
-          const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(substep),
-          });
-          return await response.json();
-        }
-      }));
-    }
-  });
+  const body = {
+    ...formData,
+    steps: formData.steps.map((step, index) => ({
+      ...step,
+      substeps:
+        index === 1
+          ? step.substeps.map((substep) => {
+              if (substep.id) {
+                return substep;
+              } else {
+                const { id, ...rest } = substep;
+                return rest;
+              }
+            })
+          : [],
+    })),
+  };
 
-  await Promise.all(promises);
-}
+  if (formData.id) {
+    body.form_id = formData.id;
+  }
+
+  await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+};
