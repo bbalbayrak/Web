@@ -3,10 +3,10 @@ const db = require("../config/db");
 const WorkStep = {
   tableName: "work_steps",
 
-  create: async (work_id, step_name, timestamp, state) => {
+  create: async (work_id, step_name, timestamp, state, status) => {
     const result = await db.one(
-      `INSERT INTO ${WorkStep.tableName} (work_id, step_name, timestamp, state) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [work_id, step_name, timestamp, state]
+      `INSERT INTO ${WorkStep.tableName} (work_id, step_name, timestamp, state, status) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [work_id, step_name, timestamp, state, status]
     );
     return result;
   },

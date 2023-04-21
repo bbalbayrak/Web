@@ -2,8 +2,8 @@ const WorkStep = require("../models/workStep");
 
 exports.createWorkStep = async (req, res) => {
   try {
-    const { work_id, step_name, timestamp, state } = req.body;
-    const newWorkStep = await WorkStep.create(work_id, step_name, timestamp, state);
+    const { work_id, step_name, timestamp, state ,status} = req.body;
+    const newWorkStep = await WorkStep.create(work_id, step_name, timestamp, state,status);
     res.status(201).send({ message: "Work step created successfully", workStep: newWorkStep });
   } catch (error) {
     console.error("Error in createWorkStep:", error);
