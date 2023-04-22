@@ -35,7 +35,7 @@ fastify.register(fastifyMulter.contentParser);
 
 fastify.register(productRoutes);
 
-userRoutes.forEach((route, index) => {
+userRoutes.forEach((route) => {
   fastify.route(route);
 });
 

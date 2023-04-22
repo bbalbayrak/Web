@@ -45,7 +45,7 @@ const routes = [
   {
     method: "PUT",
     path: "/worksteps/:id",
-    handler: workStepControllers.updateWorkStepState,
+    handler: workStepControllers.updateWorkStepStatus,
   },
   {
     method: "DELETE",

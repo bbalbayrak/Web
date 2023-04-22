@@ -3,16 +3,47 @@ const { $where } = require("../models/user");
 
 const User = require('../models/user');
 
-exports.getAllUsers = async (req, res) => {
-    try {
-      const users = await User.find();
-      console.log("***********************", users);
-      res.status(200).send({ status: "success", data: users });
-    } catch (err) {
-      console.log("**********************", err);
-      res.status(500).send({ status: "error", msg: err });
+exports.createUser = async (req, res) => {
+  try {
+    const { email, password, phone, role, name, username, related_company } = req.body;
+
+    if (!email || !password || !phone || !role || !name || !username || !related_company) {
+      return res.status(400).send({
+        status: "fail",
+        msg: "Lütfen tüm alanları doldurun.",
+      });
     }
-  };  
+
+    const existingUser = await User.findByEmail(email);
+    if (existingUser) {
+      return res.status(400).send({
+        status: "fail",
+        msg: "Bu e-posta adresi zaten kullanımda.",
+      });
+    }
+
+    const newUser = await User.create(email, password, phone, role, name, username, related_company);
+    res.status(201).send({ status: "success", data: newUser });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      status: "error",
+      msg: "Sunucu hatası.",
+    });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll();
+    res.status(200).send({ status: "success", data: users });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ status: "error", msg: "Server error." });
+  }
+};
+
+  
 // ------------------------------------------------------------------
 exports.login = async (req, res) => {
   try {
@@ -44,7 +75,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       { user_id: user.id },
       process.env.USER_TOKEN_KEY,
-      { expiresIn: "48h" }
+      { expiresIn: "1h" }
     );
 
     res.status(200).send({
@@ -61,48 +92,6 @@ exports.login = async (req, res) => {
     });
   }
 };
-
-// ------------------------------------------------------------------
-exports.register = async (req, res) => {
-  try {
-    const { email, password, phone } = req.body;
-    if (!(password && email)) {
-      res.status(400).send({
-        status: "fail",
-        msg: "Lütfen şifre ve e-posta adresinizi giriniz.",
-      });
-    }
-    const isUserExists = await User.findByEmail(email);
-    if (isUserExists) {
-      res.status(409).send({
-        status: "fail",
-        msg: "Bu e-posta adresi zaten alınmış.",
-      });
-    }
-    const savedUser = await User.create(email, password, phone);
-    const token = jwt.sign(
-      {
-        user_id: savedUser.id,
-      },
-      process.env.USER_TOKEN_KEY,
-      {
-        expiresIn: "48h",
-      }
-    );
-    res.status(201).send({
-      status: "success",
-      message: "Kullanıcı başarıyla oluşturuldu.",
-      token: token,
-    });
-  } catch (err) {
-    console.log("error in register", err);
-    res.status(500).send({ status: "error", msg: "hsadhsadhd" + err });
-    throw err;
-  }
-};
-
-
-// ------------------------------------------------------------------
 
 function extractToken(req) {
     if (

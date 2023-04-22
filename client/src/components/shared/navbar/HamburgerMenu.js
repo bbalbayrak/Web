@@ -6,7 +6,7 @@ import './HamburgerMenu.css';
 import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
-const HamburgerMenu = () => {
+const HamburgerMenu = ({ showMenu = true }) => {
   const [closed, setClosed] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   let navigate = useNavigate();
@@ -43,6 +43,10 @@ const HamburgerMenu = () => {
     };
   }, []);
   
+  const [isWorkOrdersSubMenuOpen, setIsWorkOrdersSubMenuOpen] = useState(false);
+  const toggleWorkOrdersSubMenu = () => {
+    setIsWorkOrdersSubMenuOpen(!isWorkOrdersSubMenuOpen);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -50,6 +54,7 @@ const HamburgerMenu = () => {
     navigate('/');
   };
   return (
+    showMenu && (
     <div className="menu-container">
       <button className="hamburger-button" onClick={handleToggle}>
         <FontAwesomeIcon icon={faBars} />
@@ -65,19 +70,39 @@ const HamburgerMenu = () => {
           <Link className="link" to="/customers">
             Customers
           </Link>
-          <Link className="link" to="/controltable">
-            Control Table
-          </Link>
           <Link className="link" to="/products">
             Products
-          </Link>
-          <Link className="link" to="/login">
-            Login
           </Link>
           <Link className="link" to="/forms">
             Forms
           </Link>
-          
+          {isLoggedIn && (
+            <li className="link" onClick={toggleWorkOrdersSubMenu}>
+              İş Emirleri
+              {isWorkOrdersSubMenuOpen && (
+                <ul className="sub-menu">
+                  <li>
+                    <Link className="link" to="/workorders">
+                      Açık İşler
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="link" to="/closed-workorders">
+                      Kapalı İşler
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
+          )}
+          {isLoggedIn && (
+          <Link className="link" to="/users">
+            Kullanıcılar
+          </Link>
+          )}
+          <Link className="link" to="/login">
+            Login
+          </Link>
           {isLoggedIn && (
             <Link className="link" to="/" onClick={handleLogout}>
               Çıkış Yap
@@ -86,6 +111,7 @@ const HamburgerMenu = () => {
         </ul>
       </div>
     </div>
+     )
   );
 };
 

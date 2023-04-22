@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setShowMenu }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(null); 
   let navigate = useNavigate();
+  
+  useEffect(() => {
+    setShowMenu(false);
+    return () => {
+      setShowMenu(true);
+    };
+  }, [setShowMenu]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     axios
-      .post('http://localhost:3001/login', { email, password })
+      .post('http://localhost:3001/api/login', { email, password })
       .then((response) => {
         setMessage(response.data.msg); 
         if (response.status === 200) {

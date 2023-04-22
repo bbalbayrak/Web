@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import HamburgerMenu from "./components/shared/navbar/HamburgerMenu";
 import Login from "./components/Login/Login";
@@ -7,7 +7,6 @@ import Customers from "./components/Customers/Customers";
 import { BrowserRouter as Router, Route, Link, Routes, BrowserRouter } from "react-router-dom";
 import Maintenance from "./components/Maintenance/Maintenance";
 import Home from "./components/Home/Home";
-import ToleranceTable from "./components/ToleranceTable/ToleranceTable";
 import ProductPage from "./components/ProductPage/ProductPage";
 import FormsPage from "./components/ITPForms/FormsPage";
 import FormEdit from "./components/ITPForms/FormEdit";
@@ -22,19 +21,29 @@ import QRReview from "./components/Works/QRReview";
 import Certificate from "./components/Works/Certificate";
 import QRCertificate from "./components/Works/QRCertificate";
 import QualityControl from "./components/Works/QualityControl";
+import RouteGuard from './components/RouteGuard/RouteGuard';
+import Users from './components/Users/Users';
+import CreateUser from "./components/Users/CreateUser";
 
 function App() {
+  const [showMenu, setShowMenu] = useState(true);
   return (
     <BrowserRouter>
       <div className="App">
-        <HamburgerMenu />
+      <HamburgerMenu showMenu={showMenu} />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+  path="/customers"
+  element={
+    <RouteGuard setShowMenu={setShowMenu}>
+      <Customers />
+    </RouteGuard>
+  }
+/>
+          <Route path="/login" element={<Login setShowMenu={setShowMenu} />}/>
           <Route path="/home" element={<Home />} />
           <Route path="/vendors" element={<Vendors />} />
-          <Route path="/controltable" element={<ToleranceTable />} />
           <Route path="/products" element={<UploadForm />} />
           <Route path="/forms" element={<FormsPage />} />
           <Route path="/forms/:id" element={<FormEdit />} />
@@ -48,10 +57,8 @@ function App() {
           <Route path='/qm-control' element={<QMControl />} />
           <Route path='/certificate' element={<Certificate />} />
           <Route path='/quality-control' element={<QualityControl />} />
-
-
-          
-
+          <Route path="/users" element={<Users />} />
+          <Route path="/create-user" element={<CreateUser />} />
         </Routes>
       </div>
     </BrowserRouter>

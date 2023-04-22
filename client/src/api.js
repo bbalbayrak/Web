@@ -73,3 +73,4 @@ export const searchByName = async (name) => {
     throw error;
   }
 };
+

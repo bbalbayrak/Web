@@ -31,18 +31,18 @@ exports.getWorkStepsByWorkId = async (req, res) => {
     }
   };
   
-  exports.updateWorkStepState = async (req, res) => {
+  exports.updateWorkStepStatus = async (req, res) => {
     try {
       const workStepId = req.params.id;
-      const { state } = req.body;
-      const updatedWorkStep = await WorkStep.updateState(workStepId, state);
+      const { status } = req.body;
+      const updatedWorkStep = await WorkStep.updateStatus(workStepId, status);
       if (!updatedWorkStep) {
         res.status(404).send({ message: "Work step not found" });
         return;
       }
-      res.status(200).send({ message: "Work step state updated successfully", data: updatedWorkStep });
+      res.status(200).send({ message: "Work step status updated successfully", data: updatedWorkStep });
     } catch (error) {
-      res.status(500).send({ message: "Error updating work step state", error: error.message });
+      res.status(500).send({ message: "Error updating work step status", error: error.message });
     }
   };
   

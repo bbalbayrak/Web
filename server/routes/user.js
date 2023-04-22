@@ -2,20 +2,20 @@ const userControllers = require("../controllers/user");
 
 const routes = [
     {
+        method: "POST",
+        path: "/api/create_user",
+        handler: userControllers.createUser,
+    },
+    {
         method: "GET",
-        path: "/users",
+        path: "/api/allusers",
         handler: userControllers.getAllUsers,
     },
     {
         method: "POST",
-        path: "/login",
+        path: "/api/login",
         handler: userControllers.login,
     },
-    {
-        method: "POST",
-        path: "/register",
-        handler: userControllers.register,
-    }
 ];
 
 module.exports = routes;

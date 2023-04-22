@@ -7,6 +7,10 @@ const User = {
     password: "password",
     email: "email",
     phone: "phone",
+    role: "role",
+    name: "name",
+    username: "username", 
+    related_company: "related_company",
   },
 
   findByEmail: async (email) => {
@@ -17,16 +21,27 @@ const User = {
     return result;
   },
 
-  create: async (email, password, phone) => {
+  create: async (email, password, phone, role, name, username, related_company) => {
     const result = await db.one(
-      "INSERT INTO ${table:name} (email, password, phone) VALUES (${email}, ${password}, ${phone}) RETURNING *",
+      "INSERT INTO ${table:name} (email, password, phone, role, name, username, related_company) VALUES (${email}, ${password}, ${phone}, ${role}, ${name}, ${username}, ${related_company}) RETURNING *",
       {
         table: User.tableName,
         email,
         password,
         phone,
+        role,
+        name,
+        username,
+        related_company,
       }
     );
+    return result;
+  },
+  
+  findAll: async () => {
+    const result = await db.any("SELECT * FROM ${table:name}", {
+      table: User.tableName,
+    });
     return result;
   },
 };

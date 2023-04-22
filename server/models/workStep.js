@@ -17,12 +17,12 @@ const WorkStep = {
   },
   
   findAllByWorkStatus: async (status) => {
-    const result = await db.any(`SELECT * FROM ${WorkStep.tableName} WHERE state = $1`, [status]);
+    const result = await db.any(`SELECT * FROM ${WorkStep.tableName} WHERE status = $1`, [status]);
     return result;
   },
   
-  updateState: async (id, state) => {
-    const result = await db.one(`UPDATE ${WorkStep.tableName} SET state = $1 WHERE id = $2 RETURNING *`, [state, id]);
+  updateStatus: async (id, status) => {
+    const result = await db.one(`UPDATE ${WorkStep.tableName} SET status = $1 WHERE id = $2 RETURNING *`, [status, id]);
     return result;
   },
   

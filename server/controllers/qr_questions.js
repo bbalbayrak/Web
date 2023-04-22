@@ -1,4 +1,4 @@
-const QRQuestion = require("../models/qr_question");
+const QRQuestion = require("../models/qr_questions");
 
 exports.createQRQuestion = async (req, res) => {
   try {

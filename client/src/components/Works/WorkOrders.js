@@ -12,8 +12,8 @@ const WorkOrders = () => {
 
   const fetchWorkOrders = async () => {
     try {
-      const response = await axios.get('YOUR_API_URL_HERE');
-      setWorkOrders(response.data);
+      const response = await axios.get('http://localhost:3001/worksteps/Open');
+      setWorkOrders(response.data.data);
     } catch (error) {
       console.error('Work orders alınamadı:', error);
     }
@@ -32,8 +32,11 @@ const WorkOrders = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Title</th>
-            <th>Description</th>
+            <th>Work ID</th>
+            <th>Step Name</th>
+            <th>Timestamp</th>
+            <th>State</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -41,8 +44,11 @@ const WorkOrders = () => {
           {workOrders.map((workOrder) => (
             <tr key={workOrder.id}>
               <td>{workOrder.id}</td>
-              <td>{workOrder.title}</td>
-              <td>{workOrder.description}</td>
+              <td>{workOrder.work_id}</td>
+              <td>{workOrder.step_name}</td>
+              <td>{workOrder.timestamp}</td>
+              <td>{workOrder.state}</td>
+              <td>{workOrder.status}</td>
               <td>
                 <button className="edit-button" onClick={() => handleEdit(workOrder.id)}>
                   Düzenle
