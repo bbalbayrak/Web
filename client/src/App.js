@@ -33,14 +33,7 @@ function App() {
       <HamburgerMenu showMenu={showMenu} />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route
-  path="/customers"
-  element={
-    <RouteGuard setShowMenu={setShowMenu}>
-      <Customers />
-    </RouteGuard>
-  }
-/>
+          <Route path="/customers" element={<RouteGuard setShowMenu={setShowMenu}><Customers /></RouteGuard>}/>
           <Route path="/login" element={<Login setShowMenu={setShowMenu} />}/>
           <Route path="/home" element={<Home />} />
           <Route path="/vendors" element={<Vendors />} />
