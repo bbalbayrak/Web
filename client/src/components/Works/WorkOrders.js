@@ -19,8 +19,25 @@ const WorkOrders = () => {
     }
   };
 
-  const handleEdit = (id) => {
-    navigate(`/work-orders/${id}`);
+  const handleEdit = (step_id, work_id, state) => {
+    if (state === "QR Control") {
+      navigate(`/qr-control?work_id=${work_id}&step_id=${step_id}`);
+    } 
+    if (state === "QM Control")  {
+      navigate(`/qm-control?work_id=${work_id}&step_id=${step_id}`);
+    }
+    if (state === "Vendor Control")  {
+      navigate(`/vendor-control?work_id=${work_id}&step_id=${step_id}`);
+    }
+    if (state === "QR Review")  {
+      navigate(`/qr-review?work_id=${work_id}&step_id=${step_id}`);
+    }
+    if (state === "Certificate")  {
+      navigate(`/certificate?work_id=${work_id}&step_id=${step_id}`);
+    }
+    if (state === "QR Certificate")  {
+      navigate(`/qr-certificate?work_id=${work_id}&step_id=${step_id}`);
+    }
   };
 
   return (
@@ -50,9 +67,9 @@ const WorkOrders = () => {
               <td>{workOrder.state}</td>
               <td>{workOrder.status}</td>
               <td>
-                <button className="edit-button" onClick={() => handleEdit(workOrder.id)}>
-                  Düzenle
-                </button>
+              <button className="edit-button" onClick={() => handleEdit(workOrder.id, workOrder.work_id, workOrder.state)}>
+                Düzenle
+              </button>
               </td>
             </tr>
           ))}

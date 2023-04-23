@@ -1,26 +1,34 @@
 const certificateControllers = require("../controllers/certificate");
+const fastifyMulter = require('fastify-multer');
+const storage = fastifyMulter.memoryStorage();
+const upload = fastifyMulter({ storage: storage });
 
-const routes = [
-  {
-    method: "POST",
-    path: "/certificates",
-    handler: certificateControllers.createCertificate,
-  },
-  {
-    method: "GET",
-    path: "/works/:work_id/certificates",
-    handler: certificateControllers.getCertificatesByWorkId,
-  },
-  {
-    method: "PUT",
-    path: "/certificates/:id",
-    handler: certificateControllers.updateCertificate,
-  },
-  {
-    method: "DELETE",
-    path: "/certificates/:id",
-    handler: certificateControllers.deleteCertificate,
-  },
-];
+const routes = (fastify, options, done) => {
+  fastify.post(
+    "/certificates",
+    { preHandler: upload.single('certificate_file') },
+    async (request, reply) => {
+      try {
+        const certificateFile = request.file;
+
+        // Add the file to the request object
+        request.body.certificate_file = certificateFile;
+
+        const result = await certificateControllers.createCertificate(request);
+        reply.code(201).send(result);
+      } catch (err) {
+        console.error(err);
+        reply.code(500).send({
+          status: "error",
+          message: "Certificate creation failed.",
+        });
+      }
+    }
+  );
+
+  fastify.get("/works/:work_id/certificates", certificateControllers.getCertificatesByWorkId);
+
+  done();
+};
 
 module.exports = routes;

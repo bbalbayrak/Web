@@ -1,12 +1,24 @@
 const Certificate = require("../models/certificate");
+const { uploadFile } = require("../utils/upload_azure");
 
-exports.createCertificate = async (req, res) => {
+exports.createCertificate = async (request) => {
   try {
-    const { work_id, url, product_id } = req.body;
-    const newCertificate = await Certificate.create(work_id, url, product_id);
-    res.status(201).send({ message: "Certificate created successfully", certificate: newCertificate });
-  } catch (error) {
-    res.status(500).send({ message: "Error creating certificate", error: error.message });
+    const { work_id, product_id, step_id } = request.body;
+    const certificateFile = request.file; // request.file kullanın
+
+    const certificate_url = certificateFile
+      ? await uploadFile(certificateFile.buffer, certificateFile.originalname)
+      : null;
+
+    const result = await Certificate.create(work_id, certificate_url, product_id, step_id);
+    return {
+      status: "success",
+      statusCode: 201,
+      data: result,
+    };
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 

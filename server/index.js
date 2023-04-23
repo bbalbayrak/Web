@@ -63,9 +63,7 @@ commentRoutes.forEach((route) => {
   fastify.route(route);
 });
 
-certificateRoutes.forEach((route) => {
-  fastify.route(route);
-});
+fastify.register(certificateRoutes);
 
 const start = async () => {
   try {

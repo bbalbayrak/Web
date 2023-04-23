@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getWorkById, getQRQuestionsByWorkId } from './worksapi';
+import { getWorkById, getQRQuestionsByWorkId, createWorkStep, updateWorkStepStatus, } from './worksapi';
 
 
 const VendorControl = () => {
@@ -17,20 +17,37 @@ const VendorControl = () => {
     const fetchData = async () => {
       const workData = await getWorkById(work_id);
       setWork(workData);
-
+  
       const qrQuestionsData = await getQRQuestionsByWorkId(work_id);
       setQRQuestions(qrQuestionsData.data);
     };
-
+  
     fetchData();
-  }, [work_id]);
+  }, [location]);
 
-  const handleProceed = () => {
-    navigate('/qr-review');
+  const handleSend = async () => {
+    try {
+      // Yeni bir work step oluşturun
+      const workStepData = {
+        work_id: work.data.id,
+        step_name: 'QR Review',
+        timestamp: new Date().toISOString(),
+        state: 'QR Review',
+        status: 'Open',
+      };
+  
+      const newWorkStep = await createWorkStep(workStepData);
+
+      await updateWorkStepStatus(step_id, 'Closed');
+  
+      navigate(`/workorders`);
+    } catch (error) {
+      console.error('Error sending QR questions:', error);
+    }
   };
 
   return (
-    <div>
+    <div className="form-page-container">
       <h2>Vendor Control</h2>
       <form>
         {qrQuestions.map((question, index) => (
@@ -57,6 +74,9 @@ const VendorControl = () => {
           </div>
         ))}
       </form>
+      <button type="button" onClick={handleSend} className="btn btn-primary">
+      Send
+      </button>
     </div>
   );
 };

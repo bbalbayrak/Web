@@ -32,26 +32,26 @@ function App() {
       <div className="App">
       <HamburgerMenu showMenu={showMenu} />
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<Login setShowMenu={setShowMenu} />}/>
           <Route path="/customers" element={<RouteGuard setShowMenu={setShowMenu}><Customers /></RouteGuard>}/>
           <Route path="/login" element={<Login setShowMenu={setShowMenu} />}/>
-          <Route path="/home" element={<Home />} />
-          <Route path="/vendors" element={<Vendors />} />
-          <Route path="/products" element={<UploadForm />} />
-          <Route path="/forms" element={<FormsPage />} />
-          <Route path="/forms/:id" element={<FormEdit />} />
-          <Route path='/gallery' element={<Gallery />} />
-          <Route path='/workorders' element={<WorkOrders />} />
-          <Route path='/create-work-order' element={<CreateWorkOrder />} />
-          <Route path='/qr-control' element={<QRControl />} />
-          <Route path='/vendor-control' element={<VendorControl />} />
-          <Route path='/qr-review' element={<QRReview />} />
-          <Route path='/qr-certificate' element={<QRCertificate />} />
-          <Route path='/qm-control' element={<QMControl />} />
-          <Route path='/certificate' element={<Certificate />} />
-          <Route path='/quality-control' element={<QualityControl />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/create-user" element={<CreateUser />} />
+          <Route path="/home" element={<RouteGuard setShowMenu={setShowMenu}><Home /></RouteGuard>}/>
+          <Route path="/vendors" element={<RouteGuard setShowMenu={setShowMenu}><Vendors /></RouteGuard>}/>
+          <Route path="/products" element={<RouteGuard setShowMenu={setShowMenu}><UploadForm /></RouteGuard>}/>
+          <Route path="/forms" element={<RouteGuard setShowMenu={setShowMenu}><FormsPage /></RouteGuard>}/>
+          <Route path="/forms/:id" element={<RouteGuard setShowMenu={setShowMenu}><FormEdit /></RouteGuard>}/>
+          <Route path='/gallery' element={<RouteGuard setShowMenu={setShowMenu}><Gallery /></RouteGuard>}/>
+          <Route path='/workorders' element={<RouteGuard setShowMenu={setShowMenu}><WorkOrders /></RouteGuard>}/>
+          <Route path='/create-work-order' element={<RouteGuard setShowMenu={setShowMenu}><CreateWorkOrder /></RouteGuard>}/>
+          <Route path='/qr-control' element={<RouteGuard setShowMenu={setShowMenu}><QRControl /></RouteGuard>}/>
+          <Route path='/vendor-control' element={<RouteGuard setShowMenu={setShowMenu}><VendorControl /></RouteGuard>}/>
+          <Route path='/qr-review' element={<RouteGuard setShowMenu={setShowMenu}><QRReview /></RouteGuard>}/>
+          <Route path='/qr-certificate' element={<RouteGuard setShowMenu={setShowMenu}><QRCertificate /></RouteGuard>}/>
+          <Route path='/qm-control' element={<RouteGuard setShowMenu={setShowMenu}><QMControl /></RouteGuard>}/>
+          <Route path='/certificate' element={<RouteGuard setShowMenu={setShowMenu}><Certificate /></RouteGuard>}/>
+          <Route path='/quality-control' element={<RouteGuard setShowMenu={setShowMenu}><QualityControl /></RouteGuard>}/>
+          <Route path="/users" element={<RouteGuard setShowMenu={setShowMenu}><Users /></RouteGuard>}/>
+          <Route path="/create-user" element={<RouteGuard setShowMenu={setShowMenu}><CreateUser /></RouteGuard>}/>
         </Routes>
       </div>
     </BrowserRouter>

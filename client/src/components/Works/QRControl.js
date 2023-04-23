@@ -14,8 +14,8 @@ const QRControl = () => {
   const navigate = useNavigate();
   const [work, setWork] = useState(null);
   const [product, setProduct] = useState(null);
-  const [checkedBoxes, setCheckedBoxes] = useState(new Array(3).fill(false));
-  const [inputValues, setInputValues] = useState(new Array(3).fill(''));
+  const [checkedBoxes, setCheckedBoxes] = useState(Array(3).fill({ yes: false, no: false, active: false }));
+  const [inputValues, setInputValues] = useState(Array(3).fill(''));
   const searchParams = new URLSearchParams(location.search);
   const work_id = searchParams.get('work_id');
   const step_id = searchParams.get('step_id');
@@ -35,9 +35,18 @@ const QRControl = () => {
     fetchData();
   }, [location]);
 
-  const handleCheck = (index) => {
+  const handleCheck = (index, value) => {
     const newCheckedBoxes = [...checkedBoxes];
-    newCheckedBoxes[index] = !checkedBoxes[index];
+    const currentBox = { ...newCheckedBoxes[index] };
+  
+    if (value === "yes" || value === "no") {
+      currentBox.yes = value === "yes";
+      currentBox.no = value === "no";
+    } else {
+      currentBox.active = !currentBox.active;
+    }
+  
+    newCheckedBoxes[index] = currentBox;
     setCheckedBoxes(newCheckedBoxes);
   };
 
@@ -70,21 +79,20 @@ const QRControl = () => {
           const qrQuestionData = {
             product_id: product.data.id,
             question: question || '',
-            input_text_yena: inputValues[index] || '',
-            input_text_vendor: '',
-            checkbox_yena: checkedBoxes[index] === true ? true : false,
-            checkbox_vendor: false,
-            vendor_question: false,
+            input_text: inputValues[index] || '',
+            checkbox: checkedBoxes[index].yes,
+            vendor_question: checkedBoxes[index].active,
             work_id: work.data.id,
+            step_id: step_id,
           };
   
           await postQRQuestions(qrQuestionData);
         })
       );
-
+  
       await updateWorkStepStatus(step_id, 'Closed');
   
-      navigate(`/qm-control?work_id=${work_id}&step_id=${newWorkStep.workStep.id}`);
+      navigate(`/workorders`);
     } catch (error) {
       console.error('Error sending QR questions:', error);
     }
@@ -101,7 +109,7 @@ const QRControl = () => {
   ];
 
   return (
-    <div>
+    <div className="form-page-container">
       <h2>QR Control</h2>
       {work && (
         <div>
@@ -112,29 +120,46 @@ const QRControl = () => {
           {/* Diğer iş detaylarını istediğiniz şekilde burada gösterebilirsiniz */}
         </div>
       )}
-
+  
       {product && (
         <div>
           <h3>Product Technical Drawing URL</h3>
           <p>{product.data.technicaldrawingurl}</p>
         </div>
       )}
-
-      <form>
+  
+        <form>
         {questions.map((question, index) => (
           <div key={index} className="form-group">
-            <div className="form-check d-inline-block">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id={`question-${index}`}
-                checked={checkedBoxes[index]}
-                onChange={() => handleCheck(index)}
-              />
-            </div>
-            <label className="form-check-label d-inline-block" htmlFor={`question-${index}`}>
+            <label className="d-inline-block" htmlFor={`question-${index}`}>
               {question}
             </label>
+            <div className="form-check form-check-inline">
+              <input
+                type="radio"
+                className="form-check-input"
+                id={`question-${index}-yes`}
+                name={`question-${index}`}
+                checked={checkedBoxes[index].yes}
+                onChange={() => handleCheck(index, "yes")}
+              />
+              <label className="form-check-label" htmlFor={`question-${index}-yes`}>
+                Yes
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <input
+                type="radio"
+                className="form-check-input"
+                id={`question-${index}-no`}
+                name={`question-${index}`}
+                checked={checkedBoxes[index].no}
+                onChange={() => handleCheck(index, "no")}
+              />
+              <label className="form-check-label" htmlFor={`question-${index}-no`}>
+                No
+              </label>
+            </div>
             <input
               type="text"
               className="form-control"
@@ -142,6 +167,18 @@ const QRControl = () => {
               value={inputValues[index]}
               onChange={(e) => handleInputChange(index, e.target.value)}
             />
+            <div className="form-check form-check-inline">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id={`question-${index}-active`}
+                checked={checkedBoxes[index].active}
+                onChange={() => handleCheck(index, "active")}
+              />
+              <label className="form-check-label" htmlFor={`question-${index}-active`}>
+                Active
+              </label>
+            </div>
           </div>
         ))}
         <button type="button" onClick={handleSave} className="btn btn-primary">

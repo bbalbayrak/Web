@@ -1,9 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {  getWorkById, createWorkStep,  updateWorkStepStatus, getProductById} from './worksapi';
 
 const QRCertificate = () => {
   const [checkedStatus, setCheckedStatus] = useState({ approved: false, unapproved: false, rejected: false });
   const navigate = useNavigate();
+  const location = useLocation();
+  const [product, setProduct] = useState(null);
+  const [work, setWork] = useState(null);
+  const searchParams = new URLSearchParams(location.search);
+  const work_id = searchParams.get('work_id');
+  const step_id = searchParams.get('step_id');
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const work_id = searchParams.get('work_id');
+
+    const fetchData = async () => {
+      const workData = await getWorkById(work_id);
+      setWork(workData);
+
+      const productData = await getProductById(workData.data.product_id);
+      setProduct(productData);
+    };
+
+    fetchData();
+  }, [location]);
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
@@ -12,14 +34,14 @@ const QRCertificate = () => {
 
   const handleSave = () => {
     if (checkedStatus.rejected) {
-      navigate('/certificate');
+      navigate('/workoders');
     } else {
-      navigate('/quality-control');
+      navigate('/workorders');
     }
   };
 
   return (
-    <div>
+    <div className="form-page-container">
       <h2>QR Certificate</h2>
       <div>
         <input

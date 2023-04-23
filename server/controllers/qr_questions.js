@@ -2,8 +2,8 @@ const QRQuestion = require("../models/qr_questions");
 
 exports.createQRQuestion = async (req, res) => {
   try {
-    const { product_id, question, input_text_yena, input_text_vendor, checkbox_yena, checkbox_vendor, vendor_question, work_id } = req.body;
-    const newQRQuestion = await QRQuestion.create(product_id, question, input_text_yena, input_text_vendor, checkbox_yena, checkbox_vendor, vendor_question, work_id);
+    const { product_id, question, input_text, checkbox, vendor_question, work_id, step_id } = req.body;
+    const newQRQuestion = await QRQuestion.create(product_id, question, input_text, checkbox, vendor_question, work_id, step_id);
     res.status(201).send({ message: "QRQuestion created successfully", qr_question: newQRQuestion });
   } catch (error) {
     console.error("Error in createQRQuestion:", error);
@@ -34,8 +34,8 @@ exports.getQRQuestionsByWorkId = async (req, res) => {
 exports.updateQRQuestion = async (req, res) => {
   try {
     const qrQuestionId = req.params.id;
-    const { product_id, question, input_text_yena, input_text_vendor, checkbox_yena, checkbox_vendor, vendor_question, work_id } = req.body;
-    const updatedQRQuestion = await QRQuestion.update(qrQuestionId, product_id, question, input_text_yena, input_text_vendor, checkbox_yena, checkbox_vendor, vendor_question, work_id);
+    const { product_id, question, input_text, checkbox, vendor_question, work_id, step_id } = req.body;
+    const updatedQRQuestion = await QRQuestion.update(qrQuestionId, product_id, question, input_text, checkbox, vendor_question, work_id, step_id);
     if (!updatedQRQuestion) {
       res.status(404).send({ message: "QRQuestion not found" });
       return;
@@ -45,3 +45,5 @@ exports.updateQRQuestion = async (req, res) => {
     res.status(500).send({ message: "Error updating QRQuestion", error: error.message });
   }
 };
+
+
