@@ -46,7 +46,7 @@ const Login = ({ setShowMenu }) => {
       <div className="login-container">
         <h2>Giriş Yap</h2>
         {message && <p className="message">{message}</p>}
-        <form onSubmit={handleSubmit}>
+        <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="E-posta"

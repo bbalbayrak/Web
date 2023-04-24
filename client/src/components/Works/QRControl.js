@@ -13,9 +13,7 @@ const QRControl = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [work, setWork] = useState(null);
-  const [products, setProducts] = useState(null);
-  const [checkedBoxes, setCheckedBoxes] = useState(Array(3).fill({ yes: false, no: false, active: false }));
-  const [inputValues, setInputValues] = useState(Array(3).fill(''));
+  const [products, setProducts] = useState([]);
   const searchParams = new URLSearchParams(location.search);
   const work_id = searchParams.get('work_id');
   const step_id = searchParams.get('step_id');
@@ -35,32 +33,38 @@ const QRControl = () => {
           })
         );
 
-        setProducts(fetchedProducts);
+        setProducts(
+          fetchedProducts.map((product) => ({
+            product,
+            checkedBoxes: Array(3).fill({ yes: false, no: false, active: false }),
+            inputValues: Array(3).fill(''),
+          }))
+        );
       }
     };
 
     fetchData();
   }, [work_id]);
 
-  const handleCheck = (index, value) => {
-    const newCheckedBoxes = [...checkedBoxes];
-    const currentBox = { ...newCheckedBoxes[index] };
-  
+  const handleCheck = (productIndex, index, value) => {
+    const newProducts = [...products];
+    const currentBox = { ...newProducts[productIndex].checkedBoxes[index] };
+
     if (value === "yes" || value === "no") {
       currentBox.yes = value === "yes";
       currentBox.no = value === "no";
     } else {
       currentBox.active = !currentBox.active;
     }
-  
-    newCheckedBoxes[index] = currentBox;
-    setCheckedBoxes(newCheckedBoxes);
+
+    newProducts[productIndex].checkedBoxes[index] = currentBox;
+    setProducts(newProducts);
   };
 
-  const handleInputChange = (index, value) => {
-    const newInputValues = [...inputValues];
-    newInputValues[index] = value;
-    setInputValues(newInputValues);
+  const handleInputChange = (productIndex, index, value) => {
+    const newProducts = [...products];
+    newProducts[productIndex].inputValues[index] = value;
+    setProducts(newProducts);
   };
 
   const handleSave = () => {
@@ -79,29 +83,29 @@ const QRControl = () => {
       };
   
       const newWorkStep = await createWorkStep(workStepData);
-  
+
       // QR sorularını gönderin
       await Promise.all(
-        products.map(async (product) => {
+        products.map(async (productData, productIndex) => {
           return Promise.all(
             questions.map(async (question, index) => {
               const qrQuestionData = {
-                product_id: product.id,
+                product_id: productData.product.id,
                 question: question || '',
-                input_text: inputValues[index] || '',
-                checkbox: checkedBoxes[index].yes,
-                vendor_question: checkedBoxes[index].active,
+                input_text: products[productIndex].inputValues[index] || '',
+                checkbox: products[productIndex].checkedBoxes[index].yes,
+                vendor_question: products[productIndex].checkedBoxes[index].active,
                 work_id: work.data.id,
                 step_id: step_id,
                 user_id: work.data.quality_responsible_id,
-                timestamp: new Date(), 
+                timestamp: new Date(),
               };
-      
+  
               await postQRQuestions(qrQuestionData);
-              })
-            );
-          })
-        );
+            })
+          );
+        })
+      );
   
       await updateWorkStepStatus(step_id, 'Closed');
   
@@ -145,26 +149,26 @@ const QRControl = () => {
                     {question}
                   </label>
                   <div className="form-check form-check-inline">
-                    <input
+                  <input
                       type="radio"
                       className="form-check-input"
                       id={`question-${productIndex}-${index}-yes`}
                       name={`question-${productIndex}-${index}`}
-                      checked={checkedBoxes[index].yes}
-                      onChange={() => handleCheck(index, "yes")}
+                      checked={products[productIndex].checkedBoxes[index].yes}
+                      onChange={() => handleCheck(productIndex, index, "yes")}
                     />
                     <label className="form-check-label" htmlFor={`question-${productIndex}-${index}-yes`}>
                       Yes
                     </label>
                   </div>
                   <div className="form-check form-check-inline">
-                    <input
+                  <input
                       type="radio"
                       className="form-check-input"
                       id={`question-${productIndex}-${index}-no`}
                       name={`question-${productIndex}-${index}`}
-                      checked={checkedBoxes[index].no}
-                      onChange={() => handleCheck(index, "no")}
+                      checked={products[productIndex].checkedBoxes[index].no}
+                      onChange={() => handleCheck(productIndex, index, "no")}
                     />
                     <label className="form-check-label" htmlFor={`question-${productIndex}-${index}-no`}>
                       No
@@ -174,36 +178,36 @@ const QRControl = () => {
                     type="text"
                     className="form-control"
                     id={`input-${productIndex}-${index}`}
-                    value={inputValues[index]}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    value={products[productIndex].inputValues[index]}
+                    onChange={(e) => handleInputChange(productIndex, index, e.target.value)}
                   />
                   <div className="form-check form-check-inline">
                     <input
                       type="checkbox"
                       className="form-check-input"
                       id={`question-${productIndex}-${index}-active`}
-                      checked={checkedBoxes[index].active}
-                      onChange={() => handleCheck(index, "active")}
+                      checked={products[productIndex].checkedBoxes[index].active}
+                      onChange={() => handleCheck(productIndex, index, "active")}
                     />
                     <label className="form-check-label" htmlFor={`question-${productIndex}-${index}-active`}>
                       Active
                     </label>
                   </div>
-                  </div>
+                </div>
               ))}
             </form>
           </div>
         ))}
   
-        <button type="button" onClick={handleSave} className="btn btn-primary">
-          Save
-        </button>
-        <button type="button" onClick={handleSend} className="btn btn-success">
-          Send
-        </button>
-        <button type="button" onClick={handleRevise} className="btn btn-warning">
-          Revize
-        </button>
+      <button type="button" onClick={handleSave} className="btn btn-primary">
+        Save
+      </button>
+      <button type="button" onClick={handleSend} className="btn btn-success">
+        Send
+      </button>
+      <button type="button" onClick={handleRevise} className="btn btn-warning">
+        Revize
+      </button>
     </div>
   );
 };
