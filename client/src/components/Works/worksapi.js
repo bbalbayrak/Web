@@ -141,3 +141,30 @@ export const getProductById = async (product_id) => {
   
     return await response.json();
   }; 
+
+  export const createWorkProduct = async (workProductData) => {
+    const response = await fetch(`${API_URL}/workproducts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(workProductData),
+    });
+  
+    if (!response.ok) {
+      throw new Error(`Error creating work product: ${response.statusText}`);
+    }
+  
+    return await response.json();
+  };
+
+  export const getWorkProducts = async (work_id) => {
+    try {
+      const response = await fetch(`${API_URL}/works/${work_id}/workproducts`);
+      const data = await response.json(); // veriyi json formatına çevirin
+      return data;
+    } catch (error) {
+      console.error("Error while fetching work products:", error);
+      throw error;
+    }
+  };

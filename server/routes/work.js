@@ -18,11 +18,6 @@ const routes = [
     handler: workControllers.getWorkById,
   },
   {
-    method: "PUT",
-    path: "/works/:id",
-    handler: workControllers.updateWork,
-  },
-  {
     method: "DELETE",
     path: "/works/:id",
     handler: workControllers.deleteWork,

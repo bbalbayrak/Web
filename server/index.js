@@ -12,6 +12,7 @@ const workRoutes = require('./routes/work');
 const qrQuestionRoutes = require("./routes/qr_questions");
 const commentRoutes = require("./routes/comment");
 const certificateRoutes = require("./routes/certificate");
+const workProductRoutes = require("./routes/workProduct");
 
 const db = require('./config/db');
 
@@ -60,6 +61,10 @@ qrQuestionRoutes.forEach((route) => {
 });
 
 commentRoutes.forEach((route) => {
+  fastify.route(route);
+});
+
+workProductRoutes.forEach((route) => {
   fastify.route(route);
 });
 

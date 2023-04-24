@@ -3,14 +3,14 @@ const { uploadFile } = require("../utils/upload_azure");
 
 exports.createCertificate = async (request) => {
   try {
-    const { work_id, product_id, step_id } = request.body;
-    const certificateFile = request.file; // request.file kullanın
+    const { work_id, product_id, step_id } = request.body; // product_id'yi geri ekleyin
+    const certificateFile = request.file;
 
     const certificate_url = certificateFile
       ? await uploadFile(certificateFile.buffer, certificateFile.originalname)
       : null;
 
-    const result = await Certificate.create(work_id, certificate_url, product_id, step_id);
+    const result = await Certificate.create(work_id, certificate_url, product_id, step_id); // product_id'yi geri ekleyin
     return {
       status: "success",
       statusCode: 201,

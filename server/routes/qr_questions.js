@@ -16,11 +16,6 @@ const routes = [
     path: "/qr_questions/work/:work_id",
     handler: qrQuestionControllers.getQRQuestionsByWorkId,
   },
-  {
-    method: "PUT",
-    path: "/qr_questions/:id",
-    handler: qrQuestionControllers.updateQRQuestion,
-  },
 ];
 
 module.exports = routes;

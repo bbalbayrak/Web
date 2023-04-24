@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 const Login = ({ setShowMenu }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState(null); 
+  const [message, setMessage] = useState(null);
   let navigate = useNavigate();
-  
+
   useEffect(() => {
     setShowMenu(false);
     return () => {
@@ -22,7 +22,7 @@ const Login = ({ setShowMenu }) => {
     axios
       .post('http://localhost:3001/api/login', { email, password })
       .then((response) => {
-        setMessage(response.data.msg); 
+        setMessage(response.data.msg);
         if (response.status === 200) {
           console.log(response.status);
           localStorage.setItem('token', response.data.token);
@@ -42,24 +42,26 @@ const Login = ({ setShowMenu }) => {
   };
 
   return (
-    <div className="login-container">
-      <h2>Giriş Yap</h2>
-      {message && <p className="message">{message}</p>} 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="E-posta"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Şifre"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Giriş Yap</button>
-      </form>
+    <div className="login-background">
+      <div className="login-container">
+        <h2>Giriş Yap</h2>
+        {message && <p className="message">{message}</p>}
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="E-posta"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Şifre"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Giriş Yap</button>
+        </form>
+      </div>
     </div>
   );
 };

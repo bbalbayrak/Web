@@ -43,10 +43,6 @@ const HamburgerMenu = ({ showMenu = true }) => {
     };
   }, []);
   
-  const [isWorkOrdersSubMenuOpen, setIsWorkOrdersSubMenuOpen] = useState(false);
-  const toggleWorkOrdersSubMenu = () => {
-    setIsWorkOrdersSubMenuOpen(!isWorkOrdersSubMenuOpen);
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -61,7 +57,7 @@ const HamburgerMenu = ({ showMenu = true }) => {
       </button>
       <div className={`hamburger-menu ${closed ? 'closed' : ''}`}>
         <ul className="menu">
-          <Link className="link" to="/">
+          <Link className="link" to="/home">
             Home
           </Link>
           <Link className="link" to="/vendors">
@@ -77,9 +73,8 @@ const HamburgerMenu = ({ showMenu = true }) => {
             Forms
           </Link>
           {isLoggedIn && (
-            <li className="link" onClick={toggleWorkOrdersSubMenu}>
+            <li className="link">
               İş Emirleri
-              {isWorkOrdersSubMenuOpen && (
                 <ul className="sub-menu">
                   <li>
                     <Link className="link" to="/workorders">
@@ -92,7 +87,6 @@ const HamburgerMenu = ({ showMenu = true }) => {
                     </Link>
                   </li>
                 </ul>
-              )}
             </li>
           )}
           {isLoggedIn && (

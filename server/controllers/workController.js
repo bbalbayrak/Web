@@ -2,8 +2,8 @@ const Work = require("../models/work");
 
 exports.createWork = async (req, res) => {
   try {
-    const { order_number, project_number, vendor_id, customer_id, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_id, creation_date, product_id } = req.body;
-    const newWork = await Work.create(order_number, project_number, vendor_id, customer_id, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_id, creation_date, product_id);
+    const { order_number, project_number, vendor_id, customer_id, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_id, creation_date } = req.body;
+    const newWork = await Work.create(order_number, project_number, vendor_id, customer_id, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_id, creation_date);
     res.status(201).send({ message: "Work created successfully", work: newWork });
   } catch (error) {
     console.error("Error in createWork:", error);

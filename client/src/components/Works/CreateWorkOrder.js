@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createWork, createWorkStep, getVendors, getCustomers, getUsers, getProducts } from './worksapi';
+import { createWork, createWorkStep, getVendors, getCustomers, getUsers, getProducts, createWorkProduct } from './worksapi';
 
 const CreateWorkOrder = () => {
   const navigate = useNavigate();
@@ -17,9 +17,8 @@ const CreateWorkOrder = () => {
     status: "",
     creator_id: "",
     creation_date: "",
-    product_id: "",
   });
-
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [qualityResponsibles, setQualityResponsibles] = useState([]);
@@ -75,6 +74,11 @@ const CreateWorkOrder = () => {
     }
   };
 
+  const handleProductChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    setSelectedProducts(selectedOptions.map((option) => Number(option.value)));
+  };
+
   const handleChange = (e) => {
     setWorkData({ ...workData, [e.target.name]: e.target.value });
   };
@@ -91,6 +95,10 @@ const CreateWorkOrder = () => {
         status: "Open",
       };
       const createdWorkStep = await createWorkStep(workStepData);
+      
+      for (const productId of selectedProducts) {
+        await createWorkProduct({ work_id: createdWork.work.id, product_id: productId });
+      }
       navigate(`/workorders`);
     } catch (error) {
       console.error('Error creating work and workstep:', error);
@@ -287,15 +295,15 @@ const CreateWorkOrder = () => {
 
         {/* Replace product_id input with a dropdown */}
         <div className="form-group">
-          <label htmlFor="product_id">Product</label>
+          <label htmlFor="product_id">Products</label>
           <select
             name="product_id"
             id="product_id"
             className="form-control"
-            value={workData.product_id}
-            onChange={handleChange}
+            value={selectedProducts}
+            onChange={handleProductChange}
+            multiple
           >
-            <option value="">Select Product</option>
             {products.map((product) => (
               <option key={product.id} value={product.id}>
                 {product.name}

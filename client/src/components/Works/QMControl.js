@@ -95,7 +95,6 @@ const QMControl = () => {
           <h3>Work Details</h3>
           <p>Order Number: {work.data.order_number}</p>
           <p>Project Number: {work.data.project_number}</p>
-          <p>Product: {work.data.product_id}</p>
           {/* Diğer iş detaylarını istediğiniz şekilde burada gösterebilirsiniz */}
         </div>
       )}

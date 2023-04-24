@@ -1,47 +1,71 @@
-.login-container {
-    display: flex;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    flex-direction: column;
-    align-items: center;
-    padding: 3rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    max-width: 400px;
-  }
+.login-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1455165814004-1126a7199f9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
-  .login-container h2 {
-    margin-bottom: 1rem;
-  }
-  
-  .login-container form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .login-container input {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  .login-container button {
-    padding: 0.5rem;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .login-container button:hover {
-    background-color: #2980b9;
-  }
-  
+.login-container {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+  border-radius: 10px;
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.login-container h2 {
+  margin-bottom: 1rem;
+  font-size: 24px;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.login-container input {
+  padding: 0.5rem;
+  font-size: 18px;
+  border: 1px solid #4a4a4a;
+  border-radius: 5px;
+  outline: none;
+}
+
+.login-container input:focus {
+  border-color: #007bff;
+}
+
+.login-container button {
+  padding: 0.5rem;
+  font-size: 18px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  color: red;
+  margin-bottom: 1rem;
+}
