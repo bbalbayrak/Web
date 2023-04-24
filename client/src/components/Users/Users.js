@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUsers } from './Userapi';
+import './Users.css';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -10,13 +11,12 @@ const Users = () => {
       .then((data) => setUsers(data.data))
       .catch((error) => console.error('API isteğinde hata:', error));
   }, []);
-  
 
   return (
-    <div className="form-page-container">
+    <div className="users-page-container">
       <h1>Kullanıcılar</h1>
-      <Link to="/create-user">Kullanıcı Oluştur</Link>
-      <table>
+      <Link className="create-user-link" to="/create-user">Kullanıcı Oluştur</Link>
+      <table className="users-table">
         <thead>
           <tr>
             <th>ID</th>
