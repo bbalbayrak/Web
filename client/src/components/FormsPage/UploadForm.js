@@ -58,9 +58,9 @@ const UploadForm = () => {
   };
 
   return (
-    <div>
-      <form className='products-form' onSubmit={handleSubmit}>
-        <table>
+    <div className="upload-form-container">
+    <form className='products-form' onSubmit={handleSubmit}>
+      <table className="form-table">
           <tbody>
             <tr>
               <td>İsim:</td>
@@ -116,7 +116,7 @@ const UploadForm = () => {
         </div>
       )}
       <h2>Ürün Listesi</h2>
-      <table border="1">
+      <table className="product-list">
         <thead>
           <tr>
             <th>ID</th>

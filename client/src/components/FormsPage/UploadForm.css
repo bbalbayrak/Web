@@ -1,26 +1,51 @@
-table {
-    width: 82%;
-    border-collapse: collapse;
-    margin-left: 17%;
-    padding-top: 2rem;
-  }
-  
-  th,
-  td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ccc;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f8f8f8;
-  }
-  
-  .products-form{
-    padding-top: 2rem;
-  }
+.upload-form-container {
+  width: 82%;
+  margin-left: auto;
+  padding-top: 2rem;
+  justify-content: center;
+}
+
+.form-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.form-table th,
+.form-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+.form-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.form-table tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+.products-form {
+  padding-top: 2rem;
+}
+.product-list {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.product-list th,
+.product-list td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+.product-list th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.product-list tr:nth-child(even) {
+  background-color: #f8f8f8;
+}

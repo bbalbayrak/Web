@@ -7,7 +7,6 @@ import Customers from "./components/Customers/Customers";
 import { BrowserRouter as Router, Route, Link, Routes, BrowserRouter } from "react-router-dom";
 import Maintenance from "./components/Maintenance/Maintenance";
 import Home from "./components/Home/Home";
-import ProductPage from "./components/ProductPage/ProductPage";
 import FormsPage from "./components/ITPForms/FormsPage";
 import FormEdit from "./components/ITPForms/FormEdit";
 import UploadForm from './components/FormsPage/UploadForm';
