@@ -13,16 +13,12 @@ import UploadForm from './components/FormsPage/UploadForm';
 import Gallery from "./components/Gallery/gallery";
 import WorkOrders from "./components/Works/WorkOrders";
 import CreateWorkOrder from "./components/Works/CreateWorkOrder";
-import QRControl from "./components/Works/QRControl";
-import QMControl from "./components/Works/QMControl";
-import VendorControl from "./components/Works/VendorControl";
-import QRReview from "./components/Works/QRReview";
 import Certificate from "./components/Works/Certificate";
-import QRCertificate from "./components/Works/QRCertificate";
 import QualityControl from "./components/Works/QualityControl";
 import RouteGuard from './components/RouteGuard/RouteGuard';
 import Users from './components/Users/Users';
 import CreateUser from "./components/Users/CreateUser";
+import NewWork from "./components/Works/NewWork";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
@@ -41,12 +37,8 @@ function App() {
           <Route path="/forms/:id" element={<RouteGuard setShowMenu={setShowMenu}><FormEdit /></RouteGuard>}/>
           <Route path='/gallery' element={<RouteGuard setShowMenu={setShowMenu}><Gallery /></RouteGuard>}/>
           <Route path='/workorders' element={<RouteGuard setShowMenu={setShowMenu}><WorkOrders /></RouteGuard>}/>
+          <Route path='/newworks' element={<RouteGuard setShowMenu={setShowMenu}><NewWork /></RouteGuard>}/>
           <Route path='/create-work-order' element={<RouteGuard setShowMenu={setShowMenu}><CreateWorkOrder /></RouteGuard>}/>
-          <Route path='/qr-control' element={<RouteGuard setShowMenu={setShowMenu}><QRControl /></RouteGuard>}/>
-          <Route path='/vendor-control' element={<RouteGuard setShowMenu={setShowMenu}><VendorControl /></RouteGuard>}/>
-          <Route path='/qr-review' element={<RouteGuard setShowMenu={setShowMenu}><QRReview /></RouteGuard>}/>
-          <Route path='/qr-certificate' element={<RouteGuard setShowMenu={setShowMenu}><QRCertificate /></RouteGuard>}/>
-          <Route path='/qm-control' element={<RouteGuard setShowMenu={setShowMenu}><QMControl /></RouteGuard>}/>
           <Route path='/certificate' element={<RouteGuard setShowMenu={setShowMenu}><Certificate /></RouteGuard>}/>
           <Route path='/quality-control' element={<RouteGuard setShowMenu={setShowMenu}><QualityControl /></RouteGuard>}/>
           <Route path="/users" element={<RouteGuard setShowMenu={setShowMenu}><Users /></RouteGuard>}/>

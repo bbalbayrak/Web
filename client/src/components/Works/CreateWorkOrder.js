@@ -89,9 +89,9 @@ const CreateWorkOrder = () => {
       const createdWork = await createWork(workData);
       const workStepData = {
         work_id: createdWork.work.id,
-        step_name: "QR Control",
+        step_name: "New Work",
         timestamp: new Date().toISOString(),
-        state: "QR Control",
+        state: "New Work",
         status: "Open",
       };
       const createdWorkStep = await createWorkStep(workStepData);

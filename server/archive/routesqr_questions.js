@@ -1,4 +1,4 @@
-const qrQuestionControllers = require("../controllers/qr_questions");
+const qrQuestionControllers = require("./controllerqr_questions");
 
 const routes = [
   {

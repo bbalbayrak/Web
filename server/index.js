@@ -9,7 +9,6 @@ const vendorRoutes = require("./routes/vendor");
 const fastifyMulter = require('fastify-multer');
 const formRoutes = require("./routes/form");
 const workRoutes = require('./routes/work');
-const qrQuestionRoutes = require("./routes/qr_questions");
 const commentRoutes = require("./routes/comment");
 const certificateRoutes = require("./routes/certificate");
 const workProductRoutes = require("./routes/workProduct");
@@ -53,10 +52,6 @@ formRoutes.forEach((route) => {
 });
 
 workRoutes.forEach((route) => {
-  fastify.route(route);
-});
-
-qrQuestionRoutes.forEach((route) => {
   fastify.route(route);
 });
 
