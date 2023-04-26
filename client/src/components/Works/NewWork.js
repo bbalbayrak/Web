@@ -49,9 +49,9 @@ const NewWork = () => {
       // Yeni bir work step oluşturun
       const workStepData = {
         work_id: work.data.id,
-        step_name: 'QM Control',
+        step_name: 'Certificate',
         timestamp: new Date().toISOString(),
-        state: 'QM Control',
+        state: 'Certificate',
         status: 'Open',
       };
   

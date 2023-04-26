@@ -20,18 +20,6 @@ const WorkOrders = () => {
   };
 
   const handleEdit = (step_id, work_id, state) => {
-    // if (state === "QR Control") {
-    //   navigate(`/qr-control?work_id=${work_id}&step_id=${step_id}`);
-    // } 
-    // if (state === "QM Control")  {
-    //   navigate(`/qm-control?work_id=${work_id}&step_id=${step_id}`);
-    // }
-    // if (state === "Vendor Control")  {
-    //   navigate(`/vendor-control?work_id=${work_id}&step_id=${step_id}`);
-    // }
-    // if (state === "QR Review")  {
-    //   navigate(`/qr-review?work_id=${work_id}&step_id=${step_id}`);
-    // }
     if (state === "New Work")  {
       navigate(`/newworks?work_id=${work_id}&step_id=${step_id}`);
     }
@@ -41,7 +29,7 @@ const WorkOrders = () => {
     if (state === "QR Certificate")  {
       navigate(`/qr-certificate?work_id=${work_id}&step_id=${step_id}`);
     }
-    if (state === "quality-control")  {
+    if (state === "Quality Control")  {
       navigate(`/quality-control?work_id=${work_id}&step_id=${step_id}`);
     }
   };

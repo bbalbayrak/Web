@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {  getWorkById, createWorkStep,  updateWorkStepStatus,  getQRQuestionsByWorkId, getProductById} from './worksapi';
 import { useNavigate, useLocation } from 'react-router-dom';
+import './Certificate.css';
 
 const Certificate = () => {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -12,6 +13,10 @@ const Certificate = () => {
   const searchParams = new URLSearchParams(location.search);
   const work_id = searchParams.get('work_id');
   const step_id = searchParams.get('step_id');
+
+  const handleFileChange = (e) => {
+    setFiles([...files, ...Array.from(e.target.files)]);
+  };
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -30,19 +35,21 @@ const Certificate = () => {
 
 
   const handleSend = async () => {
-    if (file) {
-      const formData = new FormData();
-      formData.append('certificate_file', file);
-      formData.append('work_id', work_id);
-      formData.append('product_id', product.data.id);
-      formData.append('step_id', step_id);
+    if (files.length > 0) {
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('certificate_file', file);
+        formData.append('work_id', work_id);
+        // formData.append('product_id', product.data.id);
+        formData.append('step_id', step_id);
   
-      try {
-        await axios.post('http://localhost:3001/certificates', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-      } catch (error) {
-        console.error(error);
+        try {
+          await axios.post('http://localhost:3001/certificates', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          });
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
 
@@ -75,7 +82,27 @@ const Certificate = () => {
   return (
     <div className="form-page-container">
       <h2>Certificate</h2>
-      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+      {work && (
+        <div>
+          <h3>Work Details</h3>
+          <p>Order Number: {work.data.order_number}</p>
+          <p>Project Number: {work.data.project_number}</p>
+        </div>
+      )}
+      
+      <div className="file-thumbnails">
+        {files.map((file, index) => (
+          <div key={index} className="file-thumbnail">
+            <img
+              src={URL.createObjectURL(file)}
+              alt={file.name}
+              className="file-thumbnail-img"
+            />
+          </div>
+        ))}
+      </div>
+      <input type="file" multiple onChange={handleFileChange} />
+      <br></br>
       <button onClick={handleSend} className="btn btn-primary">
         Gönder
       </button>

@@ -1,42 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {  getWorkById, createWorkStep,  updateWorkStepStatus, getProductById} from './worksapi';
+import {  getWorkById, createWorkStep,  updateWorkStepStatus, getProductById, getCertificatesByWorkId, getWorkProducts} from './worksapi';
 
 const QRCertificate = () => {
-  const [checkedStatus, setCheckedStatus] = useState({ approved: false, unapproved: false, rejected: false });
-  const navigate = useNavigate();
   const location = useLocation();
-  const [product, setProduct] = useState(null);
+  const navigate = useNavigate();
   const [work, setWork] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [certificates, setCertificates] = useState([]);
   const searchParams = new URLSearchParams(location.search);
   const work_id = searchParams.get('work_id');
   const step_id = searchParams.get('step_id');
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const work_id = searchParams.get('work_id');
-
     const fetchData = async () => {
       const workData = await getWorkById(work_id);
       setWork(workData);
 
-      const productData = await getProductById(workData.data.product_id);
-      setProduct(productData);
+      const productsData = await getWorkProducts(work_id);
+
+      if (productsData) {
+        const fetchedProducts = await Promise.all(
+          productsData.data.map(async (productData) => {
+            const product = await getProductById(productData.product_id);
+            return product.data;
+          })
+        );
+
+        setProducts(fetchedProducts);
+      }
+      const certificatesData = await getCertificatesByWorkId(work_id);
+      if (certificatesData) {
+        setCertificates(certificatesData.data);
+      }
     };
 
     fetchData();
-  }, [location]);
+  }, [work_id]);
 
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    setCheckedStatus({ ...checkedStatus, [name]: checked });
-  };
 
-  const handleSave = () => {
-    if (checkedStatus.rejected) {
-      navigate('/workoders');
-    } else {
-      navigate('/workorders');
+  const handleSend = async () => {
+    try {
+      // Yeni bir work step oluşturun
+      const workStepData = {
+        work_id: work.data.id,
+        step_name: 'Quality Control',
+        timestamp: new Date().toISOString(),
+        state: 'Quality Control',
+        status: 'Open',
+      };
+  
+      const newWorkStep = await createWorkStep(workStepData);
+
+      await updateWorkStepStatus(step_id, 'Closed');
+  
+      navigate(`/workorders`);
+    } catch (error) {
+      console.error('Error sending QR questions:', error);
     }
   };
 
@@ -44,37 +64,19 @@ const QRCertificate = () => {
     <div className="form-page-container">
       <h2>QR Certificate</h2>
       <div>
-        <input
-          type="checkbox"
-          id="approved"
-          name="approved"
-          checked={checkedStatus.approved}
-          onChange={handleCheckboxChange}
-        />
-        <label htmlFor="approved">Onayla</label>
+        <h3>Sertifikalar</h3>
+        <ul>
+          {certificates.map((certificate, index) => (
+            <li key={index}>
+              <a href={certificate.certificate_url} target="_blank" rel="noopener noreferrer">
+                {certificate.certificate_url}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div>
-        <input
-          type="checkbox"
-          id="unapproved"
-          name="unapproved"
-          checked={checkedStatus.unapproved}
-          onChange={handleCheckboxChange}
-        />
-        <label htmlFor="unapproved">Sertifikasız Onay</label>
-      </div>
-      <div>
-        <input
-          type="checkbox"
-          id="rejected"
-          name="rejected"
-          checked={checkedStatus.rejected}
-          onChange={handleCheckboxChange}
-        />
-        <label htmlFor="rejected">Red</label>
-      </div>
-      <button onClick={handleSave} className="btn btn-primary">
-        Kaydet
+      <button onClick={handleSend} className="btn btn-primary">
+        Send
       </button>
     </div>
   );

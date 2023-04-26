@@ -1,0 +1,18 @@
+.file-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .file-thumbnail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+  }
+  
+  .file-thumbnail-img {
+    width: 100%;
+    height: auto;
+  }
+  

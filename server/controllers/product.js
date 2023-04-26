@@ -2,6 +2,7 @@ const Product = require("../models/product");
 const Customer = require("../models/customer");
 const { uploadFile } = require("../utils/upload_azure");
 
+
 exports.createProduct = async (request) => {
   try {
     const { name, odooid, customerid } = request.body;

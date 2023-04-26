@@ -13,28 +13,29 @@ const UploadForm = () => {
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([])
 
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const { data } = await axios.get('http://localhost:3001/customers');
-        setCustomers(data.data);
-      } catch (error) {
-        console.error('Error fetching customers:', error);
-      }
-    };
-    const fetchProducts = async () => {
-      try {
-        const { data } = await axios.get('http://localhost:3001/products');
-        setProducts(data.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
+  const fetchCustomers = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:3001/customers');
+      setCustomers(data.data);
+    } catch (error) {
+      console.error('Error fetching customers:', error);
+    }
+  };
 
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:3001/products');
+      setProducts(data.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  useEffect(() => {
     fetchCustomers();
     fetchProducts();
-
   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,6 +53,7 @@ const UploadForm = () => {
         },
       });
       setResponse(data);
+      await fetchProducts();
     } catch (error) {
       console.error('Error uploading files:', error);
     }

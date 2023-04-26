@@ -1,6 +1,6 @@
 const db = require("../config/db");
 const Customer = require('./customer'); // customer.js dosyasını dahil edin
-
+const AuditLog = require("./auditLog");
 const Product = {
   tableName: "products",
   columns: {
@@ -18,6 +18,13 @@ const Product = {
     const result = await db.one(
       `INSERT INTO ${Product.tableName} (name, odooid, customerid, customer, technicaldrawingurl, guideurl) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
       [name, odooid, customerid, customer_name, technicaldrawingurl, guideurl]
+    );
+    await AuditLog.create(
+      "create",
+      "products",
+      result.id,
+      null,
+      JSON.stringify(result)
     );
     return result;
   },

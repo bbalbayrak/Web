@@ -14,6 +14,7 @@ import Gallery from "./components/Gallery/gallery";
 import WorkOrders from "./components/Works/WorkOrders";
 import CreateWorkOrder from "./components/Works/CreateWorkOrder";
 import Certificate from "./components/Works/Certificate";
+import QRCertificate from "./components/Works/QRCertificate";
 import QualityControl from "./components/Works/QualityControl";
 import RouteGuard from './components/RouteGuard/RouteGuard';
 import Users from './components/Users/Users';
@@ -40,6 +41,7 @@ function App() {
           <Route path='/newworks' element={<RouteGuard setShowMenu={setShowMenu}><NewWork /></RouteGuard>}/>
           <Route path='/create-work-order' element={<RouteGuard setShowMenu={setShowMenu}><CreateWorkOrder /></RouteGuard>}/>
           <Route path='/certificate' element={<RouteGuard setShowMenu={setShowMenu}><Certificate /></RouteGuard>}/>
+          <Route path='/qr-certificate' element={<RouteGuard setShowMenu={setShowMenu}><QRCertificate /></RouteGuard>}/>
           <Route path='/quality-control' element={<RouteGuard setShowMenu={setShowMenu}><QualityControl /></RouteGuard>}/>
           <Route path="/users" element={<RouteGuard setShowMenu={setShowMenu}><Users /></RouteGuard>}/>
           <Route path="/create-user" element={<RouteGuard setShowMenu={setShowMenu}><CreateUser /></RouteGuard>}/>

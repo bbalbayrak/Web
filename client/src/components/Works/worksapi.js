@@ -168,3 +168,14 @@ export const getProductById = async (product_id) => {
       throw error;
     }
   };
+
+  export const getCertificatesByWorkId = async (work_id) => {
+    try {
+      const response = await fetch(`${API_URL}/works/${work_id}/certificates`);
+      return response.data= await response.json();
+    } catch (error) {
+      console.error(`Error fetching certificates for work ID ${work_id}: ${error.message}`);
+      return null;
+    }
+  };
+  
