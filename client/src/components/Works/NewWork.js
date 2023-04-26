@@ -7,6 +7,9 @@ import {
   createWorkStep,
   updateWorkStepStatus,
 } from './worksapi';
+import "./NewWork.css";
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const NewWork = () => {
   const location = useLocation();
@@ -16,6 +19,7 @@ const NewWork = () => {
   const searchParams = new URLSearchParams(location.search);
   const work_id = searchParams.get('work_id');
   const step_id = searchParams.get('step_id');
+  const [activeProductIndex, setActiveProductIndex] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,44 +72,74 @@ const NewWork = () => {
     // Revize işlemini gerçekleştirebilirsiniz
   };
 
-
+  const handleProductClick = (index) => {
+    if (activeProductIndex === index) {
+      setActiveProductIndex(null);
+    } else {
+      setActiveProductIndex(index);
+    }
+  };
   return (
     <div className="form-page-container">
-      <h2>QR Control</h2>
+      <h2 className="form-page-title">QR Control</h2>
       {work && (
-        <div>
+        <div className="work-details">
           <h3>Work Details</h3>
-          <p>Order Number: {work.data.order_number}</p>
-          <p>Project Number: {work.data.project_number}</p>
-          <p>Vendor: {work.data.vendor_id}</p>
-          <p>Customer: {work.data.customer_id}</p>
-          <p>Inspector: {work.data.inspector_id}</p>
-          <p>Foreman: {work.data.foreman_id}</p>
-          <p>Work Type: {work.data.work_type}</p>
-          <p>State: {work.data.state}</p>
-          <p>Status: {work.data.status}</p>
-          <p>Creator: {work.data.creator_id}</p>
-
+          <div className="work-detail-row">
+            <p className="work-detail">Order Number: {work.data.order_number}</p>
+            <p className="work-detail">Project Number: {work.data.project_number}</p>
+          </div>
+          <div className="work-detail-row">
+            <p className="work-detail">Vendor: {work.data.vendor_id}</p>
+            <p className="work-detail">Customer: {work.data.customer_id}</p>
+          </div>
+          <div className="work-detail-row">
+            <p className="work-detail">Inspector: {work.data.inspector_id}</p>
+            <p className="work-detail">Foreman: {work.data.foreman_id}</p>
+          </div>
+          <div className="work-detail-row">
+            <p className="work-detail">Work Type: {work.data.work_type}</p>
+            <p className="work-detail">State: {work.data.state}</p>
+          </div>
+          <div className="work-detail-row">
+            <p className="work-detail">Status: {work.data.status}</p>
+            <p className="work-detail">Creator: {work.data.creator_id}</p>
+          </div>
         </div>
       )}
+     <div className="products-container">
+        {products &&
+          products.map((product, productIndex) => (
+            <div
+              key={productIndex}
+              className={`product ${activeProductIndex === productIndex ? 'active' : ''}`}
+              onClick={() => handleProductClick(productIndex)}
+            >
+              <h3>
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+                Product: {product.name}
+              </h3>
+              {activeProductIndex === productIndex && (
+                <div className="product-details">
+                  <p>Technical Drawing URL: {product.technicaldrawingurl}</p>
+                </div>
+              )}
+            </div>
+          ))}
+      </div>
 
-      {products &&
-        products.map((product, productIndex) => (
-          <div key={productIndex}>
-            <h3>Product: {product.name}</h3>
-            <p>Technical Drawing URL: {product.technicaldrawingurl}</p>   
-          </div>
-        ))}
   
-      <button type="button" onClick={handleSave} className="btn btn-primary">
-        Save
-      </button>
-      <button type="button" onClick={handleSend} className="btn btn-success">
-        Send
-      </button>
-      <button type="button" onClick={handleRevise} className="btn btn-warning">
-        Revize
-      </button>
+      <div className="button-container">
+        <button type="button" onClick={handleSave} className="btn btn-primary save-btn">
+          Save
+        </button>
+        <button type="button" onClick={handleSend} className="btn btn-success send-btn">
+          Send
+        </button>
+        <button type="button" onClick={handleRevise} className="btn btn-warning revise-btn">
+          Revize
+        </button>
+      </div>
     </div>
   );
 };

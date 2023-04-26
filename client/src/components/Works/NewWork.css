@@ -1,0 +1,116 @@
+:root {
+    --primary-color: #1e88e5;
+    --secondary-color: #42a5f5;
+    --accent-color: #ffca28;
+    --light-color: #ffffff;
+    --dark-color: #37474f;
+  }
+  
+  .form-page-container {
+    width: 83%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--light-color);
+  }
+  
+  .form-page-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-size: 2rem;
+  }
+  
+  .work-details {
+    background-color: var(--secondary-color);
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 10px;
+  }
+  
+  .work-detail-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .work-detail {
+    flex-basis: 48%;
+    color: var(--light-color);
+  }
+  
+  .products-container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .product {
+    background-color: var(--light-color);
+    padding: 15px;
+    flex: 0 0 calc(20% - 10px);
+    margin: 1rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .product:hover {
+    border: 2px solid var(--accent-color);
+  }
+  
+  .product h3 {
+    margin-bottom: 10px;
+    color: var(--dark-color);
+  }
+  
+  .product.active {
+    background-color: var(--secondary-color);
+    color: var(--light-color);
+    border: 2px solid var(--accent-color);
+  }
+  
+  .product-details {
+    display: none;
+  }
+  
+  .product.active .product-details {
+    display: block;
+  }
+  
+  .info-icon {
+    margin-right: 5px;
+    color: var(--primary-color);
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .btn {
+    margin: 1rem;
+    color: white;
+    padding: 12px 24px;
+  }
+  
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .btn-success {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+  }
+  
+  .btn-warning {
+    background-color: var(--dark-color);
+    border-color: var(--dark-color);
+  }
+  
