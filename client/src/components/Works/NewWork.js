@@ -21,7 +21,6 @@ const NewWork = () => {
     const fetchData = async () => {
       const workData = await getWorkById(work_id);
       setWork(workData);
-
       const productsData = await getWorkProducts(work_id);
 
       if (productsData) {
@@ -78,6 +77,15 @@ const NewWork = () => {
           <h3>Work Details</h3>
           <p>Order Number: {work.data.order_number}</p>
           <p>Project Number: {work.data.project_number}</p>
+          <p>Vendor: {work.data.vendor_id}</p>
+          <p>Customer: {work.data.customer_id}</p>
+          <p>Inspector: {work.data.inspector_id}</p>
+          <p>Foreman: {work.data.foreman_id}</p>
+          <p>Work Type: {work.data.work_type}</p>
+          <p>State: {work.data.state}</p>
+          <p>Status: {work.data.status}</p>
+          <p>Creator: {work.data.creator_id}</p>
+
         </div>
       )}
 
