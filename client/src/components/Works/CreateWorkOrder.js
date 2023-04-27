@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createWork, createWorkStep, getVendors, getCustomers, getUsers, getProducts, createWorkProduct } from './worksapi';
-import "./CreateWorkOrder.css"
+import "./CreateWorkOrder.css";
 
 const CreateWorkOrder = () => {
   const navigate = useNavigate();
@@ -107,40 +107,39 @@ const CreateWorkOrder = () => {
   };
 
   return (
-    <div className="form-page-container">
-      <h2>Create Work Order</h2>
+    <div className="create-work-order">
+      <h1>Create Work Order</h1>
       <form onSubmit={handleSave}>
-        <div className="form-group">
+        <div className="cwo-form-group">
           <label htmlFor="order_number">Order Number</label>
           <input
             type="text"
             name="order_number"
             id="order_number"
-            className="form-control"
+            className="cwo-form-control"
             value={workData.order_number}
             onChange={handleChange}
             required
           />
         </div>
-        <div className="form-group">
+        <div className="cwo-form-group">
           <label htmlFor="project_number">Project Number</label>
           <input
             type="text"
             name="project_number"
             id="project_number"
-            className="form-control"
+            className="cwo-form-control"
             value={workData.project_number}
             onChange={handleChange}
             required
           />
         </div>
-        {/* Replace vendor_id input with a dropdown */}
-        <div className="form-group">
+        <div className="cwo-form-group">
           <label htmlFor="vendor_id">Vendor</label>
           <select
             name="vendor_id"
             id="vendor_id"
-            className="form-control"
+            className="cwo-form-control"
             value={workData.vendor_id}
             onChange={handleChange}
           >
@@ -152,14 +151,12 @@ const CreateWorkOrder = () => {
             ))}
           </select>
         </div>
-
-        {/* Replace customer_id input with a dropdown */}
-        <div className="form-group">
+        <div className="cwo-form-group">
           <label htmlFor="customer_id">Customer</label>
           <select
             name="customer_id"
             id="customer_id"
-            className="form-control"
+            className="cwo-form-control"
             value={workData.customer_id}
             onChange={handleChange}
           >
@@ -171,14 +168,12 @@ const CreateWorkOrder = () => {
             ))}
           </select>
         </div>
-
-        {/* Replace quality_responsible_id input with a dropdown */}
-        <div className="form-group">
+        <div className="cwo-form-group">
           <label htmlFor="quality_responsible_id">Quality Responsible</label>
           <select
             name="quality_responsible_id"
             id="quality_responsible_id"
-            className="form-control"
+            className="cwo-form-control"
             value={workData.quality_responsible_id}
             onChange={handleChange}
           >
@@ -190,14 +185,12 @@ const CreateWorkOrder = () => {
             ))}
           </select>
         </div>
-
-        {/* Replace inspector_id input with a dropdown */}
-        <div className="form-group">
+        <div className="cwo-form-group">
           <label htmlFor="inspector_id">Inspector</label>
           <select
             name="inspector_id"
             id="inspector_id"
-            className="form-control"
+            className="cwo-form-control"
             value={workData.inspector_id}
             onChange={handleChange}
           >
@@ -209,115 +202,57 @@ const CreateWorkOrder = () => {
             ))}
           </select>
         </div>
-
-        {/* Replace foreman_id input with a dropdown */}
-        <div className="form-group">
+        <div className="cwo-form-group">
           <label htmlFor="foreman_id">Foreman</label>
-          <select
-            name="foreman_id"
-            id="foreman_id"
-            className="form-control"
-            value={workData.foreman_id}
-            onChange={handleChange}
-          >
-            <option value="">Select Foreman</option>
-            {foremen.map((foreman) => (
-              <option key={foreman.id} value={foreman.id}>
-                {foreman.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Replace work_type input with a dropdown */}
-        <div className="form-group">
-          <label htmlFor="work_type">Work Type</label>
-          <select
-            name="work_type"
-            id="work_type"
-            className="form-control"
-            value={workData.work_type}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Work Type</option>
-            <option value="Proje">Proje</option>
-            <option value="Diğer">Diğer</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="state">State</label>
-          <input
-            type="text"
-            name="state"
-            id="state"
-            className="form-control"
-            value={workData.state}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="status">Status</label>
-          <input
-            type="text"
-            name="status"
-            id="status"
-            className="form-control"
-            value={workData.status}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="creator_id">Creator ID</label>
-          <input
-            type="number"
-            name="creator_id"
-            id="creator_id"
-            className="form-control"
-            value={workData.creator_id}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="creation_date">Creation Date</label>
-          <input
-            type="datetime-local"
-            name="creation_date"
-            id="creation_date"
-            className="form-control"
-            value={workData.creation_date}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        {/* Replace product_id input with a dropdown */}
-        <div className="form-group">
-          <label htmlFor="product_id">Products</label>
-          <select
-            name="product_id"
-            id="product_id"
-            className="form-control"
-            value={selectedProducts}
-            onChange={handleProductChange}
-            multiple
-          >
-            {products.map((product) => (
-              <option key={product.id} value={product.id}>
-                {product.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Save
-        </button>
-      </form>
-    </div>
-  );
+<select
+         name="foreman_id"
+         id="foreman_id"
+         className="cwo-form-control"
+         value={workData.foreman_id}
+         onChange={handleChange}
+       >
+<option value="">Select Foreman</option>
+{foremen.map((foreman) => (
+<option key={foreman.id} value={foreman.id}>
+{foreman.name}
+</option>
+))}
+</select>
+</div>
+<div className="cwo-form-group">
+<label htmlFor="product_id">Product</label>
+<select
+         name="product_id"
+         id="product_id"
+         className="cwo-form-control"
+         value={workData.product_id}
+         onChange={handleChange}
+       >
+<option value="">Select Product</option>
+{products.map((product) => (
+<option key={product.id} value={product.id}>
+{product.name}
+</option>
+))}
+</select>
+</div>
+<div className="cwo-form-group">
+<label htmlFor="work_step">Work Step</label>
+<textarea
+         name="work_step"
+         id="work_step"
+         className="cwo-form-control"
+         value={workData.work_step}
+         onChange={handleChange}
+         required
+       ></textarea>
+</div>
+<button type="submit" className="cwo-btn cwo-btn-primary">
+Save Work Order
+</button>
+</form>
+</div>
+);
 };
 
 export default CreateWorkOrder;
