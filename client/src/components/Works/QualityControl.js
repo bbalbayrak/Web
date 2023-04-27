@@ -42,33 +42,11 @@ const QualityControl = () => {
     // Save işlemini gerçekleştirebilirsiniz
   };
 
-<<<<<<< HEAD
   return (
     <div className="qc-form-page-container">
       <h2 className="qc-heading">Quality Control</h2>
       <input type="file" className="qc-file-input" />
       <button onClick={handleComplete} className="qc-btn qc-btn-primary">
-=======
-return (
-    <div className="form-page-container">
-      <h2>Quality Control</h2>
-      {work && (
-        <div>
-          <h3>Work Details</h3>
-          <p>Order Number: {work.data.order_number}</p>
-          <p>Project Number: {work.data.project_number}</p>
-        </div>
-      )}
-
-      <div className="product-segments">
-        <h3>Products</h3>
-        {products.map((product, index) => (
-        <ProductSegment key={`${product.id}-${index}`} product={product} workInfo={work} />
-      ))}
-      </div>
-
-      <button onClick={handleComplete} className="btn btn-primary">
->>>>>>> b5ca2f68b50a3f2de58047a2b7ee518b813bc6f7
         Complete
       </button>
     </div>
