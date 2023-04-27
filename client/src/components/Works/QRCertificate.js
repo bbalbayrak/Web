@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {  getWorkById, createWorkStep,  updateWorkStepStatus, getProductById, getCertificatesByWorkId, getWorkProducts} from './worksapi';
+import "./QRCertificate.css"
 
 const QRCertificate = () => {
   const location = useLocation();
@@ -61,21 +62,21 @@ const QRCertificate = () => {
   };
 
   return (
-    <div className="form-page-container">
-      <h2>QR Certificate</h2>
-      <div>
-        <h3>Sertifikalar</h3>
-        <ul>
+    <div className="qr-form-page-container">
+      <h2 className="qr-heading">QR Certificate</h2>
+      <div className="qr-certificates-container">
+        <h3 className="qr-subheading">Sertifikalar</h3>
+        <ul className="qr-certificates-list">
           {certificates.map((certificate, index) => (
-            <li key={index}>
-              <a href={certificate.certificate_url} target="_blank" rel="noopener noreferrer">
+            <li key={index} className="qr-certificate-item">
+              <a href={certificate.certificate_url} target="_blank" rel="noopener noreferrer" className="qr-certificate-link">
                 {certificate.certificate_url}
               </a>
             </li>
           ))}
         </ul>
       </div>
-      <button onClick={handleSend} className="btn btn-primary">
+      <button onClick={handleSend} className="qr-btn qr-btn-primary">
         Send
       </button>
     </div>

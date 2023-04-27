@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createWork, createWorkStep, getVendors, getCustomers, getUsers, getProducts, createWorkProduct } from './worksapi';
+import "./CreateWorkOrder.css"
 
 const CreateWorkOrder = () => {
   const navigate = useNavigate();

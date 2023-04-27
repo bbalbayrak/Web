@@ -1,0 +1,57 @@
+.qr-form-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .qr-heading {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .qr-certificates-container {
+    margin-top: 2rem;
+  }
+  
+  .qr-subheading {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .qr-certificates-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .qr-certificate-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .qr-certificate-link {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .qr-certificate-link:hover {
+    color: #0062cc;
+  }
+  
+  .qr-btn {
+    background-color: #007bff;
+    border: none;
+    border-radius: 0.25rem;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-top: 2rem;
+  }
+  
+  .qr-btn:hover {
+    background-color: #0062cc;
+  }
+  

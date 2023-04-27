@@ -9,10 +9,10 @@ const QualityControl = () => {
   };
 
   return (
-    <div className="form-page-container">
-      <h2>Quality Control</h2>
-      <input type="file" />
-      <button onClick={handleComplete} className="btn btn-primary">
+    <div className="qc-form-page-container">
+      <h2 className="qc-heading">Quality Control</h2>
+      <input type="file" className="qc-file-input" />
+      <button onClick={handleComplete} className="qc-btn qc-btn-primary">
         Complete
       </button>
     </div>
