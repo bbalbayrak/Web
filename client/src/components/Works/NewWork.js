@@ -8,7 +8,7 @@ import {
   updateWorkStepStatus,
 } from './worksapi';
 import "./NewWork.css";
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const NewWork = () => {
@@ -107,23 +107,20 @@ const NewWork = () => {
           </div>
         </div>
       )}
-     <div className="products-container">
+ <div className="products-container">
         {products &&
           products.map((product, productIndex) => (
             <div
               key={productIndex}
-              className={`product ${activeProductIndex === productIndex ? 'active' : ''}`}
-              onClick={() => handleProductClick(productIndex)}
+              className={`product`}
             >
               <h3>
-                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+                <FontAwesomeIcon icon={faFilePdf} className="info-icon" />
                 Product: {product.name}
               </h3>
-              {activeProductIndex === productIndex && (
-                <div className="product-details">
-                  <p>Technical Drawing URL: {product.technicaldrawingurl}</p>
-                </div>
-              )}
+              <div className="product-details">
+                <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer">Technical Drawing PDF</a>
+              </div>
             </div>
           ))}
       </div>

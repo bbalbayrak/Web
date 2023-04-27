@@ -94,9 +94,6 @@ const HamburgerMenu = ({ showMenu = true }) => {
             Kullanıcılar
           </Link>
           )}
-          <Link className="link" to="/login">
-            Login
-          </Link>
           {isLoggedIn && (
             <Link className="link" to="/" onClick={handleLogout}>
               Çıkış Yap
