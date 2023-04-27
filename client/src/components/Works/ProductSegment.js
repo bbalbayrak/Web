@@ -1,100 +1,102 @@
-import React, { useState, useEffect } from 'react';
-import './ProductSegment.css';
-import { getFormByVendorIdAndProductId, getFormByFormId } from './worksapi';
+import React, { useEffect, useState } from 'react';
+import { getFormByVendorIdAndProductId, getFormByFormId } from '././worksapi'; 
 
-const ProductSegment = ({ product, workInfo }) => {
-  const [showContent, setShowContent] = useState(false);
-  const [form, setForm] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (workInfo) {
-        const formResponse = await getFormByVendorIdAndProductId(
-          workInfo.data.vendor_id,
-          product.id
-        );
+const ProductSegment = ({ product, vendorId }) => {
+    const [formInfo, setFormInfo] = useState(null);
+    const [formDetail, setFormDetail] = useState(null);
+    const [activeStep, setActiveStep] = useState(null);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
-        if (formResponse) {
-          const formDetails = await getFormByFormId(formResponse.form.id);
-          setForm(formDetails);
-        }
-      }
+    const handleStepClick = (stepOrder) => {
+        setActiveStep(stepOrder);
     };
+  
+    useEffect(() => {
+      const fetchForm = async () => {
+        const form = await getFormByVendorIdAndProductId(vendorId, product.id);
+        setFormInfo(form);
+  
+        if (form) {
+          const formDetails = await getFormByFormId(form.form.id);
+          setFormDetail(formDetails);
+        }
+      };
+  
+      fetchForm();
+    }, [vendorId, product.id]);
 
-    if (product.id) {
-      fetchData();
-    }
-  }, [product.id, workInfo]);
-
-  const handleToggleContent = () => {
-    setShowContent(!showContent);
-  };
-
-  const handleToggleSubsteps = (stepIndex) => {
-    const updatedSteps = form.steps.map((step, index) => {
-      if (index === stepIndex) {
-        return {
-          ...step,
-          showSubsteps: !step.showSubsteps,
-        };
-      }
-      return step;
-    });
-    setForm({ ...form, steps: updatedSteps });
-  };
-
-  return (
-    <div className="product-segment">
-      <button onClick={handleToggleContent} className={showContent ? 'active' : ''}>
-        {product.name}
-      </button>
-      {showContent && (
-        <div className="segment-content">
-        <h4>Steps</h4>
-        {form && (
+    return (
+        <div className="product-segment">
+          <h3>{product.name}</h3>
+          <p>{product.description}</p>
+          {formInfo ? (
             <div>
-            {form.steps.map((step, index) => (
-                <div key={step.name}>
-                <button onClick={() => handleToggleSubsteps(index)}>
-                    {step.name}
-                </button>
-                {step.showSubsteps && (
-                    <div>
-                    <table>
+              {formDetail ? (
+                <div>
+                  <div className="segment-buttons">
+                    {formDetail.steps.map((step) => (
+                      <button key={step.order} onClick={() => handleStepClick(step.order)}>
+                        {step.name}
+                      </button>
+                    ))}
+                  </div>
+                  {formDetail.steps.map((step) => (
+                    activeStep === step.order &&
+                    <div key={step.order} className="segment-content">
+                      <table>
                         <thead>
-                        <tr>
+                          <tr>
                             <th>Technical Drawing Numbering</th>
                             <th>Tools</th>
                             <th>Description</th>
                             <th>Actual Dimension</th>
                             <th>Lower Tolerance</th>
                             <th>Upper Tolerance</th>
-                        </tr>
+                          </tr>
                         </thead>
                         <tbody>
-                        {step.substeps.map((substep) => (
+                          {step.substeps.map((substep) => (
                             <tr key={substep.id}>
-                            <td>{substep.technical_drawing_numbering}</td>
-                            <td>{substep.tools}</td>
-                            <td>{substep.description}</td>
-                            <td>{substep.actual_dimension}</td>
-                            <td>{substep.lower_tolerance}</td>
-                            <td>{substep.upper_tolerance}</td>
+                              {/* <td>
+                              <button onClick={() => setModalIsOpen(true)}>
+                                <i className="fas fa-info-circle"></i>
+                              </button>
+                              </td> */}
+                              <td>{substep.technical_drawing_numbering}</td>
+                              <td>{substep.tools}</td>
+                              <td>{substep.description}</td>
+                              <td>{substep.actual_dimension}</td>
+                              <td>{substep.lower_tolerance}</td>
+                              <td>{substep.upper_tolerance}</td>
                             </tr>
-                        ))}
+                          ))}
                         </tbody>
-                    </table>
+                      </table>
                     </div>
-                )}
+                  ))}
                 </div>
-            ))}
+              ) : (
+                <p>Form detayları yüklenirken hata oluştu.</p>
+              )}
             </div>
-        )}
-        <p>Test Segment</p>
+          ) : (
+            <p>ITP formu yok.</p>
+          )}
+                  {/* <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={() => setModalIsOpen(false)}
+            contentLabel="Example Modal"
+          >
+            <h2>Images</h2>
+            <img src="https://yenastorageaccount.blob.core.windows.net/yenacontainer/123.png" alt="Image 1" width="300" />
+            <img src="https://yenastorageaccount.blob.core.windows.net/yenacontainer/3625f786-4438-459a-b7d0-8cfaeff00dce.png" alt="Image 2"  width="300" />
+            <img src="https://yenastorageaccount.blob.core.windows.net/yenacontainer/5d39d9d1-1c49-47c0-85cf-7edb62144bc1.png" alt="Image 3" width="300" />
+            <button onClick={() => setModalIsOpen(false)}>close</button>
+          </Modal> */}
         </div>
-    )}
-    </div>
-  );
-};
-
-export default ProductSegment;
+        
+      );
+    };
+    
+    export default ProductSegment;
