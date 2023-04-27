@@ -1,48 +1,51 @@
-import React from 'react';
-import './Customers.css';
-
-const customers = [
-  // Örnek müşteri verileri
-  {
-    name: 'John Doe',
-    code: 'JD-001',
-    openedJobs: 5,
-    closedJobs: 2,
-    lastEdited: '2023-04-09',
-    authorizedUser: 'Jane Doe',
-  },
-  // Daha fazla müşteri ekleyebilirsiniz...
-];
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Customers.css";
 
 const Customers = () => {
+  const [customers, setCustomers] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+  const fetchCustomers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/customers");
+      setCustomers(response.data.data);
+    } catch (error) {
+      console.error("Müşteriler alınırken hata oluştu:", error);
+    }
+  };
+
+  const handleClick = () => {
+    navigate("/create-customer");
+  };
+
   return (
     <div className="customers-container">
       <div className="header-container">
         <h1>Müşteriler</h1>
-        <button className="add-customer-button">+ Müşteri Ekle</button>
+        <button className="add-customer-button" onClick={handleClick}>
+          + Müşteri Ekle
+        </button>
       </div>
       <table className="customers-table">
         <thead>
           <tr>
-            <th>Müşteri Adı</th>
-            <th>Müşteri Kodu</th>
-            <th>Açılan İş Sayısı</th>
-            <th>Biten İş Sayısı</th>
-            <th>Son Düzenleme</th>
-            <th>Yetkili Kullanıcı</th>
-            <th>#</th>
+            <th>ID</th>
+            <th>İsim</th>
+            <th>Odooid</th>
           </tr>
         </thead>
         <tbody>
-          {customers.map((customer, index) => (
-            <tr key={index}>
+          {customers.map((customer) => (
+            <tr key={customer.id}>
+              <td>{customer.id}</td>
               <td>{customer.name}</td>
-              <td>{customer.code}</td>
-              <td>{customer.openedJobs}</td>
-              <td>{customer.closedJobs}</td>
-              <td>{customer.lastEdited}</td>
-              <td>{customer.authorizedUser}</td>
-              <td>{index + 1}</td>
+              <td>{customer.odooid}</td>
             </tr>
           ))}
         </tbody>

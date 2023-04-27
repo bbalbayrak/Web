@@ -1,0 +1,45 @@
+.create-customer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .create-customer-title {
+    margin-bottom: 1rem;
+  }
+  
+  .create-customer-form {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+  }
+  
+  .create-customer-label {
+    margin-bottom: 0.5rem;
+  }
+  
+  .create-customer-input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .create-customer-button {
+    margin: auto;
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 50%;
+  }
+  
+  .create-customer-button:hover {
+    background-color: #2980b9;
+  }
+  
