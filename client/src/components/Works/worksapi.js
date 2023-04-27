@@ -179,3 +179,22 @@ export const getProductById = async (product_id) => {
     }
   };
   
+  export const getFormByVendorIdAndProductId = async (vendor_id, product_id) => {
+    try {
+      const response = await fetch(`${API_URL}/forms/vendor/${vendor_id}/product/${product_id}`);
+      return response.data= await response.json();
+    } catch (error) {
+      console.error(`Error fetching certificates for work ID : ${error.message}`);
+      return null;
+    }  
+  };
+
+  export const getFormByFormId = async (form_id) => {
+    try {
+      const response = await fetch(`${API_URL}/allforms/${form_id}`);
+      return await response.json();
+    } catch (error) {
+      console.error(`Error fetching form by form ID: ${error.message}`);
+      return null;
+    }
+  };
