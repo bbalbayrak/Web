@@ -30,6 +30,14 @@ const Form = {
     `);
     return result;
   },  
+
+  findByVendorIdAndProductId: async (vendor_id, product_id) => {
+    const result = await db.oneOrNone(
+      'SELECT * FROM forms WHERE vendor_id = $1 AND product_id = $2',
+      [vendor_id, product_id]
+    );
+    return result;
+  },
 };
 
 module.exports = Form;

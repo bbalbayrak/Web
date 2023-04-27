@@ -193,3 +193,20 @@ exports.getAllForm = async (req, res) => {
     res.status(500).send({ message: 'Error retrieving form', error: error.message });
   }
 };
+
+exports.getFormByVendorIdAndProductId = async (req, res) => {
+  try {
+    const { vendor_id, product_id } = req.params;
+    const form = await Form.findByVendorIdAndProductId(vendor_id, product_id);
+
+    if (!form) {
+      res.status(404).send({ message: "Form not found" });
+      return;
+    }
+
+    res.status(200).send({ form });
+  } catch (error) {
+    res.status(500).send({ message: "Error retrieving form", error: error.message });
+  }
+};
+

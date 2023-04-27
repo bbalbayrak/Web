@@ -31,6 +31,11 @@ const routes = [
     path: "/allforms/:id",
     handler: formControllers.getAllForm,
   },
+  {
+    method: "GET",
+    path: "/forms/vendor/:vendor_id/product/:product_id",
+    handler: formControllers.getFormByVendorIdAndProductId
+  }
 ];
 
 module.exports = routes;
