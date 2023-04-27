@@ -20,6 +20,7 @@ import RouteGuard from './components/RouteGuard/RouteGuard';
 import Users from './components/Users/Users';
 import CreateUser from "./components/Users/CreateUser";
 import NewWork from "./components/Works/NewWork";
+import PageNotFound from "./components/PageNotFound/PageNotFound";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
@@ -45,6 +46,8 @@ function App() {
           <Route path='/quality-control' element={<RouteGuard setShowMenu={setShowMenu}><QualityControl /></RouteGuard>}/>
           <Route path="/users" element={<RouteGuard setShowMenu={setShowMenu}><Users /></RouteGuard>}/>
           <Route path="/create-user" element={<RouteGuard setShowMenu={setShowMenu}><CreateUser /></RouteGuard>}/>
+          <Route path="/*" element={<RouteGuard setShowMenu={setShowMenu}><PageNotFound /></RouteGuard>}/>
+
         </Routes>
       </div>
     </BrowserRouter>
