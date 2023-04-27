@@ -1,45 +1,60 @@
-.vendors-container {
-  padding: 1.25rem;
-  margin-left: 16%;
-}
-
-.header-container {
+/* Vendors.css */
+.vendor-table-container {
+  margin-left: 17%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 1.25rem;
+  justify-content: center;
+  margin: 0 auto;
+  width: 60%;
 }
 
-.add-vendor-button {
-  background-color: #007bff;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-}
-
-.vendors-table {
-  width: 100%;
+.vendor-table {
   border-collapse: collapse;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.vendors-table th,
-.vendors-table td {
-  border: 1px solid #dddddd;
+.vendor-table:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.vendor-table th,
+.vendor-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
   text-align: left;
-  padding: 0.5rem;
 }
 
-.vendors-table th {
+.vendor-table th {
   background-color: #f2f2f2;
+  font-weight: bold;
 }
 
-.vendors-table tbody tr:nth-child(even) {
-  background-color: #f8f8f8;
+.vendor-table tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.vendors-table tbody tr:hover {
-  background-color: #eee;
+.vendor-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 1em;
+  transition-duration: 0.4s;
+}
+
+button:hover {
+  background-color: #45a049;
 }

@@ -1,0 +1,51 @@
+.create-vendor-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    border-radius: 5px;
+    margin-left: 17%;
+  }
+  
+  .create-vendor-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .create-vendor-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .create-vendor-label {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+  }
+  
+  .create-vendor-input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .create-vendor-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 1em 0;
+    transition-duration: 0.4s;
+  }
+  
+  

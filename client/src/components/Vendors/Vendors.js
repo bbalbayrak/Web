@@ -1,48 +1,66 @@
-import React from 'react';
-import './Vendors.css';
-
-const vendors = [
-  // Örnek tedarikçi verileri
-  {
-    name: 'ABC Company',
-    code: 'ABC-001',
-    jobs: 10,
-    lastEdited: '2023-04-08',
-    responsibleUser: 'Alice',
-    successRate: '95%',
-  },
-  // Daha fazla tedarikçi ekleyebilirsiniz...
-];
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Vendors.css";
 
 const Vendors = () => {
+  const [vendors, setVendors] = useState([]);
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [odooid, setOdooid] = useState("");
+
+  useEffect(() => {
+    fetchVendors();
+  }, []);
+
+  let navigate = useNavigate()
+  const fetchVendors = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/vendors");
+      setVendors(response.data.data);
+    } catch (error) {
+      console.error("Tedarikçiler alınırken hata oluştu:", error);
+    }
+  };
+
+  const handleClick = () => {
+    navigate("/create-vendor");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      await axios.post("http://localhost:3001/vendors", { name, odooid });
+      fetchVendors();
+      setName("");
+      setOdooid("");
+    } catch (error) {
+      console.error("Tedarikçi eklenirken hata oluştu:", error);
+    }
+  };
+
   return (
-    <div className="vendors-container">
-      <div className="header-container">
-        <h1>Tedarikçiler</h1>
-        <button className="add-vendor-button">+ Tedarikçi Ekle</button>
-      </div>
-      <table className="vendors-table">
+    <div className="vendor-table-container">
+      
+        <button type="submit" onClick={handleClick}>
+          Tedarikçi Ekle
+        </button>
+
+      <table className="vendor-table">
         <thead>
           <tr>
-            <th>Tedarikçi Adı</th>
-            <th>Tedarikçi Kodu</th>
-            <th>Üstlendiği İş</th>
-            <th>Son Düzenlenme</th>
-            <th>Sorumlu Kullanıcı</th>
-            <th>Başarı Oranı</th>
-            <th>#</th>
+            <th>ID</th>
+            <th>İsim</th>
+            <th>Odooid</th>
           </tr>
         </thead>
         <tbody>
-          {vendors.map((vendor, index) => (
-            <tr key={index}>
+          {vendors.map((vendor) => (
+            <tr key={vendor.id}>
+              <td>{vendor.id}</td>
               <td>{vendor.name}</td>
-              <td>{vendor.code}</td>
-              <td>{vendor.jobs}</td>
-              <td>{vendor.lastEdited}</td>
-              <td>{vendor.responsibleUser}</td>
-              <td>{vendor.successRate}</td>
-              <td>{index + 1}</td>
+              <td>{vendor.odooid}</td>
             </tr>
           ))}
         </tbody>

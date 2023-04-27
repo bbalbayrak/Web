@@ -62,4 +62,3 @@ exports.getVendorsByName = async (req, res) => {
     });
   }
 };
-

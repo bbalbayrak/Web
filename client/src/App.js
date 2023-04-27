@@ -21,6 +21,7 @@ import Users from './components/Users/Users';
 import CreateUser from "./components/Users/CreateUser";
 import NewWork from "./components/Works/NewWork";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
+import CreateVendor from "./components/Vendors/CreateVendor";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
@@ -47,6 +48,8 @@ function App() {
           <Route path="/users" element={<RouteGuard setShowMenu={setShowMenu}><Users /></RouteGuard>}/>
           <Route path="/create-user" element={<RouteGuard setShowMenu={setShowMenu}><CreateUser /></RouteGuard>}/>
           <Route path="/*" element={<RouteGuard setShowMenu={setShowMenu}><PageNotFound /></RouteGuard>}/>
+          <Route path="/create-vendor" element={<RouteGuard setShowMenu={setShowMenu}><CreateVendor /></RouteGuard>}/>
+
 
         </Routes>
       </div>
