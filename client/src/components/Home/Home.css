@@ -65,7 +65,9 @@
   color: #666;
 }
 .world-map {
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 85%;
   height: 70vh;
   background-color: #f0f0f0;
   margin-top: 1.25rem;
