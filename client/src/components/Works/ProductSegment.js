@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getFormByVendorIdAndProductId, getFormByFormId } from '././worksapi'; 
-
+import "./ProductSegment.css";
 
 const ProductSegment = ({ product, vendorId }) => {
     const [formInfo, setFormInfo] = useState(null);
@@ -36,7 +36,7 @@ const ProductSegment = ({ product, vendorId }) => {
                 <div>
                   <div className="segment-buttons">
                     {formDetail.steps.map((step) => (
-                      <button key={step.order} onClick={() => handleStepClick(step.order)}>
+                      <button className='product-segment-btn' key={step.order} onClick={() => handleStepClick(step.order)}>
                         {step.name}
                       </button>
                     ))}
@@ -47,12 +47,17 @@ const ProductSegment = ({ product, vendorId }) => {
                       <table>
                         <thead>
                           <tr>
-                            <th>Technical Drawing Numbering</th>
+                            <th>Number</th>
                             <th>Tools</th>
                             <th>Description</th>
                             <th>Actual Dimension</th>
                             <th>Lower Tolerance</th>
                             <th>Upper Tolerance</th>
+                            <th>Measured Value 1</th>
+                            <th>Measured Value 2</th>
+                            <th>Measured Value 3</th>
+                            <th>OK</th>
+                            <th>NOK</th>
                           </tr>
                         </thead>
                         <tbody>

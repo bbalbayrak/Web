@@ -12,6 +12,7 @@ const workRoutes = require('./routes/work');
 const commentRoutes = require("./routes/comment");
 const certificateRoutes = require("./routes/certificate");
 const workProductRoutes = require("./routes/workProduct");
+const QualityControlRoutes = require("./routes/quality_control");
 
 const db = require('./config/db');
 
@@ -60,6 +61,10 @@ commentRoutes.forEach((route) => {
 });
 
 workProductRoutes.forEach((route) => {
+  fastify.route(route);
+});
+
+QualityControlRoutes.forEach((route) => {
   fastify.route(route);
 });
 

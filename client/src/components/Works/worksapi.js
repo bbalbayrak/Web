@@ -198,3 +198,21 @@ export const getProductById = async (product_id) => {
       return null;
     }
   };
+  
+  export const createQualityControlEntry = async (data) => {
+    const response = await fetch(`${API_URL}/api/quality_control`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  
+    if (!response.ok) {
+      throw new Error(`Error creating quality control entry: ${response.statusText}`);
+    }
+  
+    return await response.json();
+  };
+  
+
