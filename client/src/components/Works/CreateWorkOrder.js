@@ -237,16 +237,29 @@ const CreateWorkOrder = () => {
 </select>
 </div>
 <div className="cwo-form-group">
-<label htmlFor="work_step">Work Step</label>
-<textarea
-         name="work_step"
-         id="work_step"
-         className="cwo-form-control"
-         value={workData.work_step}
-         onChange={handleChange}
-         required
-       ></textarea>
-</div>
+      <label htmlFor="state">State</label>
+      <input
+        type="text" 
+        name="state"
+        id="state"
+        className="cwo-form-control"
+        value={workData.state}
+        onChange={handleChange}
+        required
+      />
+    </div>
+    <div className="cwo-form-group">
+      <label htmlFor="status">Status</label>
+      <input
+        type="text"
+        name="status"
+        id="status"
+        className="cwo-form-control"
+        value={workData.status}
+        onChange={handleChange}
+        required
+      />
+    </div>
 <button type="submit" className="cwo-btn cwo-btn-primary">
 Save Work Order
 </button>
