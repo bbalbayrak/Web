@@ -4,10 +4,15 @@ import './FormsPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const FormsPage = () => {
   const [forms, setForms] = useState([]);
+  const navigate = useNavigate();
 
+  const handleAddFormClick = () => {
+    navigate('/create-form');
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,6 +29,7 @@ const FormsPage = () => {
   return (
     <div className="form-page-container">
       <h2>Forms</h2>
+      <button onClick={handleAddFormClick} className="add-itp-btn">ITP Ekle</button>
       <table className="form-table">
         <thead>
           <tr>

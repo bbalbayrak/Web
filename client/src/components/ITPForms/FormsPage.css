@@ -28,4 +28,29 @@
   .form-table tr:nth-child(even) {
     background-color: #f2f2f2;
   }
+  .add-itp-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #0d2f5a;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .add-form-btn {
+    background-color: #0d2f5a;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+  }
   
