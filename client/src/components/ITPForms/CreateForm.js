@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getVendors, getProducts } from '../Works/worksapi';
 import { createOrUpdateForm } from './formapi';
-
+import "./FormEdit.css"
 const segments = [
   { name: 'Sub - Part Dimension', order: 1 },
   { name: 'Final Part Measurement', order: 2 },

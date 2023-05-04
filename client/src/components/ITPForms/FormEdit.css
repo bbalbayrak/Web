@@ -1,8 +1,9 @@
 .measurement-table {
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
     margin-bottom: 20px;
     table-layout: fixed;
+    margin-left: 14%;
   }
   
   .measurement-table th,
@@ -31,4 +32,10 @@
     background-color: #007bff;
     color: white;
   }
-  
+  .form-edit-text-box{
+    width: 80%;
+  }
+  .form-edit-main{
+    padding-top: 1px;
+    margin-left: 2%;
+  }
