@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getVendors, getProducts } from '../Works/worksapi';
 import { createOrUpdateForm } from './formapi';
 import "./FormEdit.css"
+
 const segments = [
   { name: 'Sub - Part Dimension', order: 1 },
   { name: 'Final Part Measurement', order: 2 },
@@ -198,6 +199,7 @@ const FormCreate = () => {
             <tr key={row.id}>
                 <td>
               <input
+                className='form-edit-text-box'
                 type="text"
                 value={row.name || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'name')}
@@ -205,6 +207,7 @@ const FormCreate = () => {
             </td>
             <td>
               <input
+                className='form-edit-text-box'
                 type="text"
                 value={row.technical_drawing_numbering || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
@@ -212,6 +215,7 @@ const FormCreate = () => {
             </td>
             <td>
               <input
+                className='form-edit-text-box'
                 type="text"
                 value={row.tools || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'tools')}
@@ -219,6 +223,7 @@ const FormCreate = () => {
             </td>
             <td>
               <input
+                className='form-edit-text-box'
                 type="text"
                 value={row.description || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'description')}
@@ -226,6 +231,7 @@ const FormCreate = () => {
             </td>
             <td>
               <input
+                className='form-edit-text-box'
                 type="text"
                 value={row.actual_dimension || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
@@ -233,6 +239,7 @@ const FormCreate = () => {
             </td>
             <td>
               <input
+                className='form-edit-text-box'
                 type="text"
                 value={row.lower_tolerance || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
@@ -240,6 +247,7 @@ const FormCreate = () => {
             </td>
             <td>
               <input
+                className='form-edit-text-box'
                 type="text"
                 value={row.upper_tolerance || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
@@ -307,7 +315,7 @@ const FormCreate = () => {
     };
     
     return (
-      <div>
+      <div className='form-edit-main'>
         <h2>Create New Form</h2>
         <form>
           {/* Render form elements */}

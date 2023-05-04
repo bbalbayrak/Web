@@ -205,8 +205,7 @@ const FormEdit = () => {
             <tr key={row.id}>
                 <td>
               <input
-                            className='form-edit-text-box'
-
+                className='form-edit-text-box'
                 type="text"
                 value={row.name || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'name')}
@@ -214,7 +213,7 @@ const FormEdit = () => {
             </td>
             <td>
               <input
-              className='form-edit-text-box'
+                className='form-edit-text-box'
                 type="text"
                 value={row.technical_drawing_numbering || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
@@ -222,8 +221,7 @@ const FormEdit = () => {
             </td>
             <td>
               <input
-                            className='form-edit-text-box'
-
+                className='form-edit-text-box'
                 type="text"
                 value={row.tools || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'tools')}
@@ -231,8 +229,7 @@ const FormEdit = () => {
             </td>
             <td>
               <input
-                            className='form-edit-text-box'
-
+                className='form-edit-text-box'
                 type="text"
                 value={row.description || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'description')}
@@ -240,8 +237,7 @@ const FormEdit = () => {
             </td>
             <td>
               <input
-                            className='form-edit-text-box'
-
+                className='form-edit-text-box'
                 type="text"
                 value={row.actual_dimension || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
@@ -249,8 +245,7 @@ const FormEdit = () => {
             </td>
             <td>
               <input
-                            className='form-edit-text-box'
-
+                className='form-edit-text-box'
                 type="text"
                 value={row.lower_tolerance || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
@@ -258,8 +253,7 @@ const FormEdit = () => {
             </td>
             <td>
               <input
-                            className='form-edit-text-box'
-
+                className='form-edit-text-box'
                 type="text"
                 value={row.upper_tolerance || ''}
                 onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
@@ -273,8 +267,7 @@ const FormEdit = () => {
                   onDrop={(e) => handleDrop(e, row.id)}
                 >
                   <input
-                                className='form-edit-text-box'
-
+                    className='form-edit-text-box'
                     type="file"
                     accept="image/png, image/jpeg"
                     onChange={(e) => handleFileUpload(e.target.files[0], row.id)}
