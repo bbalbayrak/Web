@@ -74,7 +74,10 @@ const FormCreate = () => {
       }
     };})
 
-
+    const saveForm = () => {
+      setFormSaved(true);
+    };
+    
     useEffect(() => {
       const saveForm = async () => {
         const postData = {
@@ -121,29 +124,168 @@ const FormCreate = () => {
   
       if (formSaved) {
         saveForm();
-        setFormSaved(true);
       }
     }, [formSaved]);
 
     const handleSegmentClick = (order) => {
-    setActiveSegment(order);
+      if (activeSegment === order) {
+        setActiveSegment(0);
+      } else {
+        setActiveSegment(order);
+      }
     };
     
+
+    const handleDragOver = (e) => {
+      e.preventDefault();
+    };
+
+    const handleInputChange = (event, rowId, field) => {
+      const newValue = event.target.value;
+      setRows(rows.map(row => row.id === rowId ? {...row, [field]: newValue} : row));
+    };  
+
+    const handleDrop = (e, rowId) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
+        handleFileUpload(file, rowId);
+      } else {
+        alert('Lütfen sadece PNG veya JPEG dosyaları yükleyin.');
+      }
+    };
+    const addRow = () => {
+      const newRow = {
+        id: null,
+        name: '',
+        technical_drawing_numbering: '',
+        tools: '',
+        description: '',
+        actual_dimension: '',
+        lower_tolerance: '',
+        upper_tolerance: '',
+      };
+      setRows([...rows, newRow]);
+    };
+  
     
-    const handleAddRow = () => {
+    const handleFileUpload = (e, rowId) => {
+      const file = e.target.files[0];
+      console.log(`File uploaded for row: ${rowId}`);
+      console.log('File:', file);
+    };
+
+
+    const renderFinalPartMeasurement = () => {
+  
+    return (
+      <div>
+        <table className="measurement-table">
+          <thead>
+            <tr>
+              <th>İsim</th>
+              <th>Teknik Çizim Numarası</th>
+              <th>Kullanılan Aletler</th>
+              <th>Açıklama</th>
+              <th>Gerçek Boyut</th>
+              <th>Alt Tolerans</th>
+              <th>Üst Tolerans</th>
+              <th>Example Visual</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.id}>
+                <td>
+              <input
+                type="text"
+                value={row.name || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'name')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.technical_drawing_numbering || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.tools || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'tools')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.description || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'description')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.actual_dimension || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.lower_tolerance || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={row.upper_tolerance || ''}
+                onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
+              />
+            </td>
+
+              <td>
+                <div
+                  className="dropzone"
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, row.id)}
+                >
+                  <input
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={(e) => handleFileUpload(e.target.files[0], row.id)}
+                  />
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <button onClick={handleAddRow}>Add Row</button>
+      <button onClick={saveForm}>Kaydet</button>
+
+      </div>
+    );
+  };
+    
+  const handleAddRow = (event) => {
+    event.preventDefault();
     const newRow = {
-    id: null,
-    technical_drawing_numbering: '',
-    tools: '',
-    description: '',
-    actual_dimension: '',
-    lower_tolerance: '',
-    upper_tolerance: '',
-    example_visual_url: '',
-    status: '',
+      id: null,
+      technical_drawing_numbering: '',
+      tools: '',
+      description: '',
+      actual_dimension: '',
+      lower_tolerance: '',
+      upper_tolerance: '',
+      example_visual_url: '',
+      status: '',
     };
     setRows([...rows, newRow]);
-    };
+  };
+  
     
     const handleRowChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) => {
@@ -216,13 +358,9 @@ const FormCreate = () => {
             ))}
           </div>
           {/* Render segment content based on the activeSegment state */}
-          {activeSegment === 1 && (
-            <div>
-              {/* Render Sub - Part Dimension content */}
-            </div>
-          )}
+          {activeSegment === 2 && renderFinalPartMeasurement()}
+
           {/* Render other segments if needed */}
-          <button type="button" onClick={handleSubmit}>Submit</button>
         </form>
       </div>
     );
