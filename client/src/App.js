@@ -23,6 +23,7 @@ import NewWork from "./components/Works/NewWork";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
 import CreateVendor from "./components/Vendors/CreateVendor";
 import CreateCustomer from "./components/Customers/CreateCustomer";
+import FormCreate from "./components/ITPForms/CreateForm";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
@@ -51,6 +52,7 @@ function App() {
           <Route path="/*" element={<RouteGuard setShowMenu={setShowMenu}><PageNotFound /></RouteGuard>}/>
           <Route path="/create-vendor" element={<RouteGuard setShowMenu={setShowMenu}><CreateVendor /></RouteGuard>}/>
           <Route path="/create-customer" element={<RouteGuard setShowMenu={setShowMenu}><CreateCustomer /></RouteGuard>}/>
+          <Route path="/create-form" element={<RouteGuard setShowMenu={setShowMenu}><FormCreate /></RouteGuard>}/>
 
 
         </Routes>
