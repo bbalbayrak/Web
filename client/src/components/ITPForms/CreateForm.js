@@ -19,6 +19,7 @@ const FormCreate = () => {
   const [activeSegment, setActiveSegment] = useState(1);
   const [rows, setRows] = useState([]);
   const [formSaved, setFormSaved] = useState(false);
+  const [fileUrl, setFileUrl] = useState(null);
   const [formData, setFormData] = useState({
     order_number: "",
     project_number: "",
@@ -38,6 +39,11 @@ const FormCreate = () => {
     fetchVendors();
     fetchProducts();
   }, []);
+
+  function handleCoverChange(event) {
+    const file = event.target.files[0];
+    setFileUrl(URL.createObjectURL(file));
+  }
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,6 +83,7 @@ const FormCreate = () => {
 
     const saveForm = () => {
       setFormSaved(true);
+      console.error(Request.data)
     };
     
     useEffect(() => {
@@ -150,11 +157,13 @@ const FormCreate = () => {
       e.preventDefault();
       const file = e.dataTransfer.files[0];
       if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
-        handleFileUpload(file, rowId);
+        // handleFileUpload fonksiyonunu çağırmak yerine input değişikliğini tetikleyin
+        handleInputChange({ target: { value: file } }, rowId, 'example_visual_url');
       } else {
         alert('Lütfen sadece PNG veya JPEG dosyaları yükleyin.');
       }
     };
+    
     const addRow = () => {
       const newRow = {
         id: null,
@@ -260,11 +269,7 @@ const FormCreate = () => {
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, row.id)}
                 >
-                  <input
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    onChange={(e) => handleFileUpload(e.target.files[0], row.id)}
-                  />
+                <input type="file" onChange={handleCoverChange} />
                 </div>
               </td>
             </tr>
