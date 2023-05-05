@@ -1,4 +1,4 @@
-.login-successful-popup {
+.image-popup {
     position: fixed;
     top: 0;
     left: 0;
@@ -8,30 +8,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .popup-content {
+}
+
+.popup-content {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
     text-align: center;
-  }
-  
-  .popup-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #444444;
-    margin-bottom: 10px;
-  }
-  
-  .popup-message {
-    font-size: 18px;
-    color: #666666;
+}
+
+.popup-image {
+    max-width: 100%;
+    height: auto;
     margin-bottom: 20px;
-  }
-  
-  .popup-close {
+}
+
+.popup-close {
     background-color: #ff4d4d;
     color: white;
     border: none;
@@ -40,27 +33,15 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
-    animation: pulse 1s ease-in-out infinite alternate;
-  }
-  
-  .popup-close:hover {
+}
+
+.popup-close:hover {
     background-color: #ff3333;
-    animation: none;
-  }
-  
-  @keyframes pulse {
-    from {
-      background-color: #ff4d4d;
-    }
-    to {
-      background-color: #ff9999;
-    }
-  }
-  
-  @media (min-width: 768px) {
+}
+
+@media (min-width: 768px) {
     .popup-content {
-      max-width: 400px;
+      max-width: 80%;
       margin: auto;
     }
-  }
-  
+}

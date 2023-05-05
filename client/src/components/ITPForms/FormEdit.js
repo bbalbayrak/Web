@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getFormById, createOrUpdateForm } from './formapi';
+import ImagePopup from '../shared/Popup/ImagePopup';
 
 const segments = [
   { name: 'Sub - Part Dimensiol', order: 1 },
@@ -16,7 +17,9 @@ const FormEdit = () => {
   const [form, setForm] = useState(null);
   const [activeSegment, setActiveSegment] = useState(1);
   const [formSaved, setFormSaved] = useState(false);
-
+  const [showImagePopup, setShowImagePopup] = useState(false);
+  const [imagePopupUrl, setImagePopupUrl] = useState('');
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,7 +63,12 @@ const FormEdit = () => {
       }
     }
   }, [form]);
-
+  
+  const handleImageClick = (url) => {
+    setImagePopupUrl(url);
+    setShowImagePopup(true);
+  };
+  
   const addRow = () => {
     const newRow = {
       id: null,
