@@ -94,12 +94,21 @@ const FormEdit = () => {
       alert('Lütfen sadece PNG veya JPEG dosyaları yükleyin.');
     }
   };
-
-  const handleFileUpload = (e, rowId) => {
+  
+  const handleFileSelect = (e, rowId) => {
     const file = e.target.files[0];
+    if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
+      handleFileUpload(file, rowId);
+    } else {
+      alert('Lütfen sadece PNG veya JPEG dosyaları yükleyin.');
+    }
+  };
+  
+  const handleFileUpload = (file, rowId) => {
     console.log(`File uploaded for row: ${rowId}`);
     console.log('File:', file);
   };
+  
   
   const handleSegmentClick = (order) => {
     setActiveSegment(order);
@@ -267,11 +276,12 @@ const FormEdit = () => {
                   onDrop={(e) => handleDrop(e, row.id)}
                 >
                   <input
-                    className='form-edit-text-box'
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    onChange={(e) => handleFileUpload(e.target.files[0], row.id)}
-                  />
+                className='form-edit-text-box'
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={(e) => handleFileSelect(e, row.id)}
+              />
+
                 </div>
               </td>
             </tr>
