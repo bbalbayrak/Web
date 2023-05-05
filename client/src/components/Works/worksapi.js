@@ -215,4 +215,31 @@ export const getProductById = async (product_id) => {
     return await response.json();
   };
   
-
+  export const getQualityControlEntriesByFormId = async (form_id) => {
+    try {
+      const response = await fetch(`${API_URL}/api/quality_control/form/${form_id}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(`Error fetching quality control entries by form ID: ${error.message}`);
+      throw error;
+    }
+  };
+  
+  export const updateQualityControlEntry = async (entries) => {
+    const response = await fetch(`${API_URL}/api/quality_control`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(entries),
+    });
+  
+    if (!response.ok) {
+      throw new Error(`Kalite kontrol girişini güncelleme hatası: ${response.statusText}`);
+    }
+  
+    return await response.json();
+  };
+  
+  

@@ -1,4 +1,43 @@
 const QualityControl = require("../models/quality_control");
+const { FIXED_STEPS } = require("../utils/fixedsteps");
+
+function reformatResponse(response) {
+  let stepsDict = {};
+
+  response.qualityControls.forEach((qc) => {
+    const stepName = qc.step_name;
+    if (!(stepName in stepsDict)) {
+      stepsDict[stepName] = {
+        name: stepName,
+        order: FIXED_STEPS.find(step => step.name === stepName).order,
+        substeps: [],
+      };
+    }
+
+    const substep = { ...qc };
+    delete substep.step_name;
+    stepsDict[stepName].substeps.push(substep);
+  });
+
+  // FIXED_STEPS kullanarak mevcut adımları doldurun veya substeps alanı boş olan adımları ekleyin
+  FIXED_STEPS.forEach(({ name, order }) => {
+    if (!(name in stepsDict)) {
+      stepsDict[name] = {
+        name,
+        order,
+        substeps: [],
+      };
+    }
+  });
+
+  const steps = Object.values(stepsDict).sort((a, b) => a.order - b.order);
+
+  return {
+    id: response.qualityControls[0].form_id,
+    steps: steps,
+  };
+}
+
 
 exports.createQualityControl = async (req, res) => {
   try {
@@ -12,3 +51,38 @@ exports.createQualityControl = async (req, res) => {
     res.status(500).send({ message: "Error creating quality control entry", error });
   }
 };
+
+exports.findByFormId = async (req, res) => {
+  try {
+    const { form_id } = req.params;
+
+    const qualityControls = await QualityControl.findByFormId(form_id);
+
+    const reformattedResponse = reformatResponse({
+      message: "Quality control entries fetched successfully",
+      qualityControls,
+    });
+
+    res.status(200).send(reformattedResponse);
+  } catch (error) {
+    console.error("Error in findByFormId:", error);
+    res.status(500).send({ message: "Error fetching quality control entries", error });
+  }
+};
+
+exports.updateQualityControl = async (req, res) => {
+  try {
+    const entries = req.body;
+
+    const qualityControl = await QualityControl.update(entries);
+
+    res.status(200).send({ message: "Quality control entries updated successfully", qualityControl });
+  } catch (error) {
+    console.error("Error in updateQualityControl:", error);
+    res.status(500).send({ message: "Error updating quality control entries", error });
+  }
+};
+
+
+
+

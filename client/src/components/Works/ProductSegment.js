@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { getFormByVendorIdAndProductId, getFormByFormId } from '././worksapi'; 
+import React, { useEffect, useState, useCallback  } from 'react';
+import { getFormByVendorIdAndProductId, getQualityControlEntriesByFormId, updateQualityControlEntry } from '././worksapi'; 
 import "./ProductSegment.css";
 
 const ProductSegment = ({ product, vendorId }) => {
@@ -8,6 +8,7 @@ const ProductSegment = ({ product, vendorId }) => {
     const [activeStep, setActiveStep] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedImage, setSelectedImage] = useState("");
+    const [measuredValues, setMeasuredValues] = useState({});
 
     const handleStepClick = (stepOrder) => {
         setActiveStep(stepOrder);
@@ -22,20 +23,46 @@ const ProductSegment = ({ product, vendorId }) => {
         setShowPopup(false);
     };
   
-    useEffect(() => {
-      const fetchForm = async () => {
-        const form = await getFormByVendorIdAndProductId(vendorId, product.id);
-        setFormInfo(form);
-  
-        if (form) {
-          const formDetails = await getFormByFormId(form.form.id);
-          setFormDetail(formDetails);
-        }
-      };
-  
-      fetchForm();
-    }, [vendorId, product.id]);
+    const fetchForm = useCallback(async () => {
+      const form = await getFormByVendorIdAndProductId(vendorId, product.id);
+      setFormInfo(form);
 
+      if (form) {
+        const formDetails = await getQualityControlEntriesByFormId(form.form.id);
+        setFormDetail(formDetails);
+      }
+    }, [vendorId, product.id]);
+  
+    useEffect(() => {
+      fetchForm();
+    }, [fetchForm]);
+
+    const handleMeasuredValueChange = (substepId, field, value) => {
+      setMeasuredValues({
+        ...measuredValues,
+        [substepId]: {
+          ...measuredValues[substepId],
+          [field]: value,
+        },
+      });
+    };
+    
+    const handleSaveClick = async () => {
+      const entriesToUpdate = Object.entries(measuredValues)
+        .filter(([id, values]) => Object.values(values).some((value) => value !== null && value !== ''))
+        .map(([id, values]) => ({
+          id,
+          ...values,
+        }));
+    
+      try {
+        await updateQualityControlEntry(entriesToUpdate);
+        // İsteğe bağlı olarak, başarılı güncellemelerden sonra başarı mesajı gösterin veya diğer işlemleri gerçekleştirin
+        fetchForm(); // Güncelleme işleminden sonra fetchForm işlevini çağırın
+      } catch (error) {
+        console.error("Ölçülen değerler güncellenirken hata:", error);
+      }
+    };
     return (
       <div className="product-segment">
         <h3>{product.name}</h3>
@@ -54,6 +81,7 @@ const ProductSegment = ({ product, vendorId }) => {
               <table>
                 <thead>
                   <tr>
+                    <th>Image</th>
                     <th>Number</th>
                     <th>Tools</th>
                     <th>Description</th>
@@ -79,10 +107,32 @@ const ProductSegment = ({ product, vendorId }) => {
                       <td>{substep.actual_dimension}</td>
                       <td>{substep.lower_tolerance}</td>
                       <td>{substep.upper_tolerance}</td>
+                      <td>
+                        <input
+                          type="text"
+                          value={measuredValues[substep.id]?.measured_value_1 || substep.measured_value_1}
+                          onChange={(e) => handleMeasuredValueChange(substep.id, 'measured_value_1', e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={measuredValues[substep.id]?.measured_value_2 || substep.measured_value_2}
+                          onChange={(e) => handleMeasuredValueChange(substep.id, 'measured_value_2', e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={measuredValues[substep.id]?.measured_value_3 || substep.measured_value_3}
+                          onChange={(e) => handleMeasuredValueChange(substep.id, 'measured_value_3', e.target.value)}
+                        />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <button onClick={handleSaveClick}>Save</button>
             </div>
           ))}
         </div>

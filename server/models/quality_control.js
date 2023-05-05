@@ -16,6 +16,20 @@ const QualityControl = {
     return result;
   },
 
+  update: async (entries) => {
+    const updatedEntries = await db.tx(async (t) => {
+      return await t.batch(
+        entries.map((entry) =>
+          t.one(
+            `UPDATE ${QualityControl.tableName} SET measured_value_1 = COALESCE($2, measured_value_1), measured_value_2 = COALESCE($3, measured_value_2), measured_value_3 = COALESCE($4, measured_value_3) WHERE id = $1 RETURNING *`,
+            [entry.id, entry.measured_value_1, entry.measured_value_2, entry.measured_value_3]
+          )
+        )
+      );
+    });
+  
+    return updatedEntries;
+  },
 };
 
 module.exports = QualityControl;
