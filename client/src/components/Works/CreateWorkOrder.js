@@ -85,7 +85,7 @@ const CreateWorkOrder = () => {
   };
 
   const handleSave = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     try {
       const createdWork = await createWork(workData);
       const workStepData = {
@@ -222,18 +222,17 @@ const CreateWorkOrder = () => {
 <div className="cwo-form-group">
 <label htmlFor="product_id">Product</label>
 <select
-         name="product_id"
-         id="product_id"
-         className="cwo-form-control"
-         value={workData.product_id}
-         onChange={handleChange}
-       >
-<option value="">Select Product</option>
-{products.map((product) => (
-<option key={product.id} value={product.id}>
-{product.name}
-</option>
-))}
+    name="product_id"
+    id="product_id"
+    className="cwo-form-control"
+    onChange={handleProductChange}
+>
+    <option value="">Select Product</option>
+    {products.map((product) => (
+        <option key={product.id} value={product.id}>
+            {product.name}
+        </option>
+    ))}
 </select>
 </div>
 <div className="cwo-form-group">
