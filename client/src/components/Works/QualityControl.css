@@ -1,31 +1,40 @@
 .qc-form-page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-  
-  .qc-heading {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .qc-file-input {
-    margin-bottom: 1rem;
-  }
-  
-  .qc-btn {
-    background-color: #007bff;
-    border: none;
-    border-radius: 0.25rem;
-    color: #fff;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-  }
-  
-  .qc-btn:hover {
-    background-color: #0062cc;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.qc-heading {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.qc-file-input {
+  margin-bottom: 1rem;
+}
+
+.qc-btn {
+  background-color: #007bff;
+  border: none;
+  border-radius: 0.25rem;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.qc-btn:hover {
+  background-color: #0062cc;
+}
+
+
+.qc-img {
+  align-items: start;
+  width: 125px;
+  height: 125px;
+  object-fit: cover;
+  display: inline-block;
+  margin-right: 1rem;
+}

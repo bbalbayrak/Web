@@ -13,11 +13,11 @@ const CreateWorkOrder = () => {
     quality_responsible_id: "",
     inspector_id: "",
     foreman_id: "",
-    work_type: "",
+    work_type: "Order",
     state: "",
     status: "",
-    creator_id: "",
-    creation_date: "",
+    creator_id: 1,
+    creation_date: new Date().toISOString(),
   });
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [vendors, setVendors] = useState([]);
@@ -85,7 +85,7 @@ const CreateWorkOrder = () => {
   };
 
   const handleSave = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     try {
       const createdWork = await createWork(workData);
       const workStepData = {

@@ -7,11 +7,14 @@ import {
   getWorkProducts,
   updateWorkStepStatus,
 } from './worksapi';
+import ImagePopup from '../shared/Popup/ImagePopup';
+import "./QualityControl.css"
 
 const QualityControl = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [work, setWork] = useState(null);
+  const [showImagePopup, setShowImagePopup] = useState(false);
   const [products, setProducts] = useState([]);
   const [activeProductIndex, setActiveProductIndex] = useState(0);
   const searchParams = new URLSearchParams(location.search);
@@ -54,9 +57,13 @@ const QualityControl = () => {
       <ProductSegment key={activeProduct.id} product={activeProduct} vendorId={work.data.vendor_id} />
     );
   };
+  const handleImageClick = () => {
+    setShowImagePopup(true);
+  };
 
   return (
     <div className="form-page-container">
+      {showImagePopup && <ImagePopup onClose={() => setShowImagePopup(false)} />}
       <h2 className="qc-heading">Quality Control</h2>
       {work && (
         <div className="work-details">
@@ -76,7 +83,7 @@ const QualityControl = () => {
           <div className="work-detail-row">
             <p className="work-detail">Work Type: {work.data.work_type}</p>
             <p className="work-detail">State: {work.data.state}</p>
-          </div>
+            </div>
           <div className="work-detail-row">
             <p className="work-detail">Status: {work.data.status}</p>
             <p className="work-detail">Creator: {work.data.creator_id}</p>
@@ -84,6 +91,14 @@ const QualityControl = () => {
         </div>
       )}
       <div className="product-segments">
+        <div className="work-detail-row">
+          <img
+            src={require('..//shared/a1.jpg')}
+            alt=""
+            className="qc-img"
+            onClick={handleImageClick}
+          />
+        </div>
         {products.map((product, index) => (
           <button
             key={product.id}
@@ -98,7 +113,7 @@ const QualityControl = () => {
       <button onClick={handleComplete} className="qc-btn qc-btn-primary">
         Complete
       </button>
-      </div>
+    </div>
   );
 };
 

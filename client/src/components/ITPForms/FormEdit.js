@@ -182,7 +182,6 @@ const FormEdit = () => {
   };
   
   
-
   const renderSubPartDimensiol = () => {
     return (
       <div>
@@ -201,7 +200,14 @@ const FormEdit = () => {
 
   const renderFinalPartMeasurement = () => {
     if (!form) return null;
-  
+    {showImagePopup && (
+      <ImagePopup
+        onClose={() => setShowImagePopup(false)}
+      />
+    )}
+    
+    
+    
     return (
       <div>
         <table className="measurement-table">
@@ -215,6 +221,8 @@ const FormEdit = () => {
               <th>Alt Tolerans</th>
               <th>Üst Tolerans</th>
               <th>Example Visual</th>
+              <th>Örnek Görsel</th>
+
           </tr>
         </thead>
         <tbody>
@@ -292,6 +300,19 @@ const FormEdit = () => {
 
                 </div>
               </td>
+              <td>
+              <img
+  src={require('..//shared/a1.jpg')}
+  alt=""
+  className="thumbnail-image"
+  onClick={handleImageClick}
+/>
+
+            </td>
+            <td>
+
+            </td>
+
             </tr>
           ))}
         </tbody>
@@ -335,8 +356,12 @@ const FormEdit = () => {
       </div>
     );
   };
+  const imagePopup = showImagePopup ? (
+    <ImagePopup onClose={() => setShowImagePopup(false)} />
+  ) : null;
   return (
     <div className='form-edit-main'>
+      {imagePopup}
       <h1>ITP Formu</h1>
       {form ? (
         <div>
