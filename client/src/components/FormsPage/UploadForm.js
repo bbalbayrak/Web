@@ -12,6 +12,7 @@ const UploadForm = () => {
   const [response, setResponse] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([])
+  const [isValid, setIsValid] = useState(true);
 
   const fetchCustomers = async () => {
     try {
@@ -39,6 +40,12 @@ const UploadForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!name || !odooid || !customerId) {
+      setIsValid(false);
+      return;
+    }
+
+    setIsValid(true);
     const formData = new FormData();
     formData.append('name', name);
     formData.append('odooid', odooid);
@@ -61,6 +68,11 @@ const UploadForm = () => {
 
   return (
     <div className="upload-form-container">
+       {!isValid && (
+        <div className="error-message">
+          Lütfen tüm alanları doldurunuz!
+        </div>
+      )}
     <form className='products-form' onSubmit={handleSubmit}>
       <table className="form-table">
           <tbody>
