@@ -4,15 +4,14 @@ body {
 }
 
 .menu-container {
-  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 14%;
   height: 100%;
 }
 
 .hamburger-button {
+  position: fixed;
   background: #0d2f5a;
   border: none;
   cursor: pointer;
@@ -22,12 +21,12 @@ body {
 }
 
 .hamburger-menu {
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   background-color: #0d2f5a;
-  width: 100%;
+  width: 14%;
   height: 100%;
   padding: 16px;
   padding-top: 5rem;

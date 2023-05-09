@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import './ImagePopup.css';
 
 export default function ImagePopup({ onClose, imageUrl }) {
+  console.log("ImagePopup called with imageUrl:", imageUrl);
   const popupRef = useRef(null);
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function ImagePopup({ onClose, imageUrl }) {
   return (
     <div className="image-popup">
       <div className="popup-content" ref={popupRef}>
-        <img src="https://fastly.picsum.photos/id/128/200/300.jpg?hmac=7to6-3CeagytIcDSNoyBUAgdzKPBMw3CYRpVrm7DBSA" alt="Resim" className="popup-image" />
+        <img src={imageUrl} alt="Resim" className="popup-image" />
         <button className="popup-close" onClick={onClose}>
           Kapat
         </button>

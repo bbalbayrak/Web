@@ -7,14 +7,12 @@ import {
   getWorkProducts,
   updateWorkStepStatus,
 } from './worksapi';
-import ImagePopup from '../shared/Popup/ImagePopup';
 import "./QualityControl.css"
 
 const QualityControl = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [work, setWork] = useState(null);
-  const [showImagePopup, setShowImagePopup] = useState(false);
   const [products, setProducts] = useState([]);
   const [activeProductIndex, setActiveProductIndex] = useState(0);
   const searchParams = new URLSearchParams(location.search);
@@ -54,16 +52,12 @@ const QualityControl = () => {
     if (!products.length) return null;
     const activeProduct = products[activeProductIndex];
     return (
-      <ProductSegment key={activeProduct.id} product={activeProduct} vendorId={work.data.vendor_id} />
+      <ProductSegment key={activeProduct.id} product={activeProduct} vendorId={work.data.vendor_id} work_id={work_id}/>
     );
-  };
-  const handleImageClick = () => {
-    setShowImagePopup(true);
   };
 
   return (
     <div className="form-page-container">
-      {showImagePopup && <ImagePopup onClose={() => setShowImagePopup(false)} />}
       <h2 className="qc-heading">Quality Control</h2>
       {work && (
         <div className="work-details">
@@ -92,12 +86,6 @@ const QualityControl = () => {
       )}
       <div className="product-segments">
         <div className="work-detail-row">
-          <img
-            src={require('..//shared/a1.jpg')}
-            alt=""
-            className="qc-img"
-            onClick={handleImageClick}
-          />
         </div>
         {products.map((product, index) => (
           <button

@@ -8,7 +8,7 @@ const routes = [
   },
   {
     method: "GET",
-    path: "/api/quality_control/form/:form_id",
+    path: "/api/quality_control/form/:form_id/:work_id",
     handler: QualityControl.findByFormId,
   },
   {

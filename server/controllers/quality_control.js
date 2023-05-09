@@ -41,9 +41,9 @@ function reformatResponse(response) {
 
 exports.createQualityControl = async (req, res) => {
   try {
-    const { form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3 } = req.body;
+    const { form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id } = req.body;
 
-    const qualityControl = await QualityControl.create(form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3);
+    const qualityControl = await QualityControl.create(form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id );
 
     res.status(201).send({ message: "Quality control entry created successfully", qualityControl });
   } catch (error) {
@@ -54,9 +54,9 @@ exports.createQualityControl = async (req, res) => {
 
 exports.findByFormId = async (req, res) => {
   try {
-    const { form_id } = req.params;
+    const { form_id, work_id } = req.params;
 
-    const qualityControls = await QualityControl.findByFormId(form_id);
+    const qualityControls = await QualityControl.findByFormId(form_id, work_id);
 
     const reformattedResponse = reformatResponse({
       message: "Quality control entries fetched successfully",

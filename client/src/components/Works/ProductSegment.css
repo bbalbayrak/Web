@@ -1,28 +1,32 @@
 .product-segment {
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: top;
-  }
-  
-  .segment-content {
-    min-height: 50px;
-  }
-  
-  .product-segment .active ~ .segment-content {
-    display: block;
-  }
-  
-  .segment-content > div {
-    display: inline-block;
-    vertical-align: top;
-    margin-right: 10px;
-    vertical-align: top;
-  }
-  .segment-buttons {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .product-segment-btn{
-    margin: 0;
-  }
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: top;
+}
+
+.segment-content {
+  min-height: 50px;
+}
+
+.product-segment .active ~ .segment-content {
+  display: block;
+}
+
+.segment-content > div {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 10px;
+  vertical-align: top;
+}
+.segment-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.product-segment-btn{
+  margin: 0;
+}
+
+.cell-error input {
+  background-color: #ffcccc;
+}

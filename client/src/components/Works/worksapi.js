@@ -215,9 +215,9 @@ export const getProductById = async (product_id) => {
     return await response.json();
   };
   
-  export const getQualityControlEntriesByFormId = async (form_id) => {
+  export const getQualityControlEntriesByFormId = async (form_id, work_id) => {
     try {
-      const response = await fetch(`${API_URL}/api/quality_control/form/${form_id}`);
+      const response = await fetch(`${API_URL}/api/quality_control/form/${form_id}/${work_id}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -240,6 +240,17 @@ export const getProductById = async (product_id) => {
     }
   
     return await response.json();
+  };
+  
+  export const getImagesByQualityControlId = async (substepId ) => {
+    try {
+      const response = await fetch(`${API_URL}/quality_control/${substepId}/images`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(`Error fetching images by substep ID: ${error.message}`);
+      throw error;
+    }
   };
   
   
