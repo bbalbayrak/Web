@@ -10,11 +10,11 @@ const CreateCustomer = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:3001/customers", { name, odooid });
+      await axios.post("https://portal-test.yenaengineering.nl/api/customers", { name, odooid });
       setName("");
       setOdooid("");
     } catch (error) {
-      console.error("Müşteri eklenirken hata oluştu:", error);
+      // console.error("Müşteri eklenirken hata oluştu:", error);
     }
   };
 

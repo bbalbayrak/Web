@@ -9,7 +9,7 @@ const Users = () => {
   useEffect(() => {
     getUsers()
       .then((data) => setUsers(data.data))
-      .catch((error) => console.error('API isteğinde hata:', error));
+      // .catch((error) => console.error('API isteğinde hata:', error));
   }, []);
 
   return (

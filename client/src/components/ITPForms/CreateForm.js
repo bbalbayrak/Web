@@ -54,7 +54,7 @@ const FormCreate = () => {
       const response = await getProducts();
       setProducts(response.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      // console.error('Error fetching products:', error);
     }
   };
   
@@ -63,7 +63,7 @@ const FormCreate = () => {
       const response = await getVendors();
       setVendors(response.data);
     } catch (error) {
-      console.error('Error fetching vendors:', error);
+      // console.error('Error fetching vendors:', error);
     }
   };
   
@@ -77,13 +77,13 @@ const FormCreate = () => {
         const vendorData = await getVendors();
         setVendors(vendorData);
       } catch (error) {
-        console.error('Error fetching vendors:', error);
+        // console.error('Error fetching vendors:', error);
       }
     };})
 
     const saveForm = () => {
       setFormSaved(true);
-      console.error(Request.data)
+      // console.error(Request.data)
     };
     
     useEffect(() => {
@@ -126,7 +126,7 @@ const FormCreate = () => {
           const response = await createOrUpdateForm(postData);
           setFormSaved(true);
         } catch (error) {
-          console.error('Error saving form:', error);
+          // console.error('Error saving form:', error);
         }
       };
   
@@ -181,8 +181,8 @@ const FormCreate = () => {
     
     const handleFileUpload = (e, rowId) => {
       const file = e.target.files[0];
-      console.log(`File uploaded for row: ${rowId}`);
-      console.log('File:', file);
+      // console.log(`File uploaded for row: ${rowId}`);
+      // console.log('File:', file);
     };
 
 

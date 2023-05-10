@@ -105,7 +105,7 @@ const QRCertificate = () => {
   
       navigate(`/workorders`);
     } catch (error) {
-      console.error('Error sending QR questions:', error);
+      // console.error('Error sending QR questions:', error);
     }
   };
 

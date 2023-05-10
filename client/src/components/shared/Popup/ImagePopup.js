@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import './ImagePopup.css';
 
 export default function ImagePopup({ onClose, imageUrl }) {
-  console.log("ImagePopup called with imageUrl:", imageUrl);
+  // console.log("ImagePopup called with imageUrl:", imageUrl);
   const popupRef = useRef(null);
 
   useEffect(() => {

@@ -28,7 +28,7 @@ const CreateUser = () => {
       const newUser = await createUser(userData);
       navigate(`/users`);
     } catch (error) {
-      console.error('Kullanıcı oluşturulamadı:', error);
+      // console.error('Kullanıcı oluşturulamadı:', error);
     }
   };
   

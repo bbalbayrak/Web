@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3001/products';
+const API_URL = 'https://portal-test.yenaengineering.nl/api/products';
 
 export const getProducts = async () => {
   try {
@@ -14,7 +14,7 @@ export const getProducts = async () => {
     }));
     
   } catch (error) {
-    console.error('Error fetching products:', error);
+    // console.error('Error fetching products:', error);
     throw error;
   }
 };
@@ -39,7 +39,7 @@ export const addProduct = async (product, technicalDrawingFile, guideFile) => {
     });
     return response.data.data;
   } catch (error) {
-    console.error("Error adding product:", error);
+    // console.error("Error adding product:", error);
     throw error;
   }
 };
@@ -50,7 +50,7 @@ export const updateProduct = async (id, updatedProduct) => {
     const response = await axios.put(`${API_URL}/${id}`, updatedProduct);
     return response.data.data;
   } catch (error) {
-    console.error('Error updating product:', error);
+    // console.error('Error updating product:', error);
     throw error;
   }
 };
@@ -59,7 +59,7 @@ export const deleteProduct = async (id) => {
   try {
     await axios.delete(`${API_URL}/${id}`);
   } catch (error) {
-    console.error('Error deleting product:', error);
+    // console.error('Error deleting product:', error);
     throw error;
   }
 };
@@ -69,7 +69,7 @@ export const searchByName = async (name) => {
     const response = await axios.get(`${API_URL}/search`, { params: { name } });
     return response.data.data;
   } catch (error) {
-    console.error('Error searching products by name:', error);
+    // console.error('Error searching products by name:', error);
     throw error;
   }
 };

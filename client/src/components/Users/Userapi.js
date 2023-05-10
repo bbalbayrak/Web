@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3001/api";
+const API_URL = "https://portal-test.yenaengineering.nl/api/";
 
 export const createUser = async (userData) => {
     try {
@@ -15,10 +15,10 @@ export const createUser = async (userData) => {
       }
   
       const data = await response.json();
-      console.log('Kullanıcı başarıyla oluşturuldu:', data);
+      // console.log('Kullanıcı başarıyla oluşturuldu:', data);
       return data;
     } catch (error) {
-      console.error('Kullanıcı oluşturulamadı:', error);
+      // console.error('Kullanıcı oluşturulamadı:', error);
       throw error;
     }
   };

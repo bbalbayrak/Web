@@ -16,19 +16,19 @@ const UploadForm = () => {
 
   const fetchCustomers = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3001/customers');
+      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/');
       setCustomers(data.data);
     } catch (error) {
-      console.error('Error fetching customers:', error);
+      // console.error('Error fetching customers:', error);
     }
   };
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3001/products');
+      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/');
       setProducts(data.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      // console.error('Error fetching products:', error);
     }
   };
 
@@ -54,7 +54,7 @@ const UploadForm = () => {
     formData.append('guideurl', guideFile);
 
     try {
-      const { data } = await axios.post('http://localhost:3001/products', formData, {
+      const { data } = await axios.post('https://portal-test.yenaengineering.nl/api/products', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -62,7 +62,7 @@ const UploadForm = () => {
       setResponse(data);
       await fetchProducts();
     } catch (error) {
-      console.error('Error uploading files:', error);
+      // console.error('Error uploading files:', error);
     }
   };
 

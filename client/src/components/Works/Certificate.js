@@ -44,11 +44,11 @@ const Certificate = () => {
         formData.append('step_id', step_id);
   
         try {
-          await axios.post('http://localhost:3001/certificates', formData, {
+          await axios.post('https://portal-test.yenaengineering.nl/api/certificates', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
           });
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     }
@@ -56,7 +56,7 @@ const Certificate = () => {
     try {
       await updateWorkStepStatus(step_id, 'Closed');
     } catch (error) {
-      console.error(`Error updating work step status: ${error.message}`);
+      // console.error(`Error updating work step status: ${error.message}`);
     }
   
     try {
@@ -69,7 +69,7 @@ const Certificate = () => {
       };
        await createWorkStep(workStepData);
     } catch (error) {
-      console.error(`Error creating new work step: ${error.message}`);
+      // console.error(`Error creating new work step: ${error.message}`);
     }
   
     navigate('/workorders');

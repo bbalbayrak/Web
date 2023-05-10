@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-const FORMS_API_URL = 'http://localhost:3001/forms';
-const VENDORS_API_URL = 'http://localhost:3001/vendors'; // Change this to the correct URL for fetching vendors
-const PRODUCTS_API_URL = 'http://localhost:3001/products'; // Change this to the correct URL for fetching products
-const API_URL = "http://localhost:3001";
+const FORMS_API_URL = 'https://portal-test.yenaengineering.nl/api/forms';
+const PRODUCTS_API_URL = 'https://portal-test.yenaengineering.nl/api/products'; // Change this to the correct URL for fetching products
+const API_URL = "https://portal-test.yenaengineering.nl/api";
 
 
 export const getFormstable = async () => {
@@ -11,25 +10,25 @@ export const getFormstable = async () => {
     const response = await axios.get(FORMS_API_URL);
     return response.data.data;
   } catch (error) {
-    console.error('Error fetching forms:', error);
+    // console.error('Error fetching forms:', error);
     throw error;
   }
 };
 
-const FORMS_API_URL2 = 'http://localhost:3001/allforms';
+const FORMS_API_URL2 = 'https://portal-test.yenaengineering.nl/api/allforms';
 
 export const getFormById = async (id) => {
   try {
     const response = await axios.get(`${FORMS_API_URL2}/${id}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching form:', error);
+    // console.error('Error fetching form:', error);
     throw error;
   }
 };
 
 export const createOrUpdateForm = async (formData) => {
-  const apiUrl = 'http://localhost:3001/forms';
+  const apiUrl = 'https://portal-test.yenaengineering.nl/api/forms';
 
   const body = {
     ...formData,
@@ -72,7 +71,7 @@ export const getVendors = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     throw error;
   }
 };
@@ -82,7 +81,7 @@ export const getProducts = async () => {
     const response = await axios.get(PRODUCTS_API_URL);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching products: ${error.message}`);
+    // console.error(`Error fetching products: ${error.message}`);
     throw error;
   }
 };

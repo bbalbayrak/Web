@@ -14,25 +14,25 @@ const ProductSegment = ({ product, vendorId, work_id }) => {
   const [imagePopupUrl, setImagePopupUrl] = useState("");
 
   const openImagePopup = async (substepId) => {
-    console.log("openImagePopup called with substepId:", substepId);
+    // console.log("openImagePopup called with substepId:", substepId);
     const images = await fetchImages(substepId);
-    console.log("Images fetched:", images);
+    // console.log("Images fetched:", images);
     if (images && images.data.length > 0) {
       setImagePopupUrl(images.data[0].image_url);
       setImagePopup(true);
-      console.log('ImagePopupUrl and ImagePopup state updated:', images.data[0].image_url, true); // Added log
+      // console.log('ImagePopupUrl and ImagePopup state updated:', images.data[0].image_url, true); // Added log
   } else {
-    console.log('No images found or wrong data structure:', images); // Added log
+    // console.log('No images found or wrong data structure:', images); // Added log
   }
 };
 
   const fetchImages = async (substepId) => {
     try {
       const images = await getImagesByQualityControlId(substepId);
-      console.log("Fetched Images:", images); // Eklendi
+      // console.log("Fetched Images:", images); // Eklendi
       return images;
     } catch (error) {
-      console.error(`Error fetching images by substep ID: ${error.message}`);
+      // console.error(`Error fetching images by substep ID: ${error.message}`);
       throw error;
     }
   };
@@ -77,7 +77,7 @@ const ProductSegment = ({ product, vendorId, work_id }) => {
       await updateQualityControlEntry(entriesToUpdate);
       fetchForm();
     } catch (error) {
-      console.error('Ölçülen değerler güncellenirken hata:', error);
+      // console.error('Ölçülen değerler güncellenirken hata:', error);
     }
   };
 

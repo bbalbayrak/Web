@@ -39,7 +39,7 @@ const CreateWorkOrder = () => {
       const response = await getVendors(); // Adjust this with your API call
       setVendors(response.data);
     } catch (error) {
-      console.error('Error fetching vendors:', error);
+      // console.error('Error fetching vendors:', error);
     }
   };
 
@@ -48,7 +48,7 @@ const CreateWorkOrder = () => {
       const response = await getCustomers(); // Adjust this with your API call
       setCustomers(response.data);
     } catch (error) {
-      console.error('Error fetching customers:', error);
+      // console.error('Error fetching customers:', error);
     }
   };
 
@@ -62,7 +62,7 @@ const CreateWorkOrder = () => {
       setInspectors(inspectorRes);
       setForemen(foremanRes);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      // console.error('Error fetching users:', error);
     }
   };
 
@@ -71,7 +71,7 @@ const CreateWorkOrder = () => {
       const response = await getProducts(); // Adjust this with your API call
       setProducts(response.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      // console.error('Error fetching products:', error);
     }
   };
 
@@ -102,7 +102,7 @@ const CreateWorkOrder = () => {
       }
       navigate(`/workorders`);
     } catch (error) {
-      console.error('Error creating work and workstep:', error);
+      // console.error('Error creating work and workstep:', error);
     }
   };
 

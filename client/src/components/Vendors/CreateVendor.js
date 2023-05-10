@@ -10,11 +10,11 @@ const CreateVendor = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:3001/vendors", { name, odooid });
+      await axios.post("https://portal-test.yenaengineering.nl/api/vendors", { name, odooid });
       setName("");
       setOdooid("");
     } catch (error) {
-      console.error("Tedarikçi eklenirken hata oluştu:", error);
+      // console.error("Tedarikçi eklenirken hata oluştu:", error);
     }
   };
 

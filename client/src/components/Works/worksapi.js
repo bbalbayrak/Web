@@ -164,7 +164,7 @@ export const getProductById = async (product_id) => {
       const data = await response.json(); // veriyi json formatına çevirin
       return data;
     } catch (error) {
-      console.error("Error while fetching work products:", error);
+      // console.error("Error while fetching work products:", error);
       throw error;
     }
   };
@@ -174,7 +174,7 @@ export const getProductById = async (product_id) => {
       const response = await fetch(`${API_URL}/works/${work_id}/certificates`);
       return response.data= await response.json();
     } catch (error) {
-      console.error(`Error fetching certificates for work ID ${work_id}: ${error.message}`);
+      // console.error(`Error fetching certificates for work ID ${work_id}: ${error.message}`);
       return null;
     }
   };
@@ -184,7 +184,7 @@ export const getProductById = async (product_id) => {
       const response = await fetch(`${API_URL}/forms/vendor/${vendor_id}/product/${product_id}`);
       return response.data= await response.json();
     } catch (error) {
-      console.error(`Error fetching certificates for work ID : ${error.message}`);
+      // console.error(`Error fetching certificates for work ID : ${error.message}`);
       return null;
     }  
   };
@@ -194,7 +194,7 @@ export const getProductById = async (product_id) => {
       const response = await fetch(`${API_URL}/allforms/${form_id}`);
       return await response.json();
     } catch (error) {
-      console.error(`Error fetching form by form ID: ${error.message}`);
+      // console.error(`Error fetching form by form ID: ${error.message}`);
       return null;
     }
   };
@@ -221,7 +221,7 @@ export const getProductById = async (product_id) => {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error(`Error fetching quality control entries by form ID: ${error.message}`);
+      // console.error(`Error fetching quality control entries by form ID: ${error.message}`);
       throw error;
     }
   };
@@ -248,7 +248,7 @@ export const getProductById = async (product_id) => {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error(`Error fetching images by substep ID: ${error.message}`);
+      // console.error(`Error fetching images by substep ID: ${error.message}`);
       throw error;
     }
   };

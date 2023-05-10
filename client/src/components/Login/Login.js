@@ -24,16 +24,16 @@ const Login = ({ setShowMenu }) => {
       .then((response) => {
         setMessage(response.data.msg);
         if (response.status === 200) {
-          console.log(response.status);
+          // console.log(response.status);
           localStorage.setItem('token', response.data.token);
           navigate('/home');
           window.location.reload(); // Sayfayı yeniden yükle
         } else {
-          console.log('Giriş başarısız');
+          // console.log('Giriş başarısız');
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         setPassword("");
         if (error.response) {
           setMessage(error.response.data.msg);

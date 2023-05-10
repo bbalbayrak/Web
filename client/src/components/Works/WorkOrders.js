@@ -13,10 +13,10 @@ const WorkOrders = () => {
 
   const fetchWorkOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/worksteps/Open');
+      const response = await axios.get('https://portal-test.yenaengineering.nl/api/worksteps/Open');
       setWorkOrders(response.data.data);
     } catch (error) {
-      console.error('Work orders alınamadı:', error);
+      // console.error('Work orders alınamadı:', error);
     }
   };
 

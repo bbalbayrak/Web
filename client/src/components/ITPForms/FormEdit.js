@@ -26,7 +26,7 @@ const FormEdit = () => {
         const formData = await getFormById(id);
         setForm(formData);
       } catch (error) {
-        console.error('Error fetching form:', error);
+        // console.error('Error fetching form:', error);
       }
     };
 
@@ -44,7 +44,7 @@ const FormEdit = () => {
           setForm(formData);
           setFormSaved(false);
         } catch (error) {
-          console.error('Error fetching form:', error);
+          // console.error('Error fetching form:', error);
         }
       };
 
@@ -113,8 +113,8 @@ const FormEdit = () => {
   };
   
   const handleFileUpload = (file, rowId) => {
-    console.log(`File uploaded for row: ${rowId}`);
-    console.log('File:', file);
+    // console.log(`File uploaded for row: ${rowId}`);
+    // console.log('File:', file);
   };
   
   
@@ -177,7 +177,7 @@ const FormEdit = () => {
       console.log('Form kaydedildi');
       setFormSaved(true); // Form başarıyla kaydedildiğini bildirin
     } catch (error) {
-      console.error('Error saving form:', error);
+      // console.error('Error saving form:', error);
     }
   };
   

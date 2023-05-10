@@ -16,10 +16,10 @@ const Vendors = () => {
   let navigate = useNavigate()
   const fetchVendors = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/vendors");
+      const response = await axios.get("https://portal-test.yenaengineering.nl/api/vendors");
       setVendors(response.data.data);
     } catch (error) {
-      console.error("Tedarikçiler alınırken hata oluştu:", error);
+      // console.error("Tedarikçiler alınırken hata oluştu:", error);
     }
   };
 
@@ -31,12 +31,12 @@ const Vendors = () => {
     e.preventDefault();
   
     try {
-      await axios.post("http://localhost:3001/vendors", { name, odooid });
+      await axios.post("https://portal-test.yenaengineering.nl/api/vendors", { name, odooid });
       fetchVendors();
       setName("");
       setOdooid("");
     } catch (error) {
-      console.error("Tedarikçi eklenirken hata oluştu:", error);
+      // console.error("Tedarikçi eklenirken hata oluştu:", error);
     }
   };
 

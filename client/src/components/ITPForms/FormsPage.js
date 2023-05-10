@@ -19,7 +19,7 @@ const FormsPage = () => {
         const formsData = await getFormstable();
         setForms(formsData);
       } catch (error) {
-        console.error('Error fetching forms:', error);
+        // console.error('Error fetching forms:', error);
       }
     };
 
