@@ -20,7 +20,7 @@ const Login = ({ setShowMenu }) => {
     event.preventDefault();
 
     axios
-      .post('portal-test.yenaengineering.nl/api/login', { email, password })
+      .post('/api/login', { email, password })
       .then((response) => {
         setMessage(response.data.msg);
         if (response.status === 200) {

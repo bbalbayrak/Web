@@ -27,18 +27,6 @@ const Vendors = () => {
     navigate("/create-vendor");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    try {
-      await axios.post("https://portal-test.yenaengineering.nl/api/vendors", { name, odooid });
-      fetchVendors();
-      setName("");
-      setOdooid("");
-    } catch (error) {
-      // console.error("Tedarikçi eklenirken hata oluştu:", error);
-    }
-  };
 
   return (
     <div className="vendor-table-container">
