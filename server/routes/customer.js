@@ -3,17 +3,17 @@ const customerControllers = require("../controllers/customer");
 const routes = [
   {
     method: "POST",
-    path: "/customers",
+    path: "/api/customers",
     handler: customerControllers.createCustomer,
   },
   {
     method: "GET",
-    path: "/customers",
+    path: "/api/customers",
     handler: customerControllers.getAllCustomers,
   },
   {
     method: "GET",
-    path: "/customers/search",
+    path: "/api/customers/search",
     handler: customerControllers.getCustomersByName,
   },  
 ];

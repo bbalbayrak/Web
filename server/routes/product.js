@@ -5,7 +5,7 @@ const upload = fastifyMulter({ storage: storage });
 
 const routes = (fastify, options, done) => {
   fastify.post(
-    "/products",
+    "/api/products",
     { preHandler: upload.fields([{ name: "technicaldrawingurl", maxCount: 1 }, { name: "guideurl", maxCount: 1 }]) },
     async (request, reply) => {
       try {
@@ -28,9 +28,9 @@ const routes = (fastify, options, done) => {
     }
   );
 
-  fastify.get("/products", productControllers.getAllProducts);
-  fastify.get("/products/search", productControllers.getProductsByName);
-  fastify.get("/products/:id", productControllers.getProductById);
+  fastify.get("/api/products", productControllers.getAllProducts);
+  fastify.get("/api/products/search", productControllers.getProductsByName);
+  fastify.get("/api/products/:id", productControllers.getProductById);
   // Diğer CRUD işlemleri (güncelleme, silme vb.) için gerekli yolları buraya ekleyebilirsin.
 
   done();

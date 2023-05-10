@@ -3,17 +3,17 @@ const vendorControllers = require("../controllers/vendor");
 const routes = [
   {
     method: "POST",
-    path: "/vendors",
+    path: "/api/vendors",
     handler: vendorControllers.createVendor,
   },
   {
     method: "GET",
-    path: "/vendors",
+    path: "/api/vendors",
     handler: vendorControllers.getAllVendors,
   },
   {
     method: "GET",
-    path: "/vendors/search",
+    path: "/api/vendors/search",
     handler: vendorControllers.getVendorsByName,
   },
   

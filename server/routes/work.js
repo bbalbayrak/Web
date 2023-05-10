@@ -4,47 +4,47 @@ const workStepControllers = require("../controllers/workStepController");
 const routes = [
   {
     method: "POST",
-    path: "/works",
+    path: "/api/works",
     handler: workControllers.createWork,
   },
   {
     method: "GET",
-    path: "/works",
+    path: "/api/works",
     handler: workControllers.getWorks,
   },
   {
     method: "GET",
-    path: "/works/:id",
+    path: "/api/works/:id",
     handler: workControllers.getWorkById,
   },
   {
     method: "DELETE",
-    path: "/works/:id",
+    path: "/api/works/:id",
     handler: workControllers.deleteWork,
   },
   {
     method: "POST",
-    path: "/worksteps",
+    path: "/api/worksteps",
     handler: workStepControllers.createWorkStep,
   },
   {
     method: "GET",
-    path: "/works/:workId/worksteps",
+    path: "/api/works/:workId/worksteps",
     handler: workStepControllers.getWorkStepsByWorkId,
   },
   {
     method: "GET",
-    path: "/worksteps/:status",
+    path: "/api/worksteps/:status",
     handler: workStepControllers.getWorkStepsByWorkStatus,
   },
   {
     method: "PUT",
-    path: "/worksteps/:id",
+    path: "/api/worksteps/:id",
     handler: workStepControllers.updateWorkStepStatus,
   },
   {
     method: "DELETE",
-    path: "/worksteps/:id",
+    path: "/api/worksteps/:id",
     handler: workStepControllers.deleteWorkStep,
   },
 ];

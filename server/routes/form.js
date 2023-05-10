@@ -3,37 +3,37 @@ const formControllers = require("../controllers/form");
 const routes = [
   {
     method: "POST",
-    path: "/forms",
+    path: "/api/forms",
     handler: formControllers.createOrUpdateForm,
   },
   {
     method: "GET",
-    path: "/forms",
+    path: "/api/forms",
     handler: formControllers.getFormTable,
   },
   {
     method: "GET",
-    path: "/forms/:id",
+    path: "/api/forms/:id",
     handler: formControllers.getForm,
   },
   {
     method: "PUT",
-    path: "/forms/substeps",
+    path: "/api/forms/substeps",
     handler: formControllers.updateMultipleSubsteps,
   },
   {
     method: "DELETE",
-    path: "/forms/substeps",
+    path: "/api/forms/substeps",
     handler: formControllers.deleteFormSubstep,
   },
   {
     method: "GET",
-    path: "/allforms/:id",
+    path: "/api/allforms/:id",
     handler: formControllers.getAllForm,
   },
   {
     method: "GET",
-    path: "/forms/vendor/:vendor_id/product/:product_id",
+    path: "/api/forms/vendor/:vendor_id/product/:product_id",
     handler: formControllers.getFormByVendorIdAndProductId
   }
 ];

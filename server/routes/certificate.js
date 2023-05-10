@@ -5,7 +5,7 @@ const upload = fastifyMulter({ storage: storage });
 
 const routes = (fastify, options, done) => {
   fastify.post(
-    "/certificates",
+    "/api/certificates",
     { preHandler: upload.single('certificate_file') },
     async (request, reply) => {
       try {
@@ -26,7 +26,7 @@ const routes = (fastify, options, done) => {
     }
   );
 
-  fastify.get("/works/:work_id/certificates", certificateControllers.getCertificatesByWorkId);
+  fastify.get("/api/works/:work_id/certificates", certificateControllers.getCertificatesByWorkId);
 
   done();
 };

@@ -3,22 +3,22 @@ const commentControllers = require("../controllers/comment");
 const routes = [
   {
     method: "POST",
-    path: "/comments",
+    path: "/api/comments",
     handler: commentControllers.createComment,
   },
   {
     method: "GET",
-    path: "/works/:work_id/comments",
+    path: "/api/works/:work_id/comments",
     handler: commentControllers.getCommentsByWorkId,
   },
   {
     method: "PUT",
-    path: "/comments/:id",
+    path: "/api/comments/:id",
     handler: commentControllers.updateComment,
   },
   {
     method: "DELETE",
-    path: "/comments/:id",
+    path: "/api/comments/:id",
     handler: commentControllers.deleteComment,
   },
 ];
