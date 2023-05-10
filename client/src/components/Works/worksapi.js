@@ -1,4 +1,4 @@
-const API_URL = "http://portal-test.yenaengineering.nl/api";
+const API_URL = "https://portal-test.yenaengineering.nl/api";
 
 export const createWork = async (workData) => {
   const response = await fetch(`${API_URL}/works`, {
@@ -123,7 +123,7 @@ export const getProductById = async (product_id) => {
   };
   
   export const getUsers = async () => {
-    const response = await fetch(`${API_URL}/api/allusers`);
+    const response = await fetch(`${API_URL}/allusers`);
   
     if (!response.ok) {
       throw new Error(`Error fetching all users: ${response.statusText}`);
@@ -200,7 +200,7 @@ export const getProductById = async (product_id) => {
   };
   
   export const createQualityControlEntry = async (data) => {
-    const response = await fetch(`${API_URL}/api/quality_control`, {
+    const response = await fetch(`${API_URL}/quality_control`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ export const getProductById = async (product_id) => {
   
   export const getQualityControlEntriesByFormId = async (form_id, work_id) => {
     try {
-      const response = await fetch(`${API_URL}/api/quality_control/form/${form_id}/${work_id}`);
+      const response = await fetch(`${API_URL}/quality_control/form/${form_id}/${work_id}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -227,7 +227,7 @@ export const getProductById = async (product_id) => {
   };
   
   export const updateQualityControlEntry = async (entries) => {
-    const response = await fetch(`${API_URL}/api/quality_control`, {
+    const response = await fetch(`${API_URL}/quality_control`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

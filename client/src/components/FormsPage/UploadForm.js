@@ -16,7 +16,7 @@ const UploadForm = () => {
 
   const fetchCustomers = async () => {
     try {
-      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/');
+      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/customers');
       setCustomers(data.data);
     } catch (error) {
       // console.error('Error fetching customers:', error);
@@ -25,7 +25,7 @@ const UploadForm = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/');
+      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/products');
       setProducts(data.data);
     } catch (error) {
       // console.error('Error fetching products:', error);

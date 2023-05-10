@@ -1,4 +1,4 @@
-const API_URL = "https://portal-test.yenaengineering.nl/api/";
+const API_URL = "https://portal-test.yenaengineering.nl/api";
 
 export const createUser = async (userData) => {
     try {
