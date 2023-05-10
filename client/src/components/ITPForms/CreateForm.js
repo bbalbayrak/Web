@@ -329,36 +329,36 @@ const FormCreate = () => {
               {/* Render input fields for formData */}
             </div>
           )}
-          <div>
-            <label htmlFor="product_id">Product:</label>
-            <select
-              name="product_id"
-              value={form.product_id}
-              onChange={handleFormChange}
-            >
-              <option value="" disabled>Select a product</option>
-              {products.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="vendor_id">Vendor:</label>
-            <select
-              name="vendor_id"
-              value={form.vendor_id}
-              onChange={handleFormChange}
-            >
-              <option value="" disabled>Select a vendor</option>
-              {vendors.map((vendor) => (
-                <option key={vendor.id} value={vendor.id}>
-                  {vendor.name}
-                </option>
-              ))}
-            </select>
-          </div>
+                <div>
+                  <label htmlFor="product_id">Product:</label>
+                  <select
+                    name="product_id"
+                    value={form.product_id || ""}
+                    onChange={handleFormChange}
+                  >
+                    <option value="" disabled>Please Select Product</option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="vendor_id">Vendor:</label>
+                  <select
+                    name="vendor_id"
+                    value={form.vendor_id || ""}
+                    onChange={handleFormChange}
+                  >
+                    <option value="" disabled>Please Select Vendor</option>
+                    {vendors.map((vendor) => (
+                      <option key={vendor.id} value={vendor.id}>
+                        {vendor.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
           <div>
             {segments.map((segment) => (
               <button
