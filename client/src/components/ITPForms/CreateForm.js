@@ -286,7 +286,7 @@ const FormCreate = () => {
   const handleAddRow = (event) => {
     event.preventDefault();
     const newRow = {
-      id: rows.length,
+      id: null,
       technical_drawing_numbering: '',
       tools: '',
       description: '',

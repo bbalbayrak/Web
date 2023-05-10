@@ -71,7 +71,7 @@ const FormEdit = () => {
   
   const addRow = () => {
     const newRow = {
-      id: rows.length,
+      id: null,
       name: '',
       technical_drawing_numbering: '',
       tools: '',
