@@ -4,12 +4,12 @@ import { getFormById, createOrUpdateForm } from './formapi';
 import ImagePopup from '../shared/Popup/ImagePopup';
 
 const segments = [
-  { name: 'Sub - Part Dimensiol', order: 1 },
-  { name: 'Final Part Measurement', order: 2 },
-  { name: 'Paint Report', order: 3 },
-  { name: 'Qoating Report', order: 4 },
-  { name: 'Product Packing Standart', order: 5 },
-  { name: 'Loading Check', order: 6 },
+  { name: "Sub - Part Dimensiol", order: 1 },
+  { name: "Final Part Measurement", order: 2 },
+  { name: "Paint Report", order: 3 },
+  { name: "Qoating Report", order: 4 },
+  { name: "Product Packing Standart", order: 5 },
+  { name: "Loading Check", order: 6 },
 ];
 
 const FormEdit = () => {
@@ -19,7 +19,8 @@ const FormEdit = () => {
   const [formSaved, setFormSaved] = useState(false);
   const [showImagePopup, setShowImagePopup] = useState(false);
   const [imagePopupUrl, setImagePopupUrl] = useState('');
-  
+  const [rows, setRows] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,8 +34,6 @@ const FormEdit = () => {
     fetchData();
   }, [id]);
 
-
-  const [rows, setRows] = useState([]);
 
   useEffect(() => {
     if (formSaved) {
@@ -132,6 +131,10 @@ const FormEdit = () => {
         return renderPaintReport();
       case 4:
         return renderQoatingReport();
+      case 5:
+        return renderProductPackingStandart();
+      case 6:
+        return renderLoadingCheck();
       default:
         return null;
     }
@@ -205,9 +208,6 @@ const FormEdit = () => {
         onClose={() => setShowImagePopup(false)}
       />
     )}
-    
-    
-    
     return (
       <div>
         <table className="measurement-table">
@@ -222,104 +222,86 @@ const FormEdit = () => {
               <th>Üst Tolerans</th>
               <th>Example Visual</th>
               <th>Örnek Görsel</th>
-
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.id}>
-                <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.name || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'name')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.technical_drawing_numbering || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.tools || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'tools')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.description || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'description')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.actual_dimension || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.lower_tolerance || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.upper_tolerance || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
-              />
-            </td>
-
               <td>
-                <div
-                  className="dropzone"
-                  onDragOver={handleDragOver}
-                  onDrop={(e) => handleDrop(e, row.id)}
-                >
-                  <input
-                className='form-edit-text-box'
-                type="file"
-                accept="image/png, image/jpeg"
-                onChange={(e) => handleFileSelect(e, row.id)}
-              />
-
-                </div>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.name || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'name')}
+                />
               </td>
               <td>
-              <img
-  src={require('..//shared/a1.jpg')}
-  alt=""
-  className="thumbnail-image"
-  onClick={handleImageClick}
-/>
-
-            </td>
-            <td>
-
-            </td>
-
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.technical_drawing_numbering || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.tools || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'tools')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.description || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'description')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.actual_dimension || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.lower_tolerance || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.upper_tolerance || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
+                />
+              </td>
+              <td>
+                <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, row.id)}>
+                  <input
+                    className='form-edit-text-box'
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={(e) => handleFileSelect(e, row.id)}
+                  />
+                  </div>
+              </td>
+              <td>
+                <img src={require('..//shared/a1.jpg')} alt="" className="thumbnail-image" onClick={handleImageClick} />
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       <button onClick={addRow}>Satır Ekle</button>
       <button onClick={saveForm}>Kaydet</button>
-
       </div>
     );
   };
@@ -356,9 +338,43 @@ const FormEdit = () => {
       </div>
     );
   };
+
+  const renderProductPackingStandart = () => {
+    return (
+      <div>
+        {form.steps[4].substeps.map((substep) => (
+          <div key={substep.id}>
+            <h3>{substep.name}</h3>
+            <p>{substep.description}</p>
+            <p>{`Actual dimension: ${substep.actual_dimension}`}</p>
+            <p>{`Tolerances: ${substep.lower_tolerance}-${substep.upper_tolerance}`}</p>
+            <img src={substep.example_visual_url} alt={substep.name} />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderLoadingCheck = () => {
+    return (
+      <div>
+        {form.steps[5].substeps.map((substep) => (
+          <div key={substep.id}>
+            <h3>{substep.name}</h3>
+            <p>{substep.description}</p>
+            <p>{`Actual dimension: ${substep.actual_dimension}`}</p>
+            <p>{`Tolerances: ${substep.lower_tolerance}-${substep.upper_tolerance}`}</p>
+            <img src={substep.example_visual_url} alt={substep.name} />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   const imagePopup = showImagePopup ? (
     <ImagePopup onClose={() => setShowImagePopup(false)} />
   ) : null;
+
   return (
     <div className='form-edit-main'>
       {imagePopup}
@@ -369,11 +385,7 @@ const FormEdit = () => {
           <h2>Vendor Name: {form.vendor_name || form.vendor?.name}</h2>
             <div className="segments">
                 {segments.map((segment) => (
-                <button
-                    key={segment.order}
-                    onClick={() => handleSegmentClick(segment.order)}
-                    className={activeSegment === segment.order ? 'active' : ''}
-                >
+                <button key={segment.order} onClick={() => handleSegmentClick(segment.order)} className={activeSegment === segment.order ? 'active' : ''} >
                     {segment.name}
                 </button>
                 ))}
