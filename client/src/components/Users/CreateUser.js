@@ -12,6 +12,7 @@ const CreateUser = () => {
   const [name, setName] = useState('');
   const [relatedCompany, setRelatedCompany] = useState('');
   const [userType, setUserType] = useState('');
+  const [username, setUsername] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +24,7 @@ const CreateUser = () => {
         phone,
         role,
         name,
+        username,
         related_company: relatedCompany,
       };
       const newUser = await createUser(userData);
@@ -59,6 +61,11 @@ const CreateUser = () => {
           <label htmlFor="name">İsim:</label>
           <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
+        <div className="form-group">
+  <label htmlFor="username">Kullanıcı Adı:</label>
+  <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+</div>
+
         <div className="form-group">
           <label htmlFor="email">Email:</label>
           <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
