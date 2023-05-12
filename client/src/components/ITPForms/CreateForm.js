@@ -2,53 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { getVendors, getProducts } from '../Works/worksapi';
 import { createOrUpdateForm } from './formapi';
 import "./FormEdit.css"
+import ImagePopup from '../shared/Popup/ImagePopup';
 
 const segments = [
-  { name: 'Sub - Part Dimension', order: 1 },
-  { name: 'Final Part Measurement', order: 2 },
-  { name: 'Paint Report', order: 3 },
-  { name: 'Coating Report', order: 4 },
-  { name: 'Product Packing Standard', order: 5 },
-  { name: 'Loading Check', order: 6 },
+  { name: "Sub - Part Dimensiol", order: 1 },
+  { name: "Final Part Measurement", order: 2 },
+  { name: "Paint Report", order: 3 },
+  { name: "Qoating Report", order: 4 },
+  { name: "Product Packing Standart", order: 5 },
+  { name: "Loading Check", order: 6 },
 ];
 
 const FormCreate = () => {
-  const [form, setForm] = useState({ product_id: null, vendor_id: null });
+  const [form, setForm] = useState({
+    product_id: null,
+    vendor_id: null,
+    steps: segments.map((segment, index) => ({
+      name: segment.name,
+      order: segment.order,
+      substeps: [],
+    })),
+  });
   const [vendors, setVendors] = useState([]);
   const [products, setProducts] = useState([]);
   const [activeSegment, setActiveSegment] = useState(1);
   const [rows, setRows] = useState([]);
   const [formSaved, setFormSaved] = useState(false);
   const [fileUrl, setFileUrl] = useState(null);
-  const [formData, setFormData] = useState({
-    order_number: "",
-    project_number: "",
-    vendor_id: "",
-    customer_id: "",
-    quality_responsible_id: "",
-    inspector_id: "",
-    foreman_id: "",
-    work_type: "",
-    state: "",
-    status: "",
-    creator_id: "",
-    creation_date: "",
-  });
+  const [showImagePopup, setShowImagePopup] = useState(false);
+  const [imagePopupUrl, setImagePopupUrl] = useState('');
+
 
   useEffect(() => {
     fetchVendors();
     fetchProducts();
   }, []);
 
-  function handleCoverChange(event) {
-    const file = event.target.files[0];
-    setFileUrl(URL.createObjectURL(file));
-  }
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  
   const fetchProducts = async () => {
     try {
       const response = await getProducts();
@@ -66,133 +55,160 @@ const FormCreate = () => {
       // console.error('Error fetching vendors:', error);
     }
   };
-  
+
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   
-  useEffect(() => {
-    const fetchVendors = async () => {
-      try {
-        const vendorData = await getVendors();
-        setVendors(vendorData);
-      } catch (error) {
-        // console.error('Error fetching vendors:', error);
-      }
-    };})
 
-    const saveForm = () => {
-      setFormSaved(true);
-      // console.error(Request.data)
-    };
-    
-    useEffect(() => {
-      const saveForm = async () => {
-        const postData = {
-          id: form.id,
-          product_id: form.product_id,
-          vendor_id: form.vendor_id,
-          steps: segments.map((segment, index) => ({
-            name: segment.name,
-            order: segment.order,
-            substeps: index === 1 ? rows.map((row) => {
-              const {
-                id,
-                technical_drawing_numbering,
-                tools,
-                description,
-                actual_dimension,
-                lower_tolerance,
-                upper_tolerance,
-                example_visual_url,
-                status,
-              } = row;
-              return {
-                ...(id && { id }),
-                technical_drawing_numbering,
-                tools,
-                description,
-                actual_dimension,
-                lower_tolerance,
-                upper_tolerance,
-                example_visual_url,
-                status,
-              };
-            }) : [],
-          })),
-        };
+  const handleImageClick = (url) => {
+    setImagePopupUrl(url);
+    setShowImagePopup(true);
+  };
   
-        try {
-          const response = await createOrUpdateForm(postData);
-          setFormSaved(true);
-        } catch (error) {
-          // console.error('Error saving form:', error);
-        }
-      };
+  const addRow = () => {
+    const newRow = {
+      id: null,
+      name: '',
+      technical_drawing_numbering: '',
+      tools: '',
+      description: '',
+      actual_dimension: '',
+      lower_tolerance: '',
+      upper_tolerance: '',
+    };
+    setRows([...rows, newRow]);
+  };
+
+  const handleInputChange = (event, rowId, field) => {
+    const newValue = event.target.value;
+    setRows(rows.map(row => row.id === rowId ? {...row, [field]: newValue} : row));
+  };  
   
-      if (formSaved) {
-        saveForm();
-      }
-    }, [formSaved]);
-
-    const handleSegmentClick = (order) => {
-      if (activeSegment === order) {
-        setActiveSegment(0);
-      } else {
-        setActiveSegment(order);
-      }
-    };
-    
-
-    const handleDragOver = (e) => {
-      e.preventDefault();
-    };
-
-    const handleInputChange = (event, rowId, field) => {
-      const newValue = event.target.value;
-      setRows(rows.map(row => row.id === rowId ? {...row, [field]: newValue} : row));
-    };  
-
-    const handleDrop = (e, rowId) => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
-        // handleFileUpload fonksiyonunu çağırmak yerine input değişikliğini tetikleyin
-        handleInputChange({ target: { value: file } }, rowId, 'example_visual_url');
-      } else {
-        alert('Lütfen sadece PNG veya JPEG dosyaları yükleyin.');
-      }
-    };
-    
-    const addRow = () => {
-      const newRow = {
-        id: null,
-        name: '',
-        technical_drawing_numbering: '',
-        tools: '',
-        description: '',
-        actual_dimension: '',
-        lower_tolerance: '',
-        upper_tolerance: '',
-      };
-      setRows([...rows, newRow]);
-    };
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
   
-    
-    const handleFileUpload = (e, rowId) => {
-      const file = e.target.files[0];
-      // console.log(`File uploaded for row: ${rowId}`);
-      // console.log('File:', file);
+  const handleDrop = (e, rowId) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
+      handleFileUpload(file, rowId);
+    } else {
+      alert('Lütfen sadece PNG veya JPEG dosyaları yükleyin.');
+    }
+  };
+  
+  const handleFileSelect = (e, rowId) => {
+    const file = e.target.files[0];
+    if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
+      handleFileUpload(file, rowId);
+    } else {
+      alert('Lütfen sadece PNG veya JPEG dosyaları yükleyin.');
+    }
+  };
+  
+  const handleFileUpload = (file, rowId) => {
+    // console.log(`File uploaded for row: ${rowId}`);
+    // console.log('File:', file);
+  };
+
+  const handleSegmentClick = (order) => {
+    setActiveSegment(order);
+  };
+
+  const renderSegmentContent = () => {
+    switch (activeSegment) {
+      case 1:
+        return renderSubPartDimensiol();
+      case 2:
+        return renderFinalPartMeasurement();
+      case 3:
+        return renderPaintReport();
+      case 4:
+        return renderQoatingReport();
+      case 5:
+        return renderProductPackingStandart();
+      case 6:
+        return renderLoadingCheck();
+      default:
+        return null;
+    }
+  };
+  
+  const saveForm = async () => {
+    const postData = {
+      product_id: form.product_id,
+      vendor_id: form.vendor_id,
+      steps: segments.map((segment, index) => ({
+        name: segment.name,
+        order: segment.order,
+        substeps: index === 1 ? rows.map(row => {
+          const {
+            id,
+            technical_drawing_numbering,
+            tools,
+            description,
+            actual_dimension,
+            lower_tolerance,
+            upper_tolerance,
+            example_visual_url,
+            status
+          } = row;
+          return {
+            ...(id && { id }),
+            technical_drawing_numbering,
+            tools,
+            description,
+            actual_dimension,
+            lower_tolerance,
+            upper_tolerance,
+            example_visual_url: "http://example.com/image2.png", // Statik URL
+            status: "active" // Statik durum
+          };
+        }) : [],
+      })),
     };
 
+    console.log(postData);
 
-    const renderFinalPartMeasurement = () => {
-  
+    try {
+      await createOrUpdateForm(postData);
+      console.log('Form kaydedildi');
+      setFormSaved(true); // Form başarıyla kaydedildiğini bildirin
+    } catch (error) {
+      // console.error('Error saving form:', error);
+    }
+  };
+
+ const renderSubPartDimensiol = () => {
+    return (
+      <div>
+        {form.steps[0].substeps.map((substep) => (
+          <div key={substep.id}>
+            <h3>{substep.name}</h3>
+            <p>{substep.description}</p>
+            <p>{`Actual dimension: ${substep.actual_dimension}`}</p>
+            <p>{`Tolerances: ${substep.lower_tolerance}-${substep.upper_tolerance}`}</p>
+            <img src={substep.example_visual_url} alt={substep.name} />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderFinalPartMeasurement = () => {
+    if (!form) return null;
+    {showImagePopup && (
+      <ImagePopup
+        onClose={() => setShowImagePopup(false)}
+      />
+    )}
     return (
       <div>
         <table className="measurement-table">
           <thead>
-            <tr>
+            <tr className="measurement-table-tr">
               <th>İsim</th>
               <th>Teknik Çizim Numarası</th>
               <th>Kullanılan Aletler</th>
@@ -201,183 +217,210 @@ const FormCreate = () => {
               <th>Alt Tolerans</th>
               <th>Üst Tolerans</th>
               <th>Example Visual</th>
+              <th>Örnek Görsel</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.id}>
-                <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.name || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'name')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.technical_drawing_numbering || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.tools || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'tools')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.description || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'description')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.actual_dimension || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.lower_tolerance || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
-              />
-            </td>
-            <td>
-              <input
-                className='form-edit-text-box'
-                type="text"
-                value={row.upper_tolerance || ''}
-                onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
-              />
-            </td>
-
               <td>
-                <div
-                  className="dropzone"
-                  onDragOver={handleDragOver}
-                  onDrop={(e) => handleDrop(e, row.id)}
-                >
-                <input type="file" onChange={handleCoverChange} />
-                </div>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.name || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'name')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.technical_drawing_numbering || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.tools || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'tools')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.description || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'description')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.actual_dimension || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.lower_tolerance || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
+                />
+              </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.upper_tolerance || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
+                />
+              </td>
+              <td>
+                <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, row.id)}>
+                  <input
+                    className='form-edit-text-box'
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={(e) => handleFileSelect(e, row.id)}
+                  />
+                  </div>
+              </td>
+              <td>
+                <img src={require('..//shared/a1.jpg')} alt="" className="thumbnail-image" onClick={handleImageClick} />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={handleAddRow}>Add Row</button>
-      <button onClick={saveForm}>Kaydet</button>
-
+      <button type="button" onClick={addRow}>Satır Ekle</button>
+      <button type="button" onClick={saveForm}>Kaydet</button>
       </div>
     );
   };
-    
-  const handleAddRow = (event) => {
-    event.preventDefault();
-    const newRow = {
-      id: null,
-      technical_drawing_numbering: '',
-      tools: '',
-      description: '',
-      actual_dimension: '',
-      lower_tolerance: '',
-      upper_tolerance: '',
-      example_visual_url: '',
-      status: '',
-    };
-    setRows([...rows, newRow]);
+
+  
+  const renderPaintReport = () => {
+    return (
+      <div>
+        {form.steps[2].substeps.map((substep) => (
+          <div key={substep.id}>
+            <h3>{substep.name}</h3>
+            <p>{substep.description}</p>
+            <p>{`Actual dimension: ${substep.actual_dimension}`}</p>
+            <p>{`Tolerances: ${substep.lower_tolerance}-${substep.upper_tolerance}`}</p>
+            <img src={substep.example_visual_url} alt={substep.name} />
+          </div>
+        ))}
+      </div>
+    );
   };
   
-    
-    const handleRowChange = (index, field, value) => {
-    const updatedRows = rows.map((row, rowIndex) => {
-    if (index === rowIndex) {
-    return { ...row, [field]: value };
-    }
-    return row;
-    });
-    setRows(updatedRows);
-    };
-    
-    const handleDeleteRow = (index) => {
-    const updatedRows = rows.filter((row, rowIndex) => rowIndex !== index);
-    setRows(updatedRows);
-    };
-    
-    const handleSubmit = () => {
-    setFormSaved(true);
-    };
-    
+  const renderQoatingReport = () => {
     return (
-      <div className='form-edit-main'>
-        <h2>Create New Form</h2>
+      <div>
+        {form.steps[3].substeps.map((substep) => (
+          <div key={substep.id}>
+            <h3>{substep.name}</h3>
+            <p>{substep.description}</p>
+            <p>{`Actual dimension: ${substep.actual_dimension}`}</p>
+            <p>{`Tolerances: ${substep.lower_tolerance}-${substep.upper_tolerance}`}</p>
+            <img src={substep.example_visual_url} alt={substep.name} />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderProductPackingStandart = () => {
+    return (
+      <div>
+        {form.steps[4].substeps.map((substep) => (
+          <div key={substep.id}>
+            <h3>{substep.name}</h3>
+            <p>{substep.description}</p>
+            <p>{`Actual dimension: ${substep.actual_dimension}`}</p>
+            <p>{`Tolerances: ${substep.lower_tolerance}-${substep.upper_tolerance}`}</p>
+            <img src={substep.example_visual_url} alt={substep.name} />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderLoadingCheck = () => {
+    return (
+      <div>
+        {form.steps[5].substeps.map((substep) => (
+          <div key={substep.id}>
+            <h3>{substep.name}</h3>
+            <p>{substep.description}</p>
+            <p>{`Actual dimension: ${substep.actual_dimension}`}</p>
+            <p>{`Tolerances: ${substep.lower_tolerance}-${substep.upper_tolerance}`}</p>
+            <img src={substep.example_visual_url} alt={substep.name} />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const imagePopup = showImagePopup ? (
+    <ImagePopup onClose={() => setShowImagePopup(false)} />
+  ) : null;
+    
+  return (
+    <div className='form-edit-main'>
+      <h2>Create New Form</h2>
         <form>
-          {/* Render form elements */}
-          {formData && (
-            <div>
-              {/* Render input fields for formData */}
-            </div>
-          )}
-                <div>
-                  <label htmlFor="product_id">Product:</label>
-                  <select
-                    name="product_id"
-                    value={form.product_id || ""}
-                    onChange={handleFormChange}
-                  >
-                    <option value="" disabled>Please Select Product</option>
-                    {products.map((product) => (
-                      <option key={product.id} value={product.id}>
-                        {product.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="vendor_id">Vendor:</label>
-                  <select
-                    name="vendor_id"
-                    value={form.vendor_id || ""}
-                    onChange={handleFormChange}
-                  >
-                    <option value="" disabled>Please Select Vendor</option>
-                    {vendors.map((vendor) => (
-                      <option key={vendor.id} value={vendor.id}>
-                        {vendor.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
           <div>
+            <label htmlFor="product_id">Product:</label>
+            <select
+              name="product_id"
+              value={form.product_id || ""}
+              onChange={handleFormChange}
+            >
+              <option value="" disabled>Please Select Product</option>
+              {products.map((product) => (
+                <option key={product.id} value={product.id}>
+                  {product.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="vendor_id">Vendor:</label>
+            <select
+              name="vendor_id"
+              value={form.vendor_id || ""}
+              onChange={handleFormChange}
+            >
+              <option value="" disabled>Please Select Vendor</option>
+              {vendors.map((vendor) => (
+                <option key={vendor.id} value={vendor.id}>
+                  {vendor.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="segments">
             {segments.map((segment) => (
               <button
                 key={segment.order}
-                type="button"
+                type="button" // Bu satırı ekleyin
                 onClick={() => handleSegmentClick(segment.order)}
+                className={activeSegment === segment.order ? 'active' : ''}
               >
                 {segment.name}
               </button>
             ))}
           </div>
-          {/* Render segment content based on the activeSegment state */}
-          {activeSegment === 2 && renderFinalPartMeasurement()}
+          <div className="segment-content">{renderSegmentContent()}</div>
+      </form>
+    </div>
+  );
+};
 
-          {/* Render other segments if needed */}
-        </form>
-      </div>
-    );
-    
-    };
-    
-    export default FormCreate;
+export default FormCreate;
