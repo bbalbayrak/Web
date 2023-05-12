@@ -165,18 +165,15 @@ const UploadForm = () => {
                 <td>{product.odooid}</td>
                 <td>{getCustomerNameById(product.customerid)}</td>
                 <td>
-  <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer">
-    <FontAwesomeIcon icon={faFilePdf} size="2x" /> {product.name || 'Teknik Çizim'}
-  </a>
-</td>
-<td>
-  <a href={product.guideurl} target="_blank" rel="noopener noreferrer">
-    <FontAwesomeIcon icon={faFilePdf} size="2x" /> {getFileNameFromUrl(product.guideurl) || 'Kılavuz'}
-  </a>
-</td>
-
-
-
+                  <a href={`https://drive.google.com/viewerng/viewer?embedded=true&url=${product.technicaldrawingurl}`} target="_blank" rel="noopener noreferrer">
+                    <FontAwesomeIcon icon={faFilePdf} size="2x" /> {product.name || 'Teknik Çizim'}
+                  </a>
+                </td>
+                <td>
+                  <a href={`https://drive.google.com/viewerng/viewer?embedded=true&url=${product.guideurl}`} target="_blank" rel="noopener noreferrer">
+                    <FontAwesomeIcon icon={faFilePdf} size="2x" /> {getFileNameFromUrl(product.guideurl) || 'Kılavuz'}
+                  </a>
+                </td>
               </tr>
             ))}
           </tbody>
