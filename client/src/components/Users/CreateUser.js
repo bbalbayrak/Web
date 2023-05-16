@@ -3,6 +3,8 @@ import { createUser } from './Userapi';
 import { useNavigate } from 'react-router-dom';
 import './CreateUser.css';
 
+let foremanId = 1;
+
 const CreateUser = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -14,25 +16,35 @@ const CreateUser = () => {
   const [userType, setUserType] = useState('');
   const [username, setUsername] = useState('');
 
+  useEffect(() => {
+    if (role === 'Foreman') {
+      setEmail(`foreman${Math.floor(Math.random() * 100000)}@yenaengineering.nl`);
+    }
+  }, [role]);
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    const userData = {
+      email,
+      password,
+      phone,
+      role,
+      name,
+      username,
+      related_company: relatedCompany,
+    };
     try {
-      const userData = {
-        email,
-        password,
-        phone,
-        role,
-        name,
-        username,
-        related_company: relatedCompany,
-      };
+      const userEmail = userType === "Foreman" ? `foreman${Math.floor(Math.random() * 10000)}@yenaengineering.nl` : email;
+      userData.email = userEmail;
       const newUser = await createUser(userData);
       navigate(`/users`);
     } catch (error) {
-      // console.error('Kullanıcı oluşturulamadı:', error);
+      console.error('Kullanıcı oluşturulamadı:', error);
     }
   };
+  
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
@@ -48,8 +60,10 @@ const CreateUser = () => {
         return ['Quality Manager', 'Quality Responsible', 'Project Manager'];
       case 'Vendor':
         return ['Vendor Responsible', 'Foreman'];
-      default:
+      case 'Inspector':
         return ['Inspector'];
+      default:
+        return [];
     }
   };
 
@@ -62,13 +76,18 @@ const CreateUser = () => {
           <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="form-group">
-  <label htmlFor="username">Kullanıcı Adı:</label>
-  <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-</div>
-
+          <label htmlFor="username">Kullanıcı Adı:</label>
+          <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </div>
         <div className="form-group">
           <label htmlFor="email">Email:</label>
-          <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            readOnly={role === "Foreman"}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="password">Şifre:</label>
@@ -81,39 +100,55 @@ const CreateUser = () => {
         <div className="form-group">
           <label>Kullanıcı Tipi:</label>
           <div>
-            <input type="radio" id="YENA" name="userType" value="YENA" onChange={handleUserTypeChange} />
-            <label htmlFor="YENA">YENA</label>
-          </div>
-          <div>
-            <input type="radio" id="Vendor" name="userType" value="Vendor" onChange={handleUserTypeChange} />
-            <label htmlFor="Vendor">Vendor</label>
-          </div>
-          <div>
-            <input type="radio" id="Inspector" name="userType" value="Inspector" onChange={handleUserTypeChange} />
-<label htmlFor="Inspector">Inspector</label>
+  <input type="radio" id="YENA" name="userType"
+    value="YENA"
+    onChange={handleUserTypeChange}
+  />
+  <label htmlFor="YENA">YENA</label>
+</div>
+<div>
+  <input
+    type="radio"
+    id="Vendor"
+    name="userType"
+    value="Vendor"
+    onChange={handleUserTypeChange}
+  />
+  <label htmlFor="Vendor">Vendor</label>
+</div>
+
+<div>
+  <input
+    type="radio"
+    id="Inspector"
+    name="userType"
+    value="Inspector"
+    onChange={handleUserTypeChange}
+  />
+  <label htmlFor="Inspector">Inspector</label>
 </div>
 </div>
-{userType && userType !== 'Inspector' && (
-<div className="form-group">
-<label htmlFor="role">Rol:</label>
-<select id="role" value={role} onChange={(e) => setRole(e.target.value)}>
-{rolesBasedOnUserType().map((roleOption) => (
-<option key={roleOption} value={roleOption}>
-{roleOption}
-</option>
-))}
-</select>
-</div>
+{userType && (
+  <div className="form-group">
+    <label htmlFor="role">Rol:</label>
+    <select id="role" value={role} onChange={(e) => setRole(e.target.value)}>
+      {rolesBasedOnUserType().map((roleOption) => (
+        <option key={roleOption} value={roleOption}>
+          {roleOption}
+        </option>
+      ))}
+    </select>
+  </div>
 )}
 <div className="form-group">
-<label htmlFor="relatedCompany">İlgili Şirket:</label>
-<input
-type="text"
-id="relatedCompany"
-value={relatedCompany}
-onChange={(e) => setRelatedCompany(e.target.value)}
-readOnly={userType === 'Inspector' || userType === 'YENA'}
-/>
+  <label htmlFor="relatedCompany">İlgili Şirket:</label>
+  <input
+    type="text"
+    id="relatedCompany"
+    value={relatedCompany}
+    onChange={(e) => setRelatedCompany(e.target.value)}
+    readOnly={userType === 'Inspector' || userType === 'YENA'}
+  />
 </div>
 <button type="submit">Kullanıcı Oluştur</button>
 </form>
