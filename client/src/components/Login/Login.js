@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import './Login.css';
-import { useNavigate } from 'react-router-dom';
+import useAuth from './useAuth';
 
 const Login = ({ setShowMenu }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState(null);
-  let navigate = useNavigate();
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    message,
+    handleSubmit
+  } = useAuth();
 
   useEffect(() => {
     setShowMenu(false);
@@ -15,31 +18,6 @@ const Login = ({ setShowMenu }) => {
       setShowMenu(true);
     };
   }, [setShowMenu]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    axios
-      .post('https://portal-test.yenaengineering.nl/api/login', { email, password })
-      .then((response) => {
-        setMessage(response.data.msg);
-        if (response.status === 200) {
-          // console.log(response.status);
-          localStorage.setItem('token', response.data.token);
-          navigate('/home');
-          window.location.reload(); // Sayfayı yeniden yükle
-        } else {
-          // console.log('Giriş başarısız');
-        }
-      })
-      .catch((error) => {
-        // console.log(error);
-        setPassword("");
-        if (error.response) {
-          setMessage(error.response.data.msg);
-        }
-      });
-  };
 
   return (
     <div className="login-background">
