@@ -70,7 +70,7 @@ const FormEdit = () => {
   
   const addRow = () => {
     const newRow = {
-      id: null,
+      id: '',
       name: '',
       technical_drawing_numbering: '',
       tools: '',
@@ -83,10 +83,11 @@ const FormEdit = () => {
   };
   
 
-  const handleInputChange = (event, rowId, field) => {
+  const handleInputChange = (event, index, field) => {
     const newValue = event.target.value;
-    setRows(rows.map(row => row.id === rowId ? {...row, [field]: newValue} : row));
-  };  
+    setRows(rows.map((row, i) => i === index ? {...row, [field]: newValue} : row));
+  };
+  
   
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -225,30 +226,30 @@ const FormEdit = () => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
-            <tr key={row.id}>
-              <td>
-                <input
-                  className='form-edit-text-box'
-                  type="text"
-                  value={row.name || ''}
-                  onChange={(e) => handleInputChange(e, row.id, 'name')}
-                />
-              </td>
+        {rows.map((row, index) => (
+  <tr key={index}>
+    <td>
+      <input
+        className='form-edit-text-box'
+        type="text"
+        value={row.name || ''}
+        onChange={(e) => handleInputChange(e, index, 'name')}
+      />
+    </td>
               <td>
                 <input
                   className='form-edit-text-box'
                   type="text"
                   value={row.technical_drawing_numbering || ''}
-                  onChange={(e) => handleInputChange(e, row.id, 'technical_drawing_numbering')}
-                />
+                  onChange={(e) => handleInputChange(e, index, 'technical_drawing_numbering')}
+                  />
               </td>
               <td>
                 <input
                   className='form-edit-text-box'
                   type="text"
                   value={row.tools || ''}
-                  onChange={(e) => handleInputChange(e, row.id, 'tools')}
+                  onChange={(e) => handleInputChange(e, index, 'tools')}
                 />
               </td>
               <td>
@@ -256,7 +257,7 @@ const FormEdit = () => {
                   className='form-edit-text-box'
                   type="text"
                   value={row.description || ''}
-                  onChange={(e) => handleInputChange(e, row.id, 'description')}
+                  onChange={(e) => handleInputChange(e, index, 'description')}
                 />
               </td>
               <td>
@@ -264,7 +265,7 @@ const FormEdit = () => {
                   className='form-edit-text-box'
                   type="text"
                   value={row.actual_dimension || ''}
-                  onChange={(e) => handleInputChange(e, row.id, 'actual_dimension')}
+                  onChange={(e) => handleInputChange(e, index, 'actual_dimension')}
                 />
               </td>
               <td>
@@ -272,7 +273,7 @@ const FormEdit = () => {
                   className='form-edit-text-box'
                   type="text"
                   value={row.lower_tolerance || ''}
-                  onChange={(e) => handleInputChange(e, row.id, 'lower_tolerance')}
+                  onChange={(e) => handleInputChange(e, index, 'lower_tolerance')}
                 />
               </td>
               <td>
@@ -280,16 +281,16 @@ const FormEdit = () => {
                   className='form-edit-text-box'
                   type="text"
                   value={row.upper_tolerance || ''}
-                  onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
+                  onChange={(e) => handleInputChange(e, index, 'upper_tolerance')}
                 />
               </td>
               <td>
-                <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, row.id)}>
+                <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, index)}>
                   <input
                     className='form-edit-text-box'
                     type="file"
                     accept="image/png, image/jpeg"
-                    onChange={(e) => handleFileSelect(e, row.id)}
+                    onChange={(e) => handleFileSelect(e, index)}
                   />
                   </div>
               </td>
