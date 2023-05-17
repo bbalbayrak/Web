@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { fetchCustomers } from './CustomersApi';
 import "./Customers.css";
 
 const Customers = () => {
@@ -8,17 +9,13 @@ const Customers = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCustomers();
+    const getCustomers = async () => {
+      const customers = await fetchCustomers();
+      setCustomers(customers);
+    };
+  
+    getCustomers();
   }, []);
-
-  const fetchCustomers = async () => {
-    try {
-      const response = await axios.get("https://portal-test.yenaengineering.nl/api/customers");
-      setCustomers(response.data.data);
-    } catch (error) {
-      // console.error("Müşteriler alınırken hata oluştu:", error);
-    }
-  };
 
   const handleClick = () => {
     navigate("/create-customer");

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { createCustomer } from './CustomersApi';
 import "./CreateCustomer.css";
 
 const CreateCustomer = () => {
@@ -8,13 +9,13 @@ const CreateCustomer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      await axios.post("https://portal-test.yenaengineering.nl/api/customers", { name, odooid });
+      await createCustomer(name, odooid);
       setName("");
       setOdooid("");
     } catch (error) {
-      // console.error("Müşteri eklenirken hata oluştu:", error);
+      // console.error("There was a bloody error while adding the customer:", error);
     }
   };
 
