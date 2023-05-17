@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import "./UploadForm.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons'
+import { useApi } from './UploadFormApi';
 
 const UploadForm = () => {
   const [name, setName] = useState('');
@@ -10,30 +10,19 @@ const UploadForm = () => {
   const [customerId, setCustomerId] = useState('');
   const [technicalDrawingFile, setTechnicalDrawingFile] = useState(null);
   const [guideFile, setGuideFile] = useState(null);
-  const [response, setResponse] = useState(null);
-  const [customers, setCustomers] = useState([]);
-  const [products, setProducts] = useState([])
   const [isValid, setIsValid] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
 
-  const fetchCustomers = async () => {
-    try {
-      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/customers');
-      setCustomers(data.data);
-    } catch (error) {
-      console.error('Error fetching customers:', error);
-    }
-  };
-
-  const fetchProducts = async () => {
-    try {
-      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/products');
-      setProducts(data.data);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-  };
+  const {
+    response,
+    customers,
+    products,
+    errorMessage,
+    successMessage,
+    fetchCustomers,
+    fetchProducts,
+    submitProduct,
+    getCustomerNameById
+  } = useApi();
 
   useEffect(() => {
     fetchCustomers();
@@ -42,7 +31,8 @@ const UploadForm = () => {
 
   const getFileNameFromUrl = (url) => {
     return url.substring(url.lastIndexOf('/') + 1);
-  }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,25 +49,7 @@ const UploadForm = () => {
     formData.append('technicaldrawingurl', technicalDrawingFile);
     formData.append('guideurl', guideFile);
 
-    try {
-      const { data } = await axios.post('https://portal-test.yenaengineering.nl/api/products', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setResponse(data);
-      setSuccessMessage('Ürün başarıyla eklendi.');
-      setErrorMessage(null);
-      await fetchProducts();
-    } catch (error) {
-      setSuccessMessage(null);
-      setErrorMessage('Ürün eklenirken hata oluştu.');
-    }
-  };
-
-  const getCustomerNameById = (id) => {
-    const customer = customers.find((customer) => customer.id === id);
-    return customer ? customer.name : '';
+    submitProduct(formData);
   };
 
   return (
@@ -137,10 +109,10 @@ const UploadForm = () => {
         </form>
         {response && (
           <div>
-            <h3>Response:{response.data.name}</h3>
-            <h3>Response:{getCustomerNameById(response.data.customerid)}</h3>
-            <h3>Response:{response.data.guideurl}</h3>
-            <h3>Response:{response.data.technicaldrawingurl}</h3>
+            <h3>İsim: {response.data.name}</h3>
+            <h3>Odooid: {getCustomerNameById(response.data.customerid)}</h3>
+            <h3>Teknik Çizim: {response.data.technicaldrawingurl}</h3>
+            <h3>Kılavuz: {response.data.guideurl}</h3>
           </div>
         )}
         {errorMessage && <div className="error-message">{errorMessage}</div>}
