@@ -1,40 +1,15 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import "./Vendors.css";
+import useVendors from './useVendors';
 
 const Vendors = () => {
-  const [vendors, setVendors] = useState([]);
-  const [id, setId] = useState("");
-  const [name, setName] = useState("");
-  const [odooid, setOdooid] = useState("");
-
-  useEffect(() => {
-    fetchVendors();
-  }, []);
-
-  let navigate = useNavigate()
-  const fetchVendors = async () => {
-    try {
-      const response = await axios.get("https://portal-test.yenaengineering.nl/api/vendors");
-      setVendors(response.data.data);
-    } catch (error) {
-      // console.error("Tedarikçiler alınırken hata oluştu:", error);
-    }
-  };
-
-  const handleClick = () => {
-    navigate("/create-vendor");
-  };
-
+  const { vendors, handleClick } = useVendors();
 
   return (
     <div className="vendor-table-container">
-      
-        <button type="submit" onClick={handleClick}>
-          Tedarikçi Ekle
-        </button>
-
+      <button type="submit" onClick={handleClick}>
+        Tedarikçi Ekle
+      </button>
       <table className="vendor-table">
         <thead>
           <tr>
