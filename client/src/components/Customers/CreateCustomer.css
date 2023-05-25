@@ -1,45 +1,72 @@
 .create-customer-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-  }
-  
-  .create-customer-title {
-    margin-bottom: 1rem;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.create-customer-title {
+  margin-bottom: 1rem;
+}
+
+.create-customer-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.create-customer-label {
+  margin-bottom: 0.5rem;
+}
+
+.create-customer-input {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.3125rem; /* 5px */
+  width: 100%;
+}
+
+.create-customer-button {
+  margin: auto;
+  background-color: #3498db;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.3125rem; /* 5px */
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.create-customer-button:hover {
+  background-color: #2980b9;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
   .create-customer-form {
-    display: flex;
-    flex-direction: column;
+    width: 75%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+  .create-customer-form {
+    width: 60%;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .create-customer-form {
+    width: 45%;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+  .create-customer-form {
     width: 30%;
   }
-  
-  .create-customer-label {
-    margin-bottom: 0.5rem;
-  }
-  
-  .create-customer-input {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-  }
-  
-  .create-customer-button {
-    margin: auto;
-    background-color: #3498db;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    width: 50%;
-  }
-  
-  .create-customer-button:hover {
-    background-color: #2980b9;
-  }
-  
+}

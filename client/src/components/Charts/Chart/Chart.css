@@ -1,15 +1,42 @@
 .chart {
-    position: relative;
-  }
-  
+  position: relative;
+}
+
+.chart-tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 0.75rem; /* 12px */
+  pointer-events: none;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
   .chart-tooltip {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 3px;
-    font-size: 12px;
-    pointer-events: none;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 0.875rem; /* 14px */
   }
-  
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+  .chart-tooltip {
+    font-size: 1rem; /* 16px */
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .chart-tooltip {
+    font-size: 1.125rem; /* 18px */
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+  .chart-tooltip {
+    font-size: 1.25rem; /* 20px */
+  }
+}
