@@ -296,16 +296,20 @@ const FormEdit = () => {
                   onChange={(e) => handleInputChange(e, index, 'sample_quantity')}
                 />
               </td>
-              
               <td>
-                <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, index)}>
+                <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, row.id)}>
                   <input
+                    id="fileInput"
                     className='form-edit-text-box'
                     type="file"
                     accept="image/png, image/jpeg"
-                    onChange={(e) => handleFileSelect(e, index)}
+                    onChange={(e) => handleFileSelect(e, row.id)}
+                    style={{ display: 'none' }} // Input'u gizliyoruz
                   />
-                  </div>
+                  <label for="fileInput" className="custom-file-upload">
+                    Dosya Yükle
+                  </label>
+                </div>
               </td>
               <td>
                 <img src={require('..//shared/a1.jpg')} alt="" className="thumbnail-image" onClick={handleImageClick} />

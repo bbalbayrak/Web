@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getVendors, getProducts } from '../Works/worksapi';
 import { createOrUpdateForm } from './formapi';
-import "./FormEdit.css"
+import "./CreateForm.css"
 import ImagePopup from '../shared/Popup/ImagePopup';
 
 const segments = [
