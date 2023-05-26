@@ -71,7 +71,7 @@ const UploadForm = () => {
               <tr>
                 <td>Odooid:</td>
                 <td>
-                  <input type="text" value={odooid} onChange={(e) => setOdooid(e.target.value)} />
+                  <input type="number" value={odooid} onChange={(e) => setOdooid(e.target.value)} />
                 </td>
               </tr>
               <tr>

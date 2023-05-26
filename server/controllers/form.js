@@ -36,7 +36,8 @@ exports.createOrUpdateForm = async (req, res) => {
               substep.upper_tolerance,
               substep.example_visual_url,
               substep.status,
-              substep.type
+              substep.type,
+              substep.sample_quantity
             );
           } else {
             await FormSubstep.create(
@@ -51,7 +52,8 @@ exports.createOrUpdateForm = async (req, res) => {
               substep.upper_tolerance,
               substep.example_visual_url,
               substep.status,
-              substep.type
+              substep.type,
+              substep.sample_quantity
             );
           }
         }
@@ -118,6 +120,7 @@ exports.updateMultipleSubsteps = async (req, res) => {
         example_visual_url,
         status,
         type,
+        sample_quantity
       } = substep;
 
       await FormSubstep.update(
@@ -132,7 +135,8 @@ exports.updateMultipleSubsteps = async (req, res) => {
         upper_tolerance,
         example_visual_url,
         status,
-        type
+        type,
+        sample_quantity
       );
     }
 
@@ -209,4 +213,3 @@ exports.getFormByVendorIdAndProductId = async (req, res) => {
     res.status(500).send({ message: "Error retrieving form", error: error.message });
   }
 };
-
