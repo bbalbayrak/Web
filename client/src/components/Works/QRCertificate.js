@@ -71,6 +71,7 @@ const QRCertificate = () => {
       measured_value_2: null,
       measured_value_3: null,
       work_id: work.data.id,
+      sample_quantity: substep.sample_quantity
     };
   
     await createQualityControlEntry(qualityControlData);

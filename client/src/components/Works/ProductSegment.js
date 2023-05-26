@@ -148,6 +148,7 @@ const checkTolerance = (substep, measuredValueKey) => {
                         <th>Actual Dimension</th>
                         <th>Lower Tolerance</th>
                         <th>Upper Tolerance</th>
+                        <th>Sample Quantity</th>
                         <th>Measured Value 1</th>
                         <th>Measured Value 2</th>
                         <th>Measured Value 3</th>
@@ -170,6 +171,7 @@ const checkTolerance = (substep, measuredValueKey) => {
                           <td>{substep.actual_dimension}</td>
                           <td>{substep.lower_tolerance}</td>
                           <td>{substep.upper_tolerance}</td>
+                          <td>{substep.sample_quantity}</td>
                           <td className={renderCellClass(substep, 'measured_value_1')}>
                             <input
                               type="text"

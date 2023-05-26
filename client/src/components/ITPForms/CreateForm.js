@@ -76,6 +76,7 @@ const FormCreate = () => {
       actual_dimension: '',
       lower_tolerance: '',
       upper_tolerance: '',
+      sample_quantity: '',
     };
     setRows([...rows, newRow]);
   };
@@ -152,6 +153,7 @@ const FormCreate = () => {
             actual_dimension,
             lower_tolerance,
             upper_tolerance,
+            sample_quantity,
             example_visual_url,
             status
           } = row;
@@ -163,6 +165,7 @@ const FormCreate = () => {
             actual_dimension,
             lower_tolerance,
             upper_tolerance,
+            sample_quantity,
             example_visual_url: "http://example.com/image2.png", // Statik URL
             status: "active" // Statik durum
           };
@@ -216,6 +219,7 @@ const FormCreate = () => {
               <th>Gerçek Boyut</th>
               <th>Alt Tolerans</th>
               <th>Üst Tolerans</th>
+              <th>Örnek Adedi</th>
               <th>Example Visual</th>
               <th>Örnek Görsel</th>
           </tr>
@@ -279,6 +283,14 @@ const FormCreate = () => {
                   onChange={(e) => handleInputChange(e, row.id, 'upper_tolerance')}
                 />
               </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.sample_quantity || ''}
+                  onChange={(e) => handleInputChange(e, row.id, 'sample_quantity')}
+                />
+              </td>   
               <td>
                 <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, row.id)}>
                   <input

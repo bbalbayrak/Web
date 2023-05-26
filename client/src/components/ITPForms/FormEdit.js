@@ -78,6 +78,7 @@ const FormEdit = () => {
       actual_dimension: '',
       lower_tolerance: '',
       upper_tolerance: '',
+      sample_quantity: '',
     };
     setRows([...rows, newRow]);
   };
@@ -158,6 +159,7 @@ const FormEdit = () => {
             actual_dimension,
             lower_tolerance,
             upper_tolerance,
+            sample_quantity,
             example_visual_url,
             status
           } = row;
@@ -169,6 +171,7 @@ const FormEdit = () => {
             actual_dimension,
             lower_tolerance,
             upper_tolerance,
+            sample_quantity,
             example_visual_url,
             status
           };
@@ -221,6 +224,7 @@ const FormEdit = () => {
               <th>Gerçek Boyut</th>
               <th>Alt Tolerans</th>
               <th>Üst Tolerans</th>
+              <th>Örnek Adedi</th>
               <th>Example Visual</th>
               <th>Örnek Görsel</th>
           </tr>
@@ -284,6 +288,15 @@ const FormEdit = () => {
                   onChange={(e) => handleInputChange(e, index, 'upper_tolerance')}
                 />
               </td>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.sample_quantity || ''}
+                  onChange={(e) => handleInputChange(e, index, 'sample_quantity')}
+                />
+              </td>
+              
               <td>
                 <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, index)}>
                   <input
