@@ -12,19 +12,17 @@ const ProductSegment = ({ product, vendorId, work_id }) => {
   const [measuredValues, setMeasuredValues] = useState({});
   const [imagePopup, setImagePopup] = useState(false);
   const [imagePopupUrl, setImagePopupUrl] = useState("");
+  const [imageList, setImageList] = useState([]);
 
   const openImagePopup = async (substepId) => {
-    // console.log("openImagePopup called with substepId:", substepId);
     const images = await fetchImages(substepId);
-    // console.log("Images fetched:", images);
     if (images && images.data.length > 0) {
-      setImagePopupUrl(images.data[0].image_url);
+      const imageList = images.data.map(imgData => imgData.image_url);
+      setImageList(imageList);
       setImagePopup(true);
-      // console.log('ImagePopupUrl and ImagePopup state updated:', images.data[0].image_url, true); // Added log
-  } else {
-    // console.log('No images found or wrong data structure:', images); // Added log
-  }
-};
+    }
+  };
+  
 
   const fetchImages = async (substepId) => {
     try {
@@ -118,7 +116,7 @@ const checkTolerance = (substep, measuredValueKey) => {
 
   return (
     <div className="product-segment">
-      {imagePopup && <ImagePopup onClose={() => setImagePopup(false)} imageUrl={imagePopupUrl} />}
+      {imagePopup && <ImagePopup onClose={() => setImagePopup(false)} imageList={imageList} />}
       <h3>{product.name}</h3>
       <p>{product.description}</p>
       <div>
