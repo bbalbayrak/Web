@@ -11,15 +11,18 @@
 }
 
 .popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+
     text-align: center;
+    width: 40%; /* Pop-up içeriğinin genişliğini kontrol etmek için */
+    max-height: 90%; /* Pop-up içeriğinin yüksekliğini kontrol etmek için */
+    overflow-y: auto; /* İçerik çok uzunsa kaydırma çubuğunu etkinleştirin */
+    padding: 0; /* padding'i sıfıra ayarla */
+    margin: 0; /* margin'i sıfıra ayarla */
 }
 
 .popup-image {
     max-width: 100%;
+    max-height: 30%; /* İmajın yüksekliğini kontrol etmek için */
     height: auto;
     margin-bottom: 20px;
 }
