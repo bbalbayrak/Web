@@ -39,11 +39,20 @@ const routes = [
     handler: formControllers.getFormByVendorIdAndProductId
   },
   {
-    method: "POST",
-    path: "/api/forms/upload",
-    preHandler: upload.single('file'),
+    method: 'POST',
+    url: '/api/forms/upload',
+    preHandler: async (req, reply) => {
+      const data = await req.file();
+      req.body = {
+        file: data.file,
+        fileName: data.filename,
+        encoding: data.encoding,
+        mimetype: data.mimetype,
+        limit: data.limit
+      };
+    },
     handler: formControllers.uploadImageToAzure,
-  },
+  }
 ];
 
 module.exports = routes;

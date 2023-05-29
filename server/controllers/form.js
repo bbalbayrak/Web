@@ -216,9 +216,9 @@ exports.getFormByVendorIdAndProductId = async (req, res) => {
 
 exports.uploadImageToAzure = async (req, res) => {
   try {
-    const file = req.file; // Assuming you're using multer or a similar middleware to handle file uploads.
+    const file = req.body.file; // Now using req.body.file instead of req.file
     const fileName = uuidv1(); // unique filename
-    const imageUrl = await uploadFile(file.buffer, fileName);
+    const imageUrl = await uploadFile(file, fileName);
 
     res.status(200).send({ imageUrl });
   } catch (error) {
