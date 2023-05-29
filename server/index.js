@@ -51,7 +51,9 @@ vendorRoutes.forEach((route) => {
   fastify.route(route);
 });
 
-fastify.register(formRoutes);
+formRoutes.forEach((route) => {
+  fastify.route(route);
+});
 
 workRoutes.forEach((route) => {
   fastify.route(route);

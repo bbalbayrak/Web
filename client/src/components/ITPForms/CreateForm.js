@@ -138,15 +138,13 @@ const FormCreate = () => {
   };
   
   const saveForm = async () => {
-    const formData = new FormData();
-    formData.append('product_id', form.product_id);
-    formData.append('vendor_id', form.vendor_id);
-  
-    segments.forEach((segment, index) => {
-      formData.append(`steps[${index}][name]`, segment.name);
-      formData.append(`steps[${index}][order]`, segment.order);
-      if (index === 1) {
-        rows.forEach((row, substepIndex) => {
+    const postData = {
+      product_id: form.product_id,
+      vendor_id: form.vendor_id,
+      steps: segments.map((segment, index) => ({
+        name: segment.name,
+        order: segment.order,
+        substeps: index === 1 ? rows.map(row => {
           const {
             id,
             technical_drawing_numbering,
@@ -156,33 +154,33 @@ const FormCreate = () => {
             lower_tolerance,
             upper_tolerance,
             sample_quantity,
-            example_visual_file,
-            status,
+            example_visual_url,
+            status
           } = row;
-          if (id) formData.append(`steps[${index}][substeps][${substepIndex}][id]`, id);
-          formData.append(`steps[${index}][substeps][${substepIndex}][technical_drawing_numbering]`, technical_drawing_numbering);
-          formData.append(`steps[${index}][substeps][${substepIndex}][tools]`, tools);
-          formData.append(`steps[${index}][substeps][${substepIndex}][description]`, description);
-          formData.append(`steps[${index}][substeps][${substepIndex}][actual_dimension]`, actual_dimension);
-          formData.append(`steps[${index}][substeps][${substepIndex}][lower_tolerance]`, lower_tolerance);
-          formData.append(`steps[${index}][substeps][${substepIndex}][upper_tolerance]`, upper_tolerance);
-          formData.append(`steps[${index}][substeps][${substepIndex}][sample_quantity]`, sample_quantity);
-          if (example_visual_file) {
-            formData.append(`steps[${index}][substeps][${substepIndex}][example_visual_file]`, example_visual_file);
-          }
-          formData.append(`steps[${index}][substeps][${substepIndex}][status]`, status || 'active');
-        });
-      }
-    });
-    
-    console.log(formData)
+          return {
+            ...(id && { id }),
+            technical_drawing_numbering,
+            tools,
+            description,
+            actual_dimension,
+            lower_tolerance,
+            upper_tolerance,
+            sample_quantity,
+            example_visual_url: "http://example.com/image2.png", // Statik URL
+            status: "active" // Statik durum
+          };
+        }) : [],
+      })),
+    };
+
+    console.log(postData);
 
     try {
-      await createOrUpdateForm(formData);
+      await createOrUpdateForm(postData);
       console.log('Form kaydedildi');
       setFormSaved(true); // Form başarıyla kaydedildiğini bildirin
     } catch (error) {
-      console.error('Error saving form:', error);
+      // console.error('Error saving form:', error);
     }
   };
 

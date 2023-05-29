@@ -30,36 +30,35 @@ export const getFormById = async (id) => {
 export const createOrUpdateForm = async (formData) => {
   const apiUrl = 'https://portal-test.yenaengineering.nl/api/forms';
 
-  const bodyFormData = new FormData();
-  Object.keys(formData).forEach(key => {
-    if (key !== 'steps') {
-      bodyFormData.append(key, formData[key]);
-    }
-  });
+  const body = {
+    ...formData,
+    steps: formData.steps.map((step, index) => ({
+      ...step,
+      substeps:
+        index === 1
+          ? step.substeps.map((substep) => {
+              if (substep.id) {
+                return substep;
+              } else {
+                const { id, ...rest } = substep;
+                return rest;
+              }
+            })
+          : [],
+    })),
+  };
 
-  formData.steps.forEach((step, index) => {
-    step.substeps.forEach((substep, subIndex) => {
-      if (substep.example_visual_url) {
-        bodyFormData.append(`example_visual`, substep.example_visual_url);
-      }
-      Object.keys(substep).forEach(subKey => {
-        if (subKey !== 'example_visual_url') {
-          bodyFormData.append(`steps[${index}].substeps[${subIndex}][${subKey}]`, substep[subKey]);
-        }
-      });
-    });
-  });
-
-  try {
-    const response = await axios.post(apiUrl, bodyFormData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
+  if (formData.id) {
+    body.form_id = formData.id;
   }
+
+  await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
 };
 
 

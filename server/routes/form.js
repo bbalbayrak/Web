@@ -1,40 +1,41 @@
 const formControllers = require("../controllers/form");
-const fastifyMulter = require('fastify-multer');
-const storage = fastifyMulter.memoryStorage();
-const upload = fastifyMulter({ storage: storage });
 
-const routes = (fastify, options, done) => {
-  fastify.post(
-    "/api/forms",
-    { preHandler: upload.fields([{ name: "example_visual", maxCount: 1 }]) },
-    async (request, reply) => {
-      try {
-        const example_visual = request.files.example_visual ? request.files.example_visual[0] : null;
-
-        // Add the file to the request object
-        request.body.example_visual = example_visual;
-
-        const result = await formControllers.createOrUpdateForm(request);
-        reply.code(201).send(result);
-      } catch (err) {
-        console.error(err);
-        reply.code(500).send({
-          status: "error",
-          message: "Error creating or updating form",
-          error: err.message
-        });
-      }
-    }
-  );
-  fastify.get("/api/forms", formControllers.getFormTable);
-  fastify.get("/api/forms/:id", formControllers.getForm);
-  fastify.put("/api/forms/substeps", formControllers.updateMultipleSubsteps);
-  fastify.delete("/api/forms/substeps", formControllers.deleteFormSubstep);
-  fastify.get("/api/allforms/:id", formControllers.getAllForm);
-  fastify.get("/api/forms/vendor/:vendor_id/product/:product_id", formControllers.getFormByVendorIdAndProductId);
-  done();
-};
+const routes = [
+  {
+    method: "POST",
+    path: "/api/forms",
+    handler: formControllers.createOrUpdateForm,
+  },
+  {
+    method: "GET",
+    path: "/api/forms",
+    handler: formControllers.getFormTable,
+  },
+  {
+    method: "GET",
+    path: "/api/forms/:id",
+    handler: formControllers.getForm,
+  },
+  {
+    method: "PUT",
+    path: "/api/forms/substeps",
+    handler: formControllers.updateMultipleSubsteps,
+  },
+  {
+    method: "DELETE",
+    path: "/api/forms/substeps",
+    handler: formControllers.deleteFormSubstep,
+  },
+  {
+    method: "GET",
+    path: "/api/allforms/:id",
+    handler: formControllers.getAllForm,
+  },
+  {
+    method: "GET",
+    path: "/api/forms/vendor/:vendor_id/product/:product_id",
+    handler: formControllers.getFormByVendorIdAndProductId
+  }
+];
 
 module.exports = routes;
-
-
