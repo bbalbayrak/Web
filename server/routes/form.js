@@ -41,17 +41,22 @@ const routes = [
   {
     method: 'POST',
     url: '/api/forms/upload',
-    preHandler: async (req, reply) => {
-      const data = await req.file();
-      req.body = {
-        file: data.file,
-        fileName: data.filename,
-        encoding: data.encoding,
-        mimetype: data.mimetype,
-        limit: data.limit
-      };
+    handler: async (req, reply) => {
+      const parts = req.multipart(handler, done);
+
+      function handler(field, file, filename, encoding, mimetype) {
+        // TODO: Change this to your Azure upload function
+        pump(file, fs.createWriteStream(`./${filename}`));
+      }
+
+      function done(err) {
+        if (err) {
+          reply.code(500).send({ status: 'Error occurred during file upload.' });
+        } else {
+          reply.code(200).send({ status: 'File uploaded successfully.' });
+        }
+      }
     },
-    handler: formControllers.uploadImageToAzure,
   }
 ];
 

@@ -178,8 +178,8 @@ const FormCreate = () => {
             lower_tolerance,
             upper_tolerance,
             sample_quantity,
-            example_visual_url: "http://example.com/image2.png", // Statik URL
-            status: "active" // Statik durum
+            example_visual_url,
+            status: "active"
           };
         }) : [],
       })),
