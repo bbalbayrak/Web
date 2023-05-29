@@ -45,14 +45,13 @@ const routes = (fastify, options, done) => {
     async (request, reply) => {
       try {
         const file = request.file;
+        console.log("File in request:", file);  // Add this line
         
-        request.body = {
-          file: file.buffer,  // Buffer tipini kullanın
-          fileName: file.originalname,
-          encoding: file.encoding,
-          mimetype: file.mimetype,
-          size: file.size
-        };
+        request.body.file = file.buffer;
+        request.body.fileName = file.originalname;
+        request.body.encoding = file.encoding;
+        request.body.mimetype = file.mimetype;
+        request.body.size = file.size;
 
         const result = await formControllers.uploadImageToAzure(request);
         reply.code(201).send(result);

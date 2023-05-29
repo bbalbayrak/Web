@@ -218,9 +218,11 @@ exports.getFormByVendorIdAndProductId = async (req, res) => {
 
 exports.uploadImageToAzure = async (req, res) => {
   try {
-    const file = req.body.file; // Now using req.body.file instead of req.file
-    const fileName = uuidv1(); // unique filename
+    const file = req.body.file;
+    console.log("File:", file);  // Add this line
+    const fileName = uuidv1();
     const imageUrl = await uploadFile(file, fileName);
+    console.log("Image URL:", imageUrl);  // Add this line
 
     res.status(200).send({ imageUrl });
   } catch (error) {
