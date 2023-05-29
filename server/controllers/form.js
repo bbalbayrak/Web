@@ -220,13 +220,13 @@ exports.uploadImageToAzure = async (req, res) => {
   try {
     const file = req.body.file;
     console.log("File:", file);  // Add this line
-    const fileName = uuidv1();
+    const fileName = uuidv1() + path.extname(file.originalname);
     const imageUrl = await uploadFile(file, fileName);
     console.log("Image URL:", imageUrl);  // Add this line
 
     res.status(200).send({ imageUrl });
   } catch (error) {
     console.error('Error uploading file:', error);
-    res.status(500).send({ message: "Error uploading image to Azure", error: error.message });
+    res.status(500).send({ message: "Error uploading image to Azure", error: error ? error.message : 'Unknown error' });
   }
 };
