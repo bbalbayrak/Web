@@ -308,7 +308,7 @@ const FormCreate = () => {
                     className='form-edit-text-box'
                     type="file"
                     accept="image/png, image/jpeg"
-                    onChange={(e) => handleFileSelect(e, row.id, 'example_visual_url')}
+                    onChange={(e) => handleFileSelect(e, row.id)}
                   />
                   </div>
               </td>
