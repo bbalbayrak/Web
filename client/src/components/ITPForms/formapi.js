@@ -86,10 +86,22 @@ export const getProducts = async () => {
   }
 };
 
+export const uploadImageToAzure = async (fileData, fileName) => {
+  const apiUrl = 'https://portal-test.yenaengineering.nl/api/forms/upload';
 
+  const formData = new FormData();
+  formData.append('file', fileData, fileName);
 
+  const response = await axios.post(apiUrl, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 
+  if (response.status !== 200) {
+    throw new Error('Error uploading image to Azure');
+  }
 
-
-
-
+  // The response should contain the URL of the uploaded image
+  return response.data.url;
+};

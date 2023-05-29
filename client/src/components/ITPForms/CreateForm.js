@@ -3,6 +3,7 @@ import { getVendors, getProducts } from '../Works/worksapi';
 import { createOrUpdateForm } from './formapi';
 import "./CreateForm.css"
 import ImagePopup from '../shared/Popup/ImagePopup';
+import { uploadImageToAzure } from './formapi';
 
 const segments = [
   { name: "Sub - Part Dimensiol", order: 1 },
@@ -77,6 +78,7 @@ const FormCreate = () => {
       lower_tolerance: '',
       upper_tolerance: '',
       sample_quantity: '',
+      example_visual_url: '',
     };
     setRows([...rows, newRow]);
   };
@@ -109,10 +111,20 @@ const FormCreate = () => {
     }
   };
   
-  const handleFileUpload = (file, rowId) => {
-    // console.log(`File uploaded for row: ${rowId}`);
-    // console.log('File:', file);
-  };
+  const handleFileUpload = async (file, rowId) => {
+    try {
+      // Upload the file to Azure and get the URL of the uploaded image
+      const imageUrl = await uploadImageToAzure(file);
+  
+      // Log the image URL
+      console.log(`Image URL for row ${rowId}: ${imageUrl}`);
+  
+      // Update the `example_visual_url` of the row with `rowId` to `imageUrl`
+      setRows(rows.map(row => row.id === rowId ? {...row, example_visual_url: imageUrl} : row));
+    } catch (error) {
+      console.error(`Error uploading file for row ${rowId}:`, error);
+    }
+};
 
   const handleSegmentClick = (order) => {
     setActiveSegment(order);
@@ -294,12 +306,13 @@ const FormCreate = () => {
               <td>
                 <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, row.id)}>
                   <input
-                    className='form-edit-text-box'
                     type="file"
+                    className='form-edit-text-box'
                     accept="image/png, image/jpeg"
                     onChange={(e) => handleFileSelect(e, row.id)}
                   />
-                  </div>
+                  {row.example_visual_url && <img src={row.example_visual_url} alt='example' />}
+                </div>
               </td>
               <td>
                 <img src={require('..//shared/a1.jpg')} alt="" className="thumbnail-image" onClick={handleImageClick} />

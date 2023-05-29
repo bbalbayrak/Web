@@ -213,3 +213,16 @@ exports.getFormByVendorIdAndProductId = async (req, res) => {
     res.status(500).send({ message: "Error retrieving form", error: error.message });
   }
 };
+
+exports.uploadImageToAzure = async (req, res) => {
+  try {
+    const file = req.file; // Assuming you're using multer or a similar middleware to handle file uploads.
+    const fileName = uuidv1(); // unique filename
+    const imageUrl = await uploadFile(file.buffer, fileName);
+
+    res.status(200).send({ imageUrl });
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    res.status(500).send({ message: "Error uploading image to Azure", error: error.message });
+  }
+};

@@ -1,4 +1,6 @@
 const formControllers = require("../controllers/form");
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 const routes = [
   {
@@ -35,7 +37,12 @@ const routes = [
     method: "GET",
     path: "/api/forms/vendor/:vendor_id/product/:product_id",
     handler: formControllers.getFormByVendorIdAndProductId
-  }
+  },
+  {
+    method: "POST",
+    path: "/api/forms/upload",
+    handler: [upload.single('file'), formControllers.uploadImageToAzure],
+  },
 ];
 
 module.exports = routes;
