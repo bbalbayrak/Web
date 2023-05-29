@@ -26,14 +26,15 @@ const routes = (fastify, options, done) => {
       }
     }
   );
-  fastify.get("/api/forms", formControllers.createOrUpdateForm);
+  fastify.get("/api/forms", formControllers.getFormTable);
   fastify.get("/api/forms/:id", formControllers.getForm);
   fastify.put("/api/forms/substeps", formControllers.updateMultipleSubsteps);
   fastify.delete("/api/forms/substeps", formControllers.deleteFormSubstep);
   fastify.get("/api/allforms/:id", formControllers.getAllForm);
   fastify.get("/api/forms/vendor/:vendor_id/product/:product_id", formControllers.getFormByVendorIdAndProductId);
-  
   done();
 };
 
 module.exports = routes;
+
+

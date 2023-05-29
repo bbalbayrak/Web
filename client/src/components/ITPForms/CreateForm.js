@@ -175,7 +175,7 @@ const FormCreate = () => {
       }
     });
     
-    console.log(formData);
+    console.log(formData)
 
     try {
       await createOrUpdateForm(formData);
