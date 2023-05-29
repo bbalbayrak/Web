@@ -315,7 +315,7 @@ const FormCreate = () => {
                 </div>
               </td>
               <td>
-                <img src={require('..//shared/a1.jpg')} alt="" className="thumbnail-image" onClick={handleImageClick} />
+                <img src={row.example_visual_url || require('..//shared/default_image.png')} alt="" className="thumbnail-image" onClick={handleImageClick} />
               </td>
             </tr>
           ))}

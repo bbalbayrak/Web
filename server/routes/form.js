@@ -1,63 +1,72 @@
 const formControllers = require("../controllers/form");
-const multer = require('multer');
-const upload = multer({ storage: multer.memoryStorage() });
+const fastifyMulter = require('fastify-multer');
+const storage = fastifyMulter.memoryStorage();
+const upload = fastifyMulter({ storage: storage })
 
-const routes = [
-  {
-    method: "POST",
-    path: "/api/forms",
-    handler: formControllers.createOrUpdateForm,
-  },
-  {
-    method: "GET",
-    path: "/api/forms",
-    handler: formControllers.getFormTable,
-  },
-  {
-    method: "GET",
-    path: "/api/forms/:id",
-    handler: formControllers.getForm,
-  },
-  {
-    method: "PUT",
-    path: "/api/forms/substeps",
-    handler: formControllers.updateMultipleSubsteps,
-  },
-  {
-    method: "DELETE",
-    path: "/api/forms/substeps",
-    handler: formControllers.deleteFormSubstep,
-  },
-  {
-    method: "GET",
-    path: "/api/allforms/:id",
-    handler: formControllers.getAllForm,
-  },
-  {
-    method: "GET",
-    path: "/api/forms/vendor/:vendor_id/product/:product_id",
-    handler: formControllers.getFormByVendorIdAndProductId
-  },
-  {
-    method: 'POST',
-    url: '/api/forms/upload',
-    handler: async (req, reply) => {
-      const parts = req.multipart(handler, done);
+const routes = (fastify, options, done) => {
+  fastify.post(
+    "/api/forms",
+    formControllers.createOrUpdateForm
+  );
+  
+  fastify.get(
+    "/api/forms",
+    formControllers.getFormTable
+  );
 
-      function handler(field, file, filename, encoding, mimetype) {
-        // TODO: Change this to your Azure upload function
-        pump(file, fs.createWriteStream(`./${filename}`));
+  fastify.get(
+    "/api/forms/:id",
+    formControllers.getForm
+  );
+
+  fastify.put(
+    "/api/forms/substeps",
+    formControllers.updateMultipleSubsteps
+  );
+
+  fastify.delete(
+    "/api/forms/substeps",
+    formControllers.deleteFormSubstep
+  );
+
+  fastify.get(
+    "/api/allforms/:id",
+    formControllers.getAllForm
+  );
+
+  fastify.get(
+    "/api/forms/vendor/:vendor_id/product/:product_id",
+    formControllers.getFormByVendorIdAndProductId
+  );
+
+  fastify.post(
+    "/api/forms/upload",
+    { preHandler: upload.single('file') },
+    async (request, reply) => {
+      try {
+        const file = request.file;
+        
+        request.body = {
+          file: file.buffer,  // Buffer tipini kullanın
+          fileName: file.originalname,
+          encoding: file.encoding,
+          mimetype: file.mimetype,
+          size: file.size
+        };
+
+        const result = await formControllers.uploadImageToAzure(request);
+        reply.code(201).send(result);
+      } catch (err) {
+        console.error(err);
+        reply.code(500).send({
+          status: "error",
+          message: "Dosya yüklenirken bir hata oluştu.",
+        });
       }
+    }
+  );
 
-      function done(err) {
-        if (err) {
-          reply.code(500).send({ status: 'Error occurred during file upload.' });
-        } else {
-          reply.code(200).send({ status: 'File uploaded successfully.' });
-        }
-      }
-    },
-  }
-];
+  done();
+};
 
 module.exports = routes;
