@@ -3,17 +3,21 @@ const FormSubstep = require("../models/form_substep");
 const { FIXED_STEPS } = require("../utils/fixedsteps");
 const Product = require('../models/product');
 const Vendor = require('../models/vendor');
+const { uploadFile } = require("../utils/upload_azure");
 
-exports.createOrUpdateForm = async (req, res) => {
+exports.createOrUpdateForm = async (request) => {
   try {
-    const { form_id, product_id, vendor_id, steps } = req.body;
+    const { form_id, product_id, vendor_id, steps } = request.body;
     let form;
     
     if (form_id) {
       form = await Form.findById(form_id);
       if (!form) {
-        res.status(404).send({ message: "Form not found" });
-        return;
+        return {
+          status: "fail",
+          statusCode: 404,
+          message: "Form not found"
+        };
       }
     } else {
       form = await Form.create(product_id, vendor_id);
@@ -23,6 +27,10 @@ exports.createOrUpdateForm = async (req, res) => {
       const step = steps.find(step => step.name === fixedStep.name);
       if (step) {
         for (const substep of step.substeps) {
+          const example_visual_url = substep.example_visual ? 
+            await uploadFile(substep.example_visual.buffer, substep.example_visual.originalname) 
+            : null;
+
           if (substep.id) {
             await FormSubstep.update(
               substep.id,
@@ -34,7 +42,7 @@ exports.createOrUpdateForm = async (req, res) => {
               substep.actual_dimension,
               substep.lower_tolerance,
               substep.upper_tolerance,
-              substep.example_visual_url,
+              example_visual_url,
               substep.status,
               substep.type,
               substep.sample_quantity
@@ -50,7 +58,7 @@ exports.createOrUpdateForm = async (req, res) => {
               substep.actual_dimension,
               substep.lower_tolerance,
               substep.upper_tolerance,
-              substep.example_visual_url,
+              example_visual_url,
               substep.status,
               substep.type,
               substep.sample_quantity
@@ -61,13 +69,17 @@ exports.createOrUpdateForm = async (req, res) => {
         throw new Error(`Unable to find a matching step for fixed step: ${fixedStep.name}`);
       }
     }
-    res.status(201).send({ message: "Form successfully created or updated", form });
+    return {
+      status: "success",
+      statusCode: 201,
+      message: "Form successfully created or updated",
+      data: form
+    };
   } catch (error) {
     console.error("Error in createOrUpdateForm:", error);
-    res.status(500).send({ message: "Error creating or updating form", error: error.message });
+    throw error;
   }
 };
-
 
 
 exports.getFormTable = async (req, res) => {
