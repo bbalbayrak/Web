@@ -3,8 +3,7 @@ import { getVendors, getProducts } from '../Works/worksapi';
 import { createOrUpdateForm } from './formapi';
 import "./CreateForm.css"
 import ImagePopup from '../shared/Popup/ImagePopup';
-import { v1 as uuidv1 } from 'uuid';
-const { uploadFile } = require('../shared/azure/upload_azure');
+
 const segments = [
   { name: "Sub - Part Dimensiol", order: 1 },
   { name: "Final Part Measurement", order: 2 },
@@ -78,7 +77,6 @@ const FormCreate = () => {
       lower_tolerance: '',
       upper_tolerance: '',
       sample_quantity: '',
-      example_visual_url: '',
     };
     setRows([...rows, newRow]);
   };
@@ -110,20 +108,11 @@ const FormCreate = () => {
       alert('Lütfen sadece PNG veya JPEG dosyaları yükleyin.');
     }
   };
-
-  async function handleFileUpload(file, id) {
-    try {
-      const fileName = uuidv1(); // unique filename
-      const imageUrl = await uploadFile(file, fileName);
-      // imageUrl'yi ilgili row'un 'example_visual_url' alanına ekleyin
-      const rowIndex = rows.findIndex(row => row.id === id);
-      let updatedRows = [...rows]; // Durumu direkt olarak değiştirmemek için yeni bir dizi oluşturun
-      updatedRows[rowIndex].example_visual_url = imageUrl;
-      setRows(updatedRows); // Yeni row dizisini duruma ayarlayın
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  }
+  
+  const handleFileUpload = (file, rowId) => {
+    // console.log(`File uploaded for row: ${rowId}`);
+    // console.log('File:', file);
+  };
 
   const handleSegmentClick = (order) => {
     setActiveSegment(order);
@@ -177,7 +166,7 @@ const FormCreate = () => {
             lower_tolerance,
             upper_tolerance,
             sample_quantity,
-            example_visual_url,
+            example_visual_url: "http://example.com/image2.png", // Statik URL
             status: "active" // Statik durum
           };
         }) : [],
