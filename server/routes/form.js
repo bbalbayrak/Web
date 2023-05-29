@@ -41,7 +41,8 @@ const routes = [
   {
     method: "POST",
     path: "/api/forms/upload",
-    handler: [upload.single('file'), formControllers.uploadImageToAzure],
+    preHandler: upload.single('file'),
+    handler: formControllers.uploadImageToAzure,
   },
 ];
 
