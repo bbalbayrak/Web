@@ -47,12 +47,8 @@ const routes = (fastify, options, done) => {
         const file = request.file;
         console.log("File in request:", file);  // Add this line
         
-        request.body.file = file.buffer;
-        request.body.fileName = file.originalname;
-        request.body.encoding = file.encoding;
-        request.body.mimetype = file.mimetype;
-        request.body.size = file.size;
-
+        request.body.file = file;  // Modify this line, set entire file object instead of just the buffer
+  
         const result = await formControllers.uploadImageToAzure(request);
         reply.code(201).send(result);
       } catch (err) {

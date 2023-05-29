@@ -1,3 +1,4 @@
+const path = require('path');  // Add this line
 const Form = require("../models/form");
 const FormSubstep = require("../models/form_substep");
 const { FIXED_STEPS } = require("../utils/fixedsteps");
@@ -216,17 +217,17 @@ exports.getFormByVendorIdAndProductId = async (req, res) => {
   }
 };
 
-exports.uploadImageToAzure = async (req, res) => {
+exports.uploadImageToAzure = async (req, res) => {  // Include `res` here
   try {
     const file = req.body.file;
-    console.log("File:", file);  // Add this line
+    console.log("File:", file, "Original Name:", file.originalname);
     const fileName = uuidv1() + path.extname(file.originalname);
-    const imageUrl = await uploadFile(file, fileName);
-    console.log("Image URL:", imageUrl);  // Add this line
+    const imageUrl = await uploadFile(file.buffer, fileName);
+    console.log("Image URL:", imageUrl);
 
-    res.status(200).send({ imageUrl });
+    res.json({ imageUrl });  // Send the imageUrl as a HTTP response
   } catch (error) {
     console.error('Error uploading file:', error);
-    res.status(500).send({ message: "Error uploading image to Azure", error: error ? error.message : 'Unknown error' });
+    res.status(500).send({ message: 'Error uploading file', error: error.message });  // Send an error response
   }
 };

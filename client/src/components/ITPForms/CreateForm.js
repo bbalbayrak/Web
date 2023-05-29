@@ -114,7 +114,8 @@ const FormCreate = () => {
   const handleFileUpload = async (file, rowId) => {
     try {
       // Upload the file to Azure and get the URL of the uploaded image
-      const imageUrl = await uploadImageToAzure(file);
+      const response = await uploadImageToAzure(file);
+      const imageUrl = response.data.imageUrl;  // Update this line
   
       // Log the image URL
       console.log(`Image URL for row ${rowId}: ${imageUrl}`);

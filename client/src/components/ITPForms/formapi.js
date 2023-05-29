@@ -103,5 +103,6 @@ export const uploadImageToAzure = async (fileData, fileName) => {
   }
 
   // The response should contain the URL of the uploaded image
+  console.log("Front-End Image URL:", response.data.url);
   return response.data.url;
 };
