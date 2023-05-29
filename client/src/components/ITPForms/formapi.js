@@ -98,11 +98,14 @@ export const uploadImageToAzure = async (fileData, fileName) => {
     },
   });
 
-  if (response.status !== 200) {
+  if (response.status !== 201) {  // Change this line
+    console.error('Error uploading image to Azure, status code:', response.status);
     throw new Error('Error uploading image to Azure');
   }
+  console.log("Response data:", response.data);
 
   // The response should contain the URL of the uploaded image
-  console.log("Front-End Image URL:", response.data.url);
-  return response.data.url;
+  console.log("Front-End Image URL:", response.data.imageUrl);  // Update this line
+  return response.data.imageUrl;  // And update this line
 };
+

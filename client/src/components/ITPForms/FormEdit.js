@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getFormById, createOrUpdateForm } from './formapi';
 import ImagePopup from '../shared/Popup/ImagePopup';
+import { uploadImageToAzure } from './formapi';
 
 const segments = [
   { name: "Sub - Part Dimensiol", order: 1 },
@@ -70,7 +71,7 @@ const FormEdit = () => {
   
   const addRow = () => {
     const newRow = {
-      id: '',
+      id: null,
       name: '',
       technical_drawing_numbering: '',
       tools: '',
@@ -79,6 +80,7 @@ const FormEdit = () => {
       lower_tolerance: '',
       upper_tolerance: '',
       sample_quantity: '',
+      example_visual_url: '',
     };
     setRows([...rows, newRow]);
   };
@@ -113,11 +115,20 @@ const FormEdit = () => {
     }
   };
   
-  const handleFileUpload = (file, rowId) => {
-    // console.log(`File uploaded for row: ${rowId}`);
-    // console.log('File:', file);
-  };
+  const handleFileUpload = async (file, rowId) => {
+    try {
+      // Upload the file to Azure and get the URL of the uploaded image
+      const imageUrl = await uploadImageToAzure(file);
+    
+      // Log the image URL
+      console.log(`Image URL for row ${rowId}: ${imageUrl}`);
   
+      // Update the `example_visual_url` of the row with `rowId` to `imageUrl`
+      setRows(rows.map(row => row.id === rowId ? {...row, example_visual_url: imageUrl} : row));
+    } catch (error) {
+      console.error(`Error uploading file for row ${rowId}:`, error.message, error);  // log the entire error object
+    }
+  };
   
   const handleSegmentClick = (order) => {
     setActiveSegment(order);
@@ -144,7 +155,6 @@ const FormEdit = () => {
 
   const saveForm = async () => {
     const postData = {
-      id: form.id,
       product_id: form.product_id,
       vendor_id: form.vendor_id,
       steps: segments.map((segment, index) => ({
@@ -173,12 +183,14 @@ const FormEdit = () => {
             upper_tolerance,
             sample_quantity,
             example_visual_url,
-            status
+            status: "active"
           };
         }) : [],
       })),
     };
-    
+
+    console.log(postData);
+
     try {
       await createOrUpdateForm(postData);
       console.log('Form kaydedildi');
@@ -230,16 +242,16 @@ const FormEdit = () => {
           </tr>
         </thead>
         <tbody>
-        {rows.map((row, index) => (
-  <tr key={index}>
-    <td>
-      <input
-        className='form-edit-text-box'
-        type="text"
-        value={row.name || ''}
-        onChange={(e) => handleInputChange(e, index, 'name')}
-      />
-    </td>
+          {rows.map((row, index) => (
+            <tr key={index}>
+              <td>
+                <input
+                  className='form-edit-text-box'
+                  type="text"
+                  value={row.name || ''}
+                  onChange={(e) => handleInputChange(e, index, 'name')}
+                />
+              </td>
               <td>
                 <input
                   className='form-edit-text-box'
@@ -299,20 +311,15 @@ const FormEdit = () => {
               <td>
                 <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, row.id)}>
                   <input
-                    id="fileInput"
-                    className='form-edit-text-box'
                     type="file"
+                    className='form-edit-text-box'
                     accept="image/png, image/jpeg"
                     onChange={(e) => handleFileSelect(e, row.id)}
-                    style={{ display: 'none' }} // Input'u gizliyoruz
                   />
-                  <label for="fileInput" className="custom-file-upload">
-                    Dosya Yükle
-                  </label>
                 </div>
               </td>
               <td>
-                <img src={require('..//shared/default_image.png')} alt="" className="thumbnail-image" onClick={handleImageClick} />
+                <img src={row.example_visual_url || require('..//shared/default_image.png')} alt="" className="thumbnail-image" onClick={handleImageClick} />
               </td>
             </tr>
           ))}

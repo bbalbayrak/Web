@@ -114,18 +114,17 @@ const FormCreate = () => {
   const handleFileUpload = async (file, rowId) => {
     try {
       // Upload the file to Azure and get the URL of the uploaded image
-      const response = await uploadImageToAzure(file);
-      const imageUrl = response.data.imageUrl;  // Update this line
-  
+      const imageUrl = await uploadImageToAzure(file);
+    
       // Log the image URL
       console.log(`Image URL for row ${rowId}: ${imageUrl}`);
   
       // Update the `example_visual_url` of the row with `rowId` to `imageUrl`
       setRows(rows.map(row => row.id === rowId ? {...row, example_visual_url: imageUrl} : row));
     } catch (error) {
-      console.error(`Error uploading file for row ${rowId}:`, error);
+      console.error(`Error uploading file for row ${rowId}:`, error.message, error);  // log the entire error object
     }
-};
+  };
 
   const handleSegmentClick = (order) => {
     setActiveSegment(order);
@@ -312,7 +311,6 @@ const FormCreate = () => {
                     accept="image/png, image/jpeg"
                     onChange={(e) => handleFileSelect(e, row.id)}
                   />
-                  {row.example_visual_url && <img src={row.example_visual_url} alt='example' />}
                 </div>
               </td>
               <td>

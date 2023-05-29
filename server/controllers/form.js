@@ -217,7 +217,7 @@ exports.getFormByVendorIdAndProductId = async (req, res) => {
   }
 };
 
-exports.uploadImageToAzure = async (req, res) => {  // Include `res` here
+exports.uploadImageToAzure = async (req) => {
   try {
     const file = req.body.file;
     console.log("File:", file, "Original Name:", file.originalname);
@@ -225,9 +225,9 @@ exports.uploadImageToAzure = async (req, res) => {  // Include `res` here
     const imageUrl = await uploadFile(file.buffer, fileName);
     console.log("Image URL:", imageUrl);
 
-    res.json({ imageUrl });  // Send the imageUrl as a HTTP response
+    return { imageUrl };  // return the imageUrl directly
   } catch (error) {
     console.error('Error uploading file:', error);
-    res.status(500).send({ message: 'Error uploading file', error: error.message });  // Send an error response
+    throw new Error(error ? error.message : 'Unknown error');  // throw an error when an error occurs
   }
 };
