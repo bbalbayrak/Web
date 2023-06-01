@@ -9,19 +9,24 @@ const Location = {
     );
     return result;
   },
-  
+
   findLatestByNames: async () => {
     const result = await db.any(`
       SELECT 
-        name, 
-        atitude, 
-        longitude, 
-        MAX(timeStamp) as latestTimeStamp
-      FROM ${Location.tableName}
-      GROUP BY name
+        l.name, 
+        l.atitude, 
+        l.longitude, 
+        l.timeStamp as latestTimeStamp
+      FROM location l
+      INNER JOIN (
+        SELECT name, MAX(timeStamp) as maxTimeStamp
+        FROM location
+        GROUP BY name
+      ) subq
+      ON l.name = subq.name AND l.timeStamp = subq.maxTimeStamp
     `);
     return result;
-  },
+},
 };
 
 module.exports = Location;
