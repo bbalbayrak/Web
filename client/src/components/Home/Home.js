@@ -97,7 +97,7 @@ const Home = () => {
           center={[51.505, -0.09]} // Başlangıç koordinatları
           zoom={1} // Başlangıç yakınlaştırma seviyesi
           minZoom={2} // Minimum yakınlaştırma seviyesi
-          maxZoom={12} // Maksimum yakınlaştırma seviyesi
+          maxZoom={17} // Maksimum yakınlaştırma seviyesi
           maxBounds={maxBounds} // Harita sınırlarını ayarlayın
           maxBoundsViscosity={1} // Harita sınırlarına yapışkanlık (1: tam sınırlama)
       >
