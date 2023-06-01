@@ -2,31 +2,24 @@ import React from 'react';
 import './Home.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { LatLngBounds } from 'leaflet';
-import Chart from '../Charts/Chart/Chart';
+import Chart from './Chart/Chart';
 import { useState, useEffect } from 'react';
 import { getMarkers } from './WorldMapApi';
 
 
-const data = [
-  { name: 'Pazartesi', iş: 150, iptalEdilenİş: 50 },
-  { name: 'Salı', iş: 200, iptalEdilenİş: 50 },
-  { name: 'Çarşamba', iş: 100, iptalEdilenİş: 50 },
-  { name: 'Perşembe', iş: 250, iptalEdilenİş: 50 },
-  { name: 'Cuma', iş: 175, iptalEdilenİş: 50 },
-  { name: 'Cumartesi', iş: 50, iptalEdilenİş: 50 },
-  { name: 'Pazar', iş: 75, iptalEdilenİş: 50 },
-  
-];
+
 const Home = () => {
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     getMarkers()
-      .then(data => {
-        setMarkers(data);
+      .then(response => {
+        console.log(response.data); // Gelen veriyi kontrol edelim.
+        setMarkers(response.data);
       })
       .catch(err => console.error(err));
   }, []); // Bu useEffect hooku bileşen yüklendiğinde bir kez çalışır.
+  
   const maxBounds = new LatLngBounds(
     [-90, -180], // Güneybatı köşe koordinatları
     [90, 180]    // Kuzeydoğu köşe koordinatları
@@ -113,23 +106,24 @@ const Home = () => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {markers.map((marker, index) => (
-    <Marker key={index} position={[marker.x, marker.y]}>
-      <Popup>
-        <div>
-          <strong>{marker.name}</strong> <br />
-          <small>{new Date(marker.datetime).toLocaleString()}</small>
-        </div>
-      </Popup>
-    </Marker>
-  ))}
+  <Marker key={index} position={[marker.atitude, marker.longitude]}>
+    <Popup>
+      <div>
+        <strong>{marker.name}</strong> <br />
+        <small>{new Date(parseInt(marker.latesttimestamp)).toLocaleString()}</small>
+      </div>
+    </Popup>
+  </Marker>
+))}
+
+
       </MapContainer>
     </div>
       {/* İstatistikler */}
       <div className="statistics">
         <div className="weekly-statistics">
-        <Chart data={data} />
-          {/* İstatistik bileşeni buraya eklenecek */}
-        </div>
+      <Chart />
+       </div>
         <div className="general-statistics">
           <h3>Genel İstatistik</h3>
           {/* İstatistik bileşeni buraya eklenecek */}
