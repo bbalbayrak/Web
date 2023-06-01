@@ -8,6 +8,7 @@ import {
   updateWorkStepStatus,
 } from './worksapi';
 import "./QualityControl.css"
+import "./WorkDetails.css"
 
 const QualityControl = () => {
   const location = useLocation();
@@ -61,28 +62,32 @@ const QualityControl = () => {
       <h2 className="qc-heading">Quality Control</h2>
       {work && (
         <div className="work-details">
-          <h3>Work Details</h3>
-          <div className="work-detail-row">
-            <p className="work-detail">Order Number: {work.data.order_number}</p>
-            <p className="work-detail">Project Number: {work.data.project_number}</p>
-          </div>
-          <div className="work-detail-row">
-            <p className="work-detail">Vendor: {work.data.vendor_id}</p>
-            <p className="work-detail">Customer: {work.data.customer_id}</p>
-          </div>
-          <div className="work-detail-row">
-            <p className="work-detail">Inspector: {work.data.inspector_id}</p>
-            <p className="work-detail">Foreman: {work.data.foreman_id}</p>
-          </div>
-          <div className="work-detail-row">
-            <p className="work-detail">Work Type: {work.data.work_type}</p>
-            <p className="work-detail">State: {work.data.state}</p>
-            </div>
-          <div className="work-detail-row">
-            <p className="work-detail">Status: {work.data.status}</p>
-            <p className="work-detail">Creator: {work.data.creator_id}</p>
-          </div>
-        </div>
+          <table>
+              <tbody>
+                  <tr>
+                    <h3>Work Details</h3>
+                  </tr>
+                  <tr>
+                      <td>Order Number: {work.data.order_number}</td>
+                      <td>Inspector: {work.data.inspector_id}</td>
+                  </tr>
+                  <tr>
+                      <td>Project Number: {work.data.project_number}</td>
+                      <td>Foreman: {work.data.foreman_id}</td>
+                  </tr>
+                  <tr>
+                      <td>Vendor: {work.data.vendor_id}</td>
+                      <td>Work Type: {work.data.work_type}</td>
+                  </tr>
+                  <tr>
+                      <td>Customer: {work.data.customer_id}</td>
+                  </tr>
+                  <tr>
+                      <td>Status: {work.data.status}</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
       )}
       <div className="product-segments">
         <div className="work-detail-row">

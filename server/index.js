@@ -14,7 +14,7 @@ const certificateRoutes = require("./routes/certificate");
 const workProductRoutes = require("./routes/workProduct");
 const QualityControlRoutes = require("./routes/quality_control");
 const imageRoutes = require("./routes/image");
-
+const locationRoutes = require("./routes/location");
 
 
 const db = require('./config/db');
@@ -74,6 +74,10 @@ imageRoutes.forEach((route) => {
 });
 
 fastify.register(certificateRoutes);
+
+locationRoutes.forEach((route) => {
+  fastify.route(route);
+});
 
 const start = async () => {
   try {

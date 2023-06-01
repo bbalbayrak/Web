@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {  getWorkById, createWorkStep,  updateWorkStepStatus, getProductById, getCertificatesByWorkId, getWorkProducts, getFormByVendorIdAndProductId, getFormByFormId, createQualityControlEntry } from './worksapi';
 import "./QRCertificate.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
 const QRCertificate = () => {
   const location = useLocation();
@@ -26,7 +28,7 @@ const QRCertificate = () => {
         const fetchedProducts = await Promise.all(
           productsData.data.map(async (productData) => {
             const product = await getProductById(productData.product_id);
-  
+            console.log(workData.data.vendor_id, product.data.id);
             // form ve formDetails alınıyor
             const form = await getFormByVendorIdAndProductId(workData.data.vendor_id, product.data.id);
             setFormInfo(form);
@@ -109,6 +111,13 @@ const QRCertificate = () => {
       // console.error('Error sending QR questions:', error);
     }
   };
+  
+  const getCertificateName = (url) => {
+    const urlParts = url.split('/');
+    const nameWithExtension = urlParts[urlParts.length - 1];
+    const name = nameWithExtension.split('.pdf')[0];
+    return name;
+  };
 
   return (
     <div className="qr-form-page-container">
@@ -118,9 +127,12 @@ const QRCertificate = () => {
         <ul className="qr-certificates-list">
           {certificates.map((certificate, index) => (
             <li key={index} className="qr-certificate-item">
-              <a href={certificate.certificate_url} target="_blank" rel="noopener noreferrer" className="qr-certificate-link">
-                {certificate.certificate_url}
-              </a>
+              <div className="qr-certificate-div">
+                <a href={certificate.certificate_url} target="_blank" rel="noopener noreferrer" className="qr-certificate-link">
+                  <FontAwesomeIcon icon={faFilePdf} className="qr-certificate-icon"/>
+                </a>
+                <p className="qr-certificate-name">{getCertificateName(certificate.certificate_url)}</p>
+              </div>
             </li>
           ))}
         </ul>

@@ -29,6 +29,9 @@
   background-color: #0062cc;
 }
 
+.product-content {
+  width: 100%; /* Her hücrenin genişliğini ayarla */
+}
 
 .qc-img {
   align-items: start;
@@ -37,4 +40,9 @@
   object-fit: cover;
   display: inline-block;
   margin-right: 1rem;
+}
+
+.active {
+  background-color: #042a52; /* Or any color you prefer */
+  color: #fff; /* Changes the text color to white */
 }

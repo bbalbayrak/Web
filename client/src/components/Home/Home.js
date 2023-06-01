@@ -1,8 +1,11 @@
 import React from 'react';
 import './Home.css';
-import { MapContainer, TileLayer, Marker} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { LatLngBounds } from 'leaflet';
 import Chart from '../Charts/Chart/Chart';
+import { useState, useEffect } from 'react';
+import { getMarkers } from './WorldMapApi';
+
 
 const data = [
   { name: 'Pazartesi', iş: 150, iptalEdilenİş: 50 },
@@ -12,11 +15,22 @@ const data = [
   { name: 'Cuma', iş: 175, iptalEdilenİş: 50 },
   { name: 'Cumartesi', iş: 50, iptalEdilenİş: 50 },
   { name: 'Pazar', iş: 75, iptalEdilenİş: 50 },
+  
 ];
 const Home = () => {
+  const [markers, setMarkers] = useState([]);
+
+  useEffect(() => {
+    getMarkers()
+      .then(data => {
+        setMarkers(data);
+      })
+      .catch(err => console.error(err));
+  }, []); // Bu useEffect hooku bileşen yüklendiğinde bir kez çalışır.
   const maxBounds = new LatLngBounds(
     [-90, -180], // Güneybatı köşe koordinatları
     [90, 180]    // Kuzeydoğu köşe koordinatları
+    
   );
   return (
     <div className="home-container">
@@ -86,21 +100,30 @@ const Home = () => {
       </div>
 
       <div className="world-map">
-          <MapContainer
-              center={[51.505, -0.09]} // Başlangıç koordinatları
-              zoom={1} // Başlangıç yakınlaştırma seviyesi
-              minZoom={2} // Minimum yakınlaştırma seviyesi
-              maxZoom={6} // Maksimum yakınlaştırma seviyesi
-              maxBounds={maxBounds} // Harita sınırlarını ayarlayın
-              maxBoundsViscosity={1} // Harita sınırlarına yapışkanlık (1: tam sınırlama)
-              
-          >
-              <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              />
-          </MapContainer>
-      </div>
+      <MapContainer
+          center={[51.505, -0.09]} // Başlangıç koordinatları
+          zoom={1} // Başlangıç yakınlaştırma seviyesi
+          minZoom={2} // Minimum yakınlaştırma seviyesi
+          maxZoom={12} // Maksimum yakınlaştırma seviyesi
+          maxBounds={maxBounds} // Harita sınırlarını ayarlayın
+          maxBoundsViscosity={1} // Harita sınırlarına yapışkanlık (1: tam sınırlama)
+      >
+        <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {markers.map((marker, index) => (
+    <Marker key={index} position={[marker.x, marker.y]}>
+      <Popup>
+        <div>
+          <strong>{marker.name}</strong> <br />
+          <small>{new Date(marker.datetime).toLocaleString()}</small>
+        </div>
+      </Popup>
+    </Marker>
+  ))}
+      </MapContainer>
+    </div>
       {/* İstatistikler */}
       <div className="statistics">
         <div className="weekly-statistics">

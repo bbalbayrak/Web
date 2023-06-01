@@ -116,10 +116,10 @@ const NewWork = () => {
             >
               <h3>
                 <FontAwesomeIcon icon={faFilePdf} className="info-icon" />
-                Product: {product.name}
+                {product.name}
               </h3>
               <div className="product-details">
-                <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer">Technical Drawing PDF</a>
+                <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer"></a>
               </div>
             </div>
           ))}
@@ -127,9 +127,6 @@ const NewWork = () => {
 
   
       <div className="button-container">
-        <button type="button" onClick={handleSave} className="btn btn-primary save-btn">
-          Save
-        </button>
         <button type="button" onClick={handleSend} className="btn btn-success send-btn">
           Send
         </button>

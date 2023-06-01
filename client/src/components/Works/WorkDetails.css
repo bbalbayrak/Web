@@ -1,0 +1,16 @@
+.work-details {
+    width: 100%; /* Tablonun genişliği */
+    margin: auto; /* Merkezleme */
+  }
+  
+  .work-details table {
+    width: 100%; /* Tablonun genişliğini ebeveyn div genişliğine ayarla */
+    color: white; /* Tablo içindeki metin rengini beyaza ayarla */
+    text-align: left; /* Metinleri sola hizala */
+  }
+  
+  .work-details td {
+    width: 50%; /* Her hücrenin genişliğini ayarla */
+    padding: 5px; /* Hücreler arası boşluk */
+  }
+  

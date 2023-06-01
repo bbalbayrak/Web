@@ -2,20 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './ImagePopup.css';
 
 export default function ImagePopup({ onClose, imageList }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const popupContentRef = useRef(null);
-
-  const handleNext = () => {
-    if (currentIndex < imageList.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -34,12 +21,16 @@ export default function ImagePopup({ onClose, imageList }) {
   return (
     <div className="image-popup">
       <div className="popup-content" ref={popupContentRef}>
-        <img src={imageList[currentIndex]} alt="Resim" className="popup-image" />
-        <button onClick={handlePrev}>Prev</button>
-        <button onClick={handleNext}>Next</button>
-        <button className="popup-close" onClick={onClose}>
-          Kapat
-        </button>
+        <div className="image-container">
+          {imageList.map((image, index) => (
+            <img key={index} src={image} alt={`Resim ${index}`} className="popup-image" />
+          ))}
+        </div>
+        <div className="close-button-container">
+          <button className="popup-close" onClick={onClose}>
+            Kapat
+          </button>
+        </div>
       </div>
     </div>
   );

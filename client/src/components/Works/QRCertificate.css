@@ -51,6 +51,12 @@
     margin-top: 2rem;
   }
   
+  .qr-certificate-icon {
+    width: 50px;  /* İkonun genişliğini ayarlayın */
+    height: 50px; /* İkonun yüksekliğini ayarlayın */
+    margin-right: 10px; /* İkon ile link arasında boşluk oluşturun */
+  }
+  
   .qr-btn:hover {
     background-color: #0062cc;
   }

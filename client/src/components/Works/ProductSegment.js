@@ -117,13 +117,16 @@ const checkTolerance = (substep, measuredValueKey) => {
   return (
     <div className="product-segment">
       {imagePopup && <ImagePopup onClose={() => setImagePopup(false)} imageList={imageList} />}
-      <h3>{product.name}</h3>
       <p>{product.description}</p>
       <div>
         <div className="segment-buttons">
           {formDetail &&
             formDetail.steps.map((step) => (
-              <button className="product-segment-btn" key={step.order} onClick={() => handleStepClick(step.order)}>
+              <button 
+                className={`product-segment-btn ${activeStep === step.order ? 'active' : ''}`}
+                key={step.order} 
+                onClick={() => handleStepClick(step.order)}
+              >
                 {step.name}
               </button>
             ))}
@@ -133,25 +136,22 @@ const checkTolerance = (substep, measuredValueKey) => {
             (step) =>
               activeStep === step.order && (
                 <div key={step.order} className="segment-content">
-                        
-
                   <table>
-                    
                     <thead>
                       <tr>
-                        <th>Image</th>
-                        <th>Number</th>
-                        <th>Tools</th>
-                        <th>Description</th>
-                        <th>Actual Dimension</th>
-                        <th>Lower Tolerance</th>
-                        <th>Upper Tolerance</th>
-                        <th>Sample Quantity</th>
-                        <th>Measured Value 1</th>
-                        <th>Measured Value 2</th>
-                        <th>Measured Value 3</th>
-                        <th>OK</th>
-                        <th>NOK</th>
+                        <th className="column-5">Image</th>
+                        <th className="column-9">Number</th>
+                        <th className="column-9">Tools</th>
+                        <th className="column-9">Description</th>
+                        <th className="column-9">Actual Dimension</th>
+                        <th className="column-9">Lower Tolerance</th>
+                        <th className="column-9">Upper Tolerance</th>
+                        <th className="column-9">Sample Quantity</th>
+                        <th className="column-9">Measured Value 1</th>
+                        <th className="column-9">Measured Value 2</th>
+                        <th className="column-9">Measured Value 3</th>
+                        <th className="column-25">OK</th>
+                        <th className="column-25">NOK</th>
                       </tr>
                     </thead>
                     <tbody>
