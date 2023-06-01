@@ -20,3 +20,29 @@ exports.getLatestLocations = async (req, res) => {
       res.status(500).send({ message: "Error retrieving latest locations", error: error.message });
     }
 };
+
+exports.getAllLocations = async (req, res) => {
+    try {
+      const locations = await Location.getAll();
+      const groupedLocations = locations.reduce((acc, location) => {
+        acc[location.name] = acc[location.name] || [];
+        acc[location.name].push({
+          id: location.id,
+          atitude: location.atitude,
+          longitude: location.longitude,
+          timeStamp: location.timeStamp
+        });
+        return acc;
+      }, {});
+  
+      const result = Object.keys(groupedLocations).map(name => ({
+        name,
+        locations: groupedLocations[name]
+      }));
+  
+      res.status(200).send({ message: "Locations fetched successfully", location: result });
+    } catch (error) {
+      console.error("Error in getAllLocations:", error);
+      res.status(500).send({ message: "Error getting locations", error: error.message });
+    }
+  };

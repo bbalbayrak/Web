@@ -11,6 +11,11 @@ const routes = [
     path: "/api/locations/latest",
     handler: locationControllers.getLatestLocations,
   },
+  {
+    method: "GET",
+    path: "/api/locations",
+    handler: locationControllers.getAllLocations,
+  },
 ];
 
 module.exports = routes;

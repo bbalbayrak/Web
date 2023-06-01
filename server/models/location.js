@@ -26,7 +26,12 @@ const Location = {
       ON l.name = subq.name AND l.timeStamp = subq.maxTimeStamp
     `);
     return result;
-},
+    },
+    
+  getAll: async () => {
+    const result = await db.any(`SELECT * FROM ${Location.tableName}`);
+    return result;
+  },
 };
 
 module.exports = Location;
