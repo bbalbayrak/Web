@@ -14,7 +14,7 @@ const Home = () => {
   useEffect(() => {
     getLatestLocations()
       .then(response => {
-        console.log(response.data); // Gelen veriyi kontrol edelim.
+        console.log(response.data.locations); // Gelen veriyi kontrol edelim.
         setMarkers(response.data);
       })
       .catch(err => console.error(err));

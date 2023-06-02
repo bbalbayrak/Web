@@ -30,7 +30,7 @@ exports.getAllLocations = async (req, res) => {
           id: location.id,
           atitude: location.atitude,
           longitude: location.longitude,
-          timeStamp: location.timeStamp
+          timeStamp: location.timestamp
         });
         return acc;
       }, {});

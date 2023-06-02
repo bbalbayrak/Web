@@ -24,7 +24,8 @@ import PageNotFound from "./components/PageNotFound/PageNotFound";
 import CreateVendor from "./components/Vendors/CreateVendor";
 import CreateCustomer from "./components/Customers/CreateCustomer";
 import FormCreate from "./components/ITPForms/CreateForm";
-
+import Transfers from "./components/Transfers/Transfers";
+import TransfersDetail from "./components/Transfers/TransfersDetail";
 function App() {
   const [showMenu, setShowMenu] = useState(true);
   return (
@@ -53,7 +54,8 @@ function App() {
           <Route path="/create-vendor" element={<RouteGuard setShowMenu={setShowMenu}><CreateVendor /></RouteGuard>}/>
           <Route path="/create-customer" element={<RouteGuard setShowMenu={setShowMenu}><CreateCustomer /></RouteGuard>}/>
           <Route path="/create-form" element={<RouteGuard setShowMenu={setShowMenu}><FormCreate /></RouteGuard>}/>
-
+          <Route path="/transfers" element={<RouteGuard setShowMenu={setShowMenu}><Transfers /></RouteGuard>}/>
+          <Route path="//transfers/:name" element={<RouteGuard setShowMenu={setShowMenu}><TransfersDetail /></RouteGuard>}/>
 
         </Routes>
       </div>

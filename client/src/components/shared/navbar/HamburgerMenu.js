@@ -5,6 +5,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import './HamburgerMenu.css';
 import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import Transfers from '../../Transfers/Transfers';
 
 const HamburgerMenu = ({ showMenu = true }) => {
   const [closed, setClosed] = useState(false);
@@ -92,6 +93,11 @@ const HamburgerMenu = ({ showMenu = true }) => {
           {isLoggedIn && (
           <Link className="link" to="/users">
             Kullanıcılar
+          </Link>
+          )}
+          {isLoggedIn && (
+          <Link className="link" to="/transfers">
+            Transferler
           </Link>
           )}
           {isLoggedIn && (
