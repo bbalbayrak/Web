@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { LatLngBounds } from 'leaflet';
 import Chart from './Chart/Chart';
 import { useState, useEffect } from 'react';
-import { getMarkers } from './WorldMapApi';
+import { getLatestLocations, getAllLocations, createLocation } from './WorldMapApi';
 
 
 
@@ -12,7 +12,7 @@ const Home = () => {
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
-    getMarkers()
+    getLatestLocations()
       .then(response => {
         console.log(response.data); // Gelen veriyi kontrol edelim.
         setMarkers(response.data);
