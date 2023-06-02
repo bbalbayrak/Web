@@ -1,7 +1,6 @@
-// Transfers.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllLocations } from './TransfersApi'
+import { getAllLocations } from './TransfersApi';
 import './Transfers.css';
 
 const Transfers = () => {
@@ -9,8 +8,8 @@ const Transfers = () => {
 
   useEffect(() => {
     getAllLocations()
-    .then(response => setLocations(response.data.location)) 
-    .catch(err => console.error(err));
+      .then(response => setLocations(response.location)) 
+      .catch(err => console.error(err));
   }, []);
 
   return (
@@ -19,9 +18,7 @@ const Transfers = () => {
       {locations.map((location, index) => (
         <div key={index} className="location-item">
           <h2>{location.name}</h2>
-          {location.locations.map((loc, idx) => (
-            <Link key={idx} to={`/transfers/${loc.name.replace(/\s/g, '-')}`}>{loc.name}</Link>
-          ))}
+          <Link to={`/transfers/${location.name.replace(/\s/g, '%')}`}>Detaylar</Link>
         </div>
       ))}
     </div>
