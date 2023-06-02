@@ -7,7 +7,6 @@ import { LatLngBounds } from 'leaflet';
 const TransfersDetail = () => {
   const { name: encodedName } = useParams();
   const name = decodeURIComponent(encodedName);
-
   const [locations, setLocations] = useState([]);
   const [filteredLocations, setFilteredLocations] = useState([]);
   const maxBounds = new LatLngBounds(
@@ -29,9 +28,10 @@ const TransfersDetail = () => {
 
   useEffect(() => {
     if (locations.length) {
-      const filtered = locations.find((location) => location.name === name);
-      if (filtered) {
-        setFilteredLocations(filtered.locations);
+      const locationData = locations.find((location) => location.name === name);
+      if (locationData) {
+        const updatedLocations = locationData.locations.map(loc => ({ ...loc, name: locationData.name }));
+        setFilteredLocations(updatedLocations);
       }
     }
   }, [locations, name]);
@@ -51,22 +51,17 @@ const TransfersDetail = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
-{filteredLocations.map((location, index) => (
-  <Marker key={index} position={[location.atitude, location.longitude]}>
-    <Popup>
-      <div>
-        <strong>{location.name}</strong> <br />
-        <small>{new Date(parseInt(location.timeStamp)).toLocaleString()}</small>
-      </div>
-    </Popup>
-  </Marker>
-))}
-
-
-
-
+      {filteredLocations.map((location, index) => (
+        <Marker key={index} position={[location.atitude, location.longitude]}>
+          <Popup>
+            <div>
+              <strong>{location.name}</strong> <br />
+              <small>{new Date(parseInt(location.timeStamp)).toLocaleString()}</small>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
       <Polyline positions={filteredLocations.map(loc => [loc.atitude, loc.longitude,])} color='red' />
-
     </MapContainer>
   );
 };

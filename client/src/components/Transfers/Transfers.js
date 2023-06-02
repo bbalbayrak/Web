@@ -18,7 +18,7 @@ const Transfers = () => {
       {locations.map((location, index) => (
         <div key={index} className="location-item">
           <h2>{location.name}</h2>
-          <Link to={`/transfers/${location.name.replace(/\s/g, '%')}`}>Detaylar</Link>
+          <Link to={`/transfers/${encodeURIComponent(location.name)}`}>Detaylar</Link>
         </div>
       ))}
     </div>
