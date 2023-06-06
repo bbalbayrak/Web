@@ -12,7 +12,6 @@ const segments = [
   { name: "Product Packing Standart", order: 5 },
   { name: "Loading Check", order: 6 },
 ];
-
 const FormEdit = () => {
   const { id } = useParams();
   const [form, setForm] = useState(null);
@@ -21,7 +20,6 @@ const FormEdit = () => {
   const [showImagePopup, setShowImagePopup] = useState(false);
   const [imagePopupUrl, setImagePopupUrl] = useState('');
   const [rows, setRows] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,11 +29,8 @@ const FormEdit = () => {
         // console.error('Error fetching form:', error);
       }
     };
-
     fetchData();
   }, [id]);
-
-
   useEffect(() => {
     if (formSaved) {
       const fetchData = async () => {
@@ -47,17 +42,14 @@ const FormEdit = () => {
           // console.error('Error fetching form:', error);
         }
       };
-
       fetchData();
     }
   }, [formSaved, id]);
-
   useEffect(() => {
     if (form) {
       const finalPartMeasurementStep = form.steps.find(
         (step) => step.name === 'Final Part Measurement'
       );
-
       if (finalPartMeasurementStep) {
         setRows(finalPartMeasurementStep.substeps);
       }
@@ -71,7 +63,7 @@ const FormEdit = () => {
   
   const addRow = () => {
     const newRow = {
-      id: null,
+      id: '',
       name: '',
       technical_drawing_numbering: '',
       tools: '',
@@ -80,12 +72,10 @@ const FormEdit = () => {
       lower_tolerance: '',
       upper_tolerance: '',
       sample_quantity: '',
-      example_visual_url: '',
     };
     setRows([...rows, newRow]);
   };
   
-
   const handleInputChange = (event, index, field) => {
     const newValue = event.target.value;
     setRows(rows.map((row, i) => i === index ? {...row, [field]: newValue} : row));
@@ -129,11 +119,10 @@ const FormEdit = () => {
       console.error(`Error uploading file for row ${rowId}:`, error.message, error);  // log the entire error object
     }
   };
-  
+    
   const handleSegmentClick = (order) => {
     setActiveSegment(order);
   };
-
   const renderSegmentContent = () => {
     switch (activeSegment) {
       case 1:
@@ -152,9 +141,9 @@ const FormEdit = () => {
         return null;
     }
   };
-
   const saveForm = async () => {
     const postData = {
+      id: form.id,
       product_id: form.product_id,
       vendor_id: form.vendor_id,
       steps: segments.map((segment, index) => ({
@@ -183,14 +172,12 @@ const FormEdit = () => {
             upper_tolerance,
             sample_quantity,
             example_visual_url,
-            status: "active"
+            status
           };
         }) : [],
       })),
     };
-
-    console.log(postData);
-
+    
     try {
       await createOrUpdateForm(postData);
       console.log('Form kaydedildi');
@@ -216,7 +203,6 @@ const FormEdit = () => {
       </div>
     );
   };
-
   const renderFinalPartMeasurement = () => {
     if (!form) return null;
     {showImagePopup && (
@@ -242,16 +228,16 @@ const FormEdit = () => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
-            <tr key={index}>
-              <td>
-                <input
-                  className='form-edit-text-box'
-                  type="text"
-                  value={row.name || ''}
-                  onChange={(e) => handleInputChange(e, index, 'name')}
-                />
-              </td>
+        {rows.map((row, index) => (
+  <tr key={index}>
+    <td>
+      <input
+        className='form-edit-text-box'
+        type="text"
+        value={row.name || ''}
+        onChange={(e) => handleInputChange(e, index, 'name')}
+      />
+    </td>
               <td>
                 <input
                   className='form-edit-text-box'
@@ -311,15 +297,20 @@ const FormEdit = () => {
               <td>
                 <div className="dropzone" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, row.id)}>
                   <input
-                    type="file"
+                    id="fileInput"
                     className='form-edit-text-box'
+                    type="file"
                     accept="image/png, image/jpeg"
                     onChange={(e) => handleFileSelect(e, row.id)}
+                    style={{ display: 'none' }} // Input'u gizliyoruz
                   />
+                  <label for="fileInput" className="custom-file-upload">
+                    Dosya Yükle
+                  </label>
                 </div>
               </td>
               <td>
-                <img src={row.example_visual_url || require('..//shared/default_image.png')} alt="" className="thumbnail-image" onClick={handleImageClick} />
+                <img src={require('..//shared/default_image.png')} alt="" className="thumbnail-image" onClick={handleImageClick} />
               </td>
             </tr>
           ))}
@@ -330,7 +321,6 @@ const FormEdit = () => {
       </div>
     );
   };
-
   
   const renderPaintReport = () => {
     return (
@@ -363,7 +353,6 @@ const FormEdit = () => {
       </div>
     );
   };
-
   const renderProductPackingStandart = () => {
     return (
       <div>
@@ -379,7 +368,6 @@ const FormEdit = () => {
       </div>
     );
   };
-
   const renderLoadingCheck = () => {
     return (
       <div>
@@ -395,11 +383,9 @@ const FormEdit = () => {
       </div>
     );
   };
-
   const imagePopup = showImagePopup ? (
     <ImagePopup onClose={() => setShowImagePopup(false)} />
   ) : null;
-
   return (
     <div className='form-edit-main'>
       {imagePopup}
@@ -423,5 +409,4 @@ const FormEdit = () => {
     </div>
   );
 };
-
 export default FormEdit;

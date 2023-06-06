@@ -192,6 +192,8 @@ const FormCreate = () => {
       console.log('Form kaydedildi');
       setFormSaved(true); // Form başarıyla kaydedildiğini bildirin
     } catch (error) {
+      console.error('Error saving form:', error);
+      throw new Error(`Error saving form: ${error}`);
       // console.error('Error saving form:', error);
     }
   };
