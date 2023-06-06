@@ -14,13 +14,14 @@ const Transfers = () => {
 
   return (
     <div className="transfers-container">
-      <h1>Lokasyon Listesi</h1>
-      {locations.map((location, index) => (
-        <div key={index} className="location-item">
-          <h2>{location.name}</h2>
-          <Link to={`/transfers/${encodeURIComponent(location.name)}`}>Detaylar</Link>
-        </div>
-      ))}
+      <h1 className="title">Lokasyon Listesi</h1>
+      <div className="locations-grid">
+        {locations.map((location, index) => (
+          <Link key={index} to={`/transfers/${encodeURIComponent(location.name)}`} className="location-card">
+            <h2 className="location-name">{location.name}</h2>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };
