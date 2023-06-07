@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {  getWorkById, createWorkStep,  updateWorkStepStatus, getProductById, getCertificatesByWorkId, getWorkProducts, getFormByVendorIdAndProductId, getFormByFormId, createQualityControlEntry } from './worksapi';
-import "./QRCertificate.css"
+import { getWorkById, createWorkStep, updateWorkStepStatus, getProductById, getCertificatesByWorkId, getWorkProducts, getFormByVendorIdAndProductId, getFormByFormId, createQualityControlEntry } from './worksapi';
+import "./QRCertificate.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,8 +10,8 @@ const QRCertificate = () => {
   const navigate = useNavigate();
   const [work, setWork] = useState(null);
   const [products, setProducts] = useState([]);
-  const [formInfo, setFormInfo] = useState(null);
-  const [formDetail, setFormDetail] = useState(null);
+  const [formInfo, setFormInfo] = useState([]);
+  const [formDetail, setFormDetail] = useState([]);
   const [certificates, setCertificates] = useState([]);
   const searchParams = new URLSearchParams(location.search);
   const work_id = searchParams.get('work_id');
@@ -28,14 +28,13 @@ const QRCertificate = () => {
         const fetchedProducts = await Promise.all(
           productsData.data.map(async (productData) => {
             const product = await getProductById(productData.product_id);
-            console.log(workData.data.vendor_id, product.data.id);
-            // form ve formDetails alınıyor
             const form = await getFormByVendorIdAndProductId(workData.data.vendor_id, product.data.id);
-            setFormInfo(form);
-  
+            
+            setFormInfo(oldFormInfo => [...oldFormInfo, form]);
+
             if (form) {
               const formDetails = await getFormByFormId(form.form.id);
-              setFormDetail(formDetails);
+              setFormDetail(oldFormDetail => [...oldFormDetail, formDetails]);
             }
   
             return product.data;
@@ -44,6 +43,7 @@ const QRCertificate = () => {
   
         setProducts(fetchedProducts);
       }
+
       const certificatesData = await getCertificatesByWorkId(work_id);
       if (certificatesData) {
         setCertificates(certificatesData.data);
@@ -78,12 +78,9 @@ const QRCertificate = () => {
   
     await createQualityControlEntry(qualityControlData);
   };
-  
-
 
   const handleSend = async () => {
     try {
-      // Yeni bir work step oluşturun
       const workStepData = {
         work_id: work.data.id,
         step_name: 'Quality Control',
@@ -94,11 +91,15 @@ const QRCertificate = () => {
   
       const newWorkStep = await createWorkStep(workStepData);
 
-      if (formDetail && formDetail.steps) {
-        for (const step of formDetail.steps) {
-          if (step.substeps) {
-            for (const substep of step.substeps) {
-              await sendSubstepData(substep);
+      if (formDetail.length > 0) {
+        for (const form of formDetail) {
+          if (form && form.steps) {
+            for (const step of form.steps) {
+              if (step.substeps) {
+                for (const substep of step.substeps) {
+                  await sendSubstepData(substep, form);
+                }
+              }
             }
           }
         }

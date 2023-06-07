@@ -19,7 +19,6 @@ const NewWork = () => {
   const searchParams = new URLSearchParams(location.search);
   const work_id = searchParams.get('work_id');
   const step_id = searchParams.get('step_id');
-  const [activeProductIndex, setActiveProductIndex] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +35,7 @@ const NewWork = () => {
         );
 
         setProducts(fetchedProducts);
+        console.log(fetchedProducts)
       }
     };
 
@@ -72,13 +72,6 @@ const NewWork = () => {
     // Revize işlemini gerçekleştirebilirsiniz
   };
 
-  const handleProductClick = (index) => {
-    if (activeProductIndex === index) {
-      setActiveProductIndex(null);
-    } else {
-      setActiveProductIndex(index);
-    }
-  };
   return (
     <div className="form-page-container">
       <h2 className="form-page-title">QR Control</h2>
@@ -113,13 +106,15 @@ const NewWork = () => {
             <div
               key={productIndex}
               className={`product`}
+              href={product.technicaldrawingurl}
             >
               <h3>
                 <FontAwesomeIcon icon={faFilePdf} className="info-icon" />
+                <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer">
                 {product.name}
+                </a>
               </h3>
               <div className="product-details">
-                <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer"></a>
               </div>
             </div>
           ))}

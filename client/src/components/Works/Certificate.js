@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {  getWorkById, createWorkStep,  updateWorkStepStatus,  getQRQuestionsByWorkId, getProductById} from './worksapi';
+import {  getWorkById, createWorkStep,  updateWorkStepStatus,  getQRQuestionsByWorkId, getProductById, getWorkProducts } from './worksapi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Certificate.css';
 
+
 const Certificate = () => {
   const [files, setFiles] = useState([]);
+  const [products, setProducts] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -21,17 +23,29 @@ const Certificate = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const work_id = searchParams.get('work_id');
-
+  
     const fetchData = async () => {
       const workData = await getWorkById(work_id);
       setWork(workData);
+      const productsData = await getWorkProducts(work_id);
 
-      const productData = await getProductById(workData.data.product_id);
-      setProduct(productData);
+      if (productsData) {
+        const fetchedProducts = await Promise.all(
+          productsData.data.map(async (productData) => {
+            const product = await getProductById(productData.product_id);
+
+            return product.data;
+          })
+        );
+
+        setProducts(fetchedProducts);
+        console.log(fetchedProducts)
+      }
     };
 
     fetchData();
   }, [location]);
+  
 
 
   const handleSend = async () => {
@@ -76,7 +90,7 @@ const Certificate = () => {
   };
 
   const handleContinueWithoutSending = () => {
-    navigate('/workorders');
+    
   };
 
   return (
