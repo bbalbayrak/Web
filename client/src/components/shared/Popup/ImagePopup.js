@@ -23,7 +23,13 @@ export default function ImagePopup({ onClose, imageList }) {
       <div className="popup-content" ref={popupContentRef}>
         <div className="image-container">
           {imageList.map((image, index) => (
-            <img key={index} src={image} alt={`Resim ${index}`} className="popup-image" />
+            <div key={index} className="image-item">
+              <img src={image} alt={`Resim ${index}`} className="popup-image" />
+              <div className="image-controls">
+                <button className="btn btn-approve">Onayla</button>
+                <button className="btn btn-reject">Reddet</button>
+              </div>
+            </div>
           ))}
         </div>
         <div className="close-button-container">
