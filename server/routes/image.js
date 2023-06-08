@@ -11,6 +11,11 @@ const routes = [
     path: "/api/quality_control/:quality_control_id/images",
     handler: imageControllers.getImagesByQualityControlId,
   },
+  {
+    method: "PUT",
+    path: "/api/images/:id",
+    handler: imageControllers.updateImageStatus,
+  },
 ];
 
 module.exports = routes;

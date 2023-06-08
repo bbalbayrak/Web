@@ -18,6 +18,14 @@ const Image = {
     );
     return result;
   },
+
+  updateStatus: async (id, status) => {
+    const result = await db.one(
+      `UPDATE ${Image.tableName} SET status = $1 WHERE id = $2 RETURNING *`,
+      [status, id]
+    );
+    return result;
+  },
 };
 
 module.exports = Image;
