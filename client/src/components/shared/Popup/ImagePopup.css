@@ -1,98 +1,111 @@
 .image-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .popup-content {
-    text-align: center;
-    width: auto;
-    max-width: 90%;
-    min-width: 300px;
-    max-height: 90%;
-    overflow-y: auto;
-    padding: 0;
-    margin: 0;
-    background-color: white;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-  
+
+.popup-content {
+  text-align: center;
+  width: auto;
+  max-width: 90%;
+  min-width: 300px;
+  max-height: 90%;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .image-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  gap: 2%;
 }
-  
-  .image-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 20%;
-    margin: 1%;
+
+.image-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+max-width: 20%;
+margin: 1%;
+}
+
+.popup-image {
+  width: 100%;
+  height: auto;
+}
+
+.popup-image.status-approved {
+  border: 3px solid green;
+}
+
+.popup-image.status-rejected {
+  border: 3px solid red;
+}
+
+.popup-image.status-unknown {
+  border: 3px solid grey;
+}
+
+.image-controls {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.btn-approve,
+.btn-reject {
+  margin-top: 10px;
+  padding: 5px 10px;
+  color: white;
+  cursor: pointer;
+  border: none;
+  font-size: 0.8rem;
+}
+
+.btn-approve {
+  background-color: green;
+}
+
+.btn-reject {
+  background-color: red;
+}
+
+.close-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.popup-close {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.popup-close:hover {
+  background-color: #ff3333;
+}
+
+@media (min-width: 768px) {
+  .popup-content {
+    max-width: 80%;
+    margin: auto;
   }
-  
-  .popup-image {
-    width: 100%;
-    height: auto;
-  }
-  
-  .image-controls {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-  }
-  
-  .btn-approve,
-  .btn-reject {
-    margin-top: 10px;
-    padding: 5px 10px;
-    color: white;
-    cursor: pointer;
-    border: none;
-  }
-  
-  .btn-approve {
-    background-color: green;
-  }
-  
-  .btn-reject {
-    background-color: red;
-  }
-  
-  .close-button-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .popup-close {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .popup-close:hover {
-    background-color: #ff3333;
-  }
-  
-  @media (min-width: 768px) {
-    .popup-content {
-      max-width: 80%;
-      margin: auto;
-    }
-  }
-  
+}

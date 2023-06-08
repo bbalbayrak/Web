@@ -17,11 +17,17 @@ const ProductSegment = ({ product, vendorId, work_id }) => {
   const openImagePopup = async (substepId) => {
     const images = await fetchImages(substepId);
     if (images && images.data.length > 0) {
-      const imageList = images.data.map(imgData => imgData.image_url);
+      const imageList = images.data.map(imgData => ({
+        url: imgData.image_url,
+        id: imgData.id,
+        status: imgData.status
+      }));
+
       setImageList(imageList);
       setImagePopup(true);
     }
   };
+  
   
 
   const fetchImages = async (substepId) => {
