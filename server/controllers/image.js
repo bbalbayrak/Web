@@ -19,3 +19,13 @@ exports.getImagesByQualityControlId = async (req, res) => {
     res.status(500).send({ message: "Error retrieving images", error: error.message });
   }
 };
+
+exports.updateImageStatus = async (req, res) => {
+  try {
+    const { id, status } = req.body;
+    const updatedImage = await Image.updateStatus(id, status);
+    res.status(200).send({ message: "Image status updated successfully", image: updatedImage });
+  } catch (error) {
+    res.status(500).send({ message: "Error updating image status", error: error.message });
+  }
+};

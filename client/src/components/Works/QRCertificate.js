@@ -29,19 +29,23 @@ const QRCertificate = () => {
           productsData.data.map(async (productData) => {
             const product = await getProductById(productData.product_id);
             const form = await getFormByVendorIdAndProductId(workData.data.vendor_id, product.data.id);
-            
+            console.log("products",product);
+            console.log("forms", form);
             setFormInfo(oldFormInfo => [...oldFormInfo, form]);
 
             if (form) {
               const formDetails = await getFormByFormId(form.form.id);
               setFormDetail(oldFormDetail => [...oldFormDetail, formDetails]);
+              console.log("formDetails", formDetails);
             }
-  
+            
             return product.data;
-          })
+            }
+          )
         );
-  
+        
         setProducts(fetchedProducts);
+        console.log("fetchedProducts", fetchedProducts);
       }
 
       const certificatesData = await getCertificatesByWorkId(work_id);
@@ -55,7 +59,7 @@ const QRCertificate = () => {
 
   const sendSubstepData = async (substep) => {
     const qualityControlData = {
-      form_id: formInfo.form.id,
+      form_id: substep.form_id,
       substep_id: substep.id,
       step_name: substep.step_name, 
       name: substep.name, 
@@ -72,12 +76,14 @@ const QRCertificate = () => {
       measured_value_1: null,
       measured_value_2: null,
       measured_value_3: null,
-      work_id: work.data.id,
+      work_id: substep.work_id,
       sample_quantity: substep.sample_quantity
     };
   
+    console.log('qualityControlData:', qualityControlData);  // eklediğimiz log
+  
     await createQualityControlEntry(qualityControlData);
-  };
+};
 
   const handleSend = async () => {
     try {
@@ -91,20 +97,21 @@ const QRCertificate = () => {
   
       const newWorkStep = await createWorkStep(workStepData);
 
-      if (formDetail.length > 0) {
-        for (const form of formDetail) {
-          if (form && form.steps) {
-            for (const step of form.steps) {
-              if (step.substeps) {
-                for (const substep of step.substeps) {
-                  await sendSubstepData(substep, form);
-                }
-              }
-            }
-          }
-        }
-      }
-
+      formDetail.forEach((form, index) => {
+          form.steps.forEach(step => {
+              step.substeps.forEach(async substep => {
+                  if (formInfo[index] && formInfo[index].form) {
+                      console.log('form_id:', formInfo[index].form.id);  // eklediğimiz log
+                      await sendSubstepData({
+                          ...substep,
+                          form_id: formInfo[index].form.id,
+                          work_id: work.data.id
+                      });
+                  }
+              });
+          });
+      });
+    
       await updateWorkStepStatus(step_id, 'Closed');
   
       navigate(`/workorders`);
