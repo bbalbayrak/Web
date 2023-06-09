@@ -34,7 +34,18 @@ const WorkOrders = () => {
       navigate(`/quality-control?work_id=${work_id}&step_id=${step_id}`);
     }
   };
-
+  const formatDate = (timestamp) => {
+    let date = new Date(timestamp);
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = ("0" + date.getHours()).slice(-2);
+    let minutes = ("0" + date.getMinutes()).slice(-2);
+    let seconds = ("0" + date.getSeconds()).slice(-2);
+    return day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+  };
+  
+  
   return (
     <div className="work-orders-container">
       <h1 className="work-orders-title">Work Orders</h1>
@@ -60,7 +71,7 @@ const WorkOrders = () => {
                 <td>{workOrder.id}</td>
                 <td>{workOrder.work_id}</td>
                 <td>{workOrder.step_name}</td>
-                <td>{workOrder.timestamp}</td>
+                <td>{formatDate(workOrder.timestamp)}</td>
                 <td>{workOrder.state}</td>
                 <td>{workOrder.status}</td>
                 <td>
