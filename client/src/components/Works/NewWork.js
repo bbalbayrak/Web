@@ -106,17 +106,17 @@ const NewWork = () => {
             <div
               key={productIndex}
               className={`product`}
-              href={product.technicaldrawingurl}
             >
               <h3>
                 <FontAwesomeIcon icon={faFilePdf} className="info-icon" />
-                <a href={product.technicaldrawingurl} target="_blank" rel="noopener noreferrer">
-                {product.name}
+                <a href={`https://drive.google.com/viewerng/viewer?embedded=true&url=${product.technicaldrawingurl}`} target="_blank" rel="noopener noreferrer">
+                  {product.name}
                 </a>
               </h3>
               <div className="product-details">
               </div>
             </div>
+
           ))}
       </div>
 
