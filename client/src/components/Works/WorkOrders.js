@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './WorkOrders.css';
+import { getWorkById } from './worksapi';
 
 const WorkOrders = () => {
   const [workOrders, setWorkOrders] = useState([]);
@@ -14,7 +15,18 @@ const WorkOrders = () => {
   const fetchWorkOrders = async () => {
     try {
       const response = await axios.get('https://portal-test.yenaengineering.nl/api/worksteps/Open');
-      setWorkOrders(response.data.data);
+      console.log(response.data.data)
+      const workOrdersData = await Promise.all(
+        response.data.data.map(async (workOrder) => {
+          const workData = await getWorkById(workOrder.work_id);
+          return {
+            ...workOrder,
+            order_number: workData.data.order_number,
+            project_number: workData.data.project_number,
+          };
+        })
+      );
+      setWorkOrders(workOrdersData);
     } catch (error) {
       // console.error('Work orders alınamadı:', error);
     }
@@ -58,6 +70,8 @@ const WorkOrders = () => {
             <tr>
               <th>ID</th>
               <th>Work ID</th>
+              <th>Order Number</th>
+              <th>Project Number</th>
               <th>Step Name</th>
               <th>Timestamp</th>
               <th>State</th>
@@ -70,6 +84,8 @@ const WorkOrders = () => {
               <tr key={workOrder.id}>
                 <td>{workOrder.id}</td>
                 <td>{workOrder.work_id}</td>
+                <td>{workOrder.order_number}</td>
+                <td>{workOrder.project_number}</td>
                 <td>{workOrder.step_name}</td>
                 <td>{formatDate(workOrder.timestamp)}</td>
                 <td>{workOrder.state}</td>
