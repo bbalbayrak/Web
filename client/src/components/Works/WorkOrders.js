@@ -23,6 +23,9 @@ const WorkOrders = () => {
             ...workOrder,
             order_number: workData.data.order_number,
             project_number: workData.data.project_number,
+            vendor_id: workData.data.vendor_id,
+            inspector_id: workData.data.inspector_id,
+            
           };
         })
       );
@@ -72,6 +75,8 @@ const WorkOrders = () => {
               <th>Work ID</th>
               <th>Order Number</th>
               <th>Project Number</th>
+              <th>Vendor</th>
+              <th>Inspector</th>
               <th>Step Name</th>
               <th>Timestamp</th>
               <th>State</th>
@@ -86,6 +91,8 @@ const WorkOrders = () => {
                 <td>{workOrder.work_id}</td>
                 <td>{workOrder.order_number}</td>
                 <td>{workOrder.project_number}</td>
+                <td>{workOrder.vendor_id}</td>
+                <td>{workOrder.inspector_id}</td>
                 <td>{workOrder.step_name}</td>
                 <td>{formatDate(workOrder.timestamp)}</td>
                 <td>{workOrder.state}</td>
