@@ -17,6 +17,8 @@ const QRCertificate = () => {
   const work_id = searchParams.get('work_id');
   const step_id = searchParams.get('step_id');
 
+  const [hasNoFormInfo, setHasNoFormInfo] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       const workData = await getWorkById(work_id);
@@ -29,24 +31,28 @@ const QRCertificate = () => {
           productsData.data.map(async (productData) => {
             const product = await getProductById(productData.product_id);
             const form = await getFormByVendorIdAndProductId(workData.data.vendor_id, product.data.id);
+      
+            if (!form || !form.form) {
+              setHasNoFormInfo(true);
+              return product.data;
+            }
+            
             console.log("products",product);
             console.log("forms", form);
             setFormInfo(oldFormInfo => [...oldFormInfo, form]);
-
-            if (form) {
-              const formDetails = await getFormByFormId(form.form.id);
-              setFormDetail(oldFormDetail => [...oldFormDetail, formDetails]);
-              console.log("formDetails", formDetails);
-            }
-            
+      
+            const formDetails = await getFormByFormId(form.form.id);
+            setFormDetail(oldFormDetail => [...oldFormDetail, formDetails]);
+            console.log("formDetails", formDetails);
+                  
             return product.data;
-            }
-          )
+          })
         );
-        
+              
         setProducts(fetchedProducts);
         console.log("fetchedProducts", fetchedProducts);
       }
+      
 
       const certificatesData = await getCertificatesByWorkId(work_id);
       if (certificatesData) {
@@ -130,6 +136,11 @@ const QRCertificate = () => {
   return (
     <div className="qr-form-page-container">
       <h2 className="qr-heading">QR Certificate</h2>
+      {hasNoFormInfo && (
+        <div className="alert alert-warning">
+          No ITP form has been prepared yet.
+        </div>
+      )}
       <div className="qr-certificates-container">
         <h3 className="qr-subheading">Sertifikalar</h3>
         <ul className="qr-certificates-list">
@@ -145,7 +156,7 @@ const QRCertificate = () => {
           ))}
         </ul>
       </div>
-      <button onClick={handleSend} className="qr-btn qr-btn-primary">
+      <button onClick={handleSend} className="qr-btn qr-btn-primary" disabled={hasNoFormInfo}>
         Send
       </button>
     </div>
