@@ -2,15 +2,38 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './WorkOrders.css';
-import { getWorkById } from './worksapi';
+import { getWorkById, getVendors, getUsers } from './worksapi';
 
 const WorkOrders = () => {
   const [workOrders, setWorkOrders] = useState([]);
+  const [vendors, setVendors] = useState([]);
+  const [inspectors, setInspectors] = useState([]);
   let navigate = useNavigate();
 
   useEffect(() => {
     fetchWorkOrders();
+    fetchVendors();
+    fetchInspectors();
   }, []);
+
+  const fetchVendors = async () => {
+    try {
+      const response = await getVendors();
+      setVendors(response.data);
+    } catch (error) {
+      // console.error('Error fetching vendors:', error);
+    }
+  };
+
+  const fetchInspectors = async () => {
+    try {
+      const response = await getUsers();
+      const inspectorRes = response.data.filter(user => user.role === 'Inspector');
+      setInspectors(inspectorRes);
+    } catch (error) {
+      // console.error('Error fetching inspectors:', error);
+    }
+  };
 
   const fetchWorkOrders = async () => {
     try {
@@ -25,7 +48,6 @@ const WorkOrders = () => {
             project_number: workData.data.project_number,
             vendor_id: workData.data.vendor_id,
             inspector_id: workData.data.inspector_id,
-            
           };
         })
       );
@@ -49,6 +71,7 @@ const WorkOrders = () => {
       navigate(`/quality-control?work_id=${work_id}&step_id=${step_id}`);
     }
   };
+
   const formatDate = (timestamp) => {
     let date = new Date(timestamp);
     let day = ("0" + date.getDate()).slice(-2);
@@ -59,8 +82,17 @@ const WorkOrders = () => {
     let seconds = ("0" + date.getSeconds()).slice(-2);
     return day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
   };
-  
-  
+
+  const getVendorName = (vendorId) => {
+    const vendor = vendors.find(v => v.id === vendorId);
+    return vendor ? vendor.name : "Unknown Vendor";
+  };
+
+  const getInspectorName = (inspectorId) => {
+    const inspector = inspectors.find(i => i.id === inspectorId);
+    return inspector ? inspector.name : "Unknown Inspector";
+  };
+
   return (
     <div className="work-orders-container">
       <h1 className="work-orders-title">Work Orders</h1>
@@ -91,8 +123,8 @@ const WorkOrders = () => {
                 <td>{workOrder.work_id}</td>
                 <td>{workOrder.order_number}</td>
                 <td>{workOrder.project_number}</td>
-                <td>{workOrder.vendor_id}</td>
-                <td>{workOrder.inspector_id}</td>
+                <td>{getVendorName(workOrder.vendor_id)}</td>
+                <td>{getInspectorName(workOrder.inspector_id)}</td>
                 <td>{workOrder.step_name}</td>
                 <td>{formatDate(workOrder.timestamp)}</td>
                 <td>{workOrder.state}</td>
