@@ -74,7 +74,7 @@ const NewWork = () => {
 
   return (
     <div className="form-page-container">
-      <h2 className="form-page-title">QR Control</h2>
+      <h2 className="form-page-title">New Work</h2>
       {work && (
         <div className="work-details">
           <h3>Work Details</h3>
