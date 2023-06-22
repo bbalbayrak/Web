@@ -60,4 +60,7 @@
   .qr-btn:hover {
     background-color: #0062cc;
   }
-  
+  .alert-warning{
+    color: red;
+    font-size: 2rem;
+  }
