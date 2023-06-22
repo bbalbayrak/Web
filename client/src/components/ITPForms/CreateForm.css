@@ -1,9 +1,8 @@
 .measurement-table {
   width: 80%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin: 20px auto;
   table-layout: fixed;
-  margin-left: 14%;
 }
 
 .measurement-table th,
