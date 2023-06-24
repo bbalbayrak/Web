@@ -97,7 +97,7 @@ export const renderFinalPartMeasurement = ({
                 </div>
               </td>
               <td>
-                <img src={row.example_visual_url || require('../shared/default_image.png')} alt="" className="thumbnail-image" />
+                <img src={row.example_visual_url || require('..//../shared/default_image.png')} alt="" className="thumbnail-image" />
               </td>
             </tr>
           ))}

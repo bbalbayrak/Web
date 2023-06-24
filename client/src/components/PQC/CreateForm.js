@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getVendors, getProducts } from '../Works/worksapi';
-import "./CreateForm.css"
+import "./createForm.css"
 import { segments } from './renderSegmentContent';
 import { renderSegmentContent } from './renderSegmentContent';
 import { initialFormState, fetchItems, handleFormChange, saveForm, handleDragOver } from './pqc_utils';

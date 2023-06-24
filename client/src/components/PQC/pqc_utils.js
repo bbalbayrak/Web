@@ -1,5 +1,5 @@
 import { createOrUpdateForm } from './formapi';
-import { segments } from './Segments';
+import { segments } from './renderSegmentContent';
 
 export const initialFormState = {
     product_id: null,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './app/store';
 import "./App.css";
 import HamburgerMenu from "./components/shared/navbar/HamburgerMenu";
 import Login from "./components/Login/Login";
@@ -9,7 +9,7 @@ import Customers from "./components/Customers/Customers";
 import { BrowserRouter as Router, Route, Link, Routes, BrowserRouter } from "react-router-dom";
 import Home from "./components/Home/Home";
 import FormsPage from "./components/PQC/FormsPage";
-import FormEdit from "./components/PQC/FormEdit";
+import FormEdit from "./components/PQC/editForm";
 import UploadForm from './components/FormsPage/UploadForm';
 import Gallery from "./components/Gallery/gallery";
 import WorkOrders from "./components/Works/WorkOrders";
@@ -24,7 +24,7 @@ import NewWork from "./components/Works/NewWork";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
 import CreateVendor from "./components/Vendors/CreateVendor";
 import CreateCustomer from "./components/Customers/CreateCustomer";
-import FormCreate from "./components/PQC/CreateForm";
+import FormCreate from "./components/PQC/createForm";
 import Transfers from "./components/Transfers/Transfers";
 import TransfersDetail from "./components/Transfers/TransfersDetail";
 function App() {
