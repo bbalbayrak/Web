@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getVendors, getProducts } from '../Works/worksapi';
 import "./CreateForm.css"
-import { segments } from './Segments';
+import { segments } from './renderSegmentContent';
 import { renderSegmentContent } from './renderSegmentContent';
 import { initialFormState, fetchItems, handleFormChange, saveForm, handleDragOver } from './pqc_utils';
-import { addRow, handleInputChange, handleFileUpload, handleDrop, handleFileSelect } from './rowDetail';
+import { addRow, handleInputChange, handleDrop, handleFileSelect } from './rowDetail';
 
 const FormCreate = () => {
   const [form, setForm] = useState(initialFormState);
@@ -62,7 +62,7 @@ const FormCreate = () => {
             {segments.map((segment) => (
               <button
                 key={segment.order}
-                type="button" // Bu satırı ekleyin
+                type="button"
                 onClick={() => handleSegmentClick(segment.order)}
                 className={activeSegment === segment.order ? 'active' : ''}
               >

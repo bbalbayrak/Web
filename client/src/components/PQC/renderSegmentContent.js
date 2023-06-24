@@ -1,8 +1,16 @@
-import { renderSubPartDimensiol } from "./renderSubPartDimensiol";
-import { renderFinalPartMeasurement } from "./renderFinalPartMeasurement";
-import { renderPaintReport } from "./renderPaintReport";
-import { renderQoatingReport } from "./renderQoatingReport";
-import { renderProductPackingStandart } from "./renderProductPackingStandart";
+import { renderSubPartDimensiol } from "./Segments/renderSubPartDimensiol";
+import { renderFinalPartMeasurement } from "./Segments/renderFinalPartMeasurement";
+import { renderPaintReport } from "./Segments/renderPaintReport";
+import { renderQoatingReport } from "./Segments/renderQoatingReport";
+import { renderProductPackingStandart } from "./Segments/renderProductPackingStandart";
+
+export const segments = [
+  { name: "Sub - Part Dimensiol", order: 1 },
+  { name: "Final Part Measurement", order: 2 },
+  { name: "Paint Report", order: 3 },
+  { name: "Qoating Report", order: 4 },
+  { name: "Product Packing Standart", order: 5 },
+];
 
 export const renderSegmentContent = ({
     activeSegment,
