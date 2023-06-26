@@ -3,10 +3,10 @@ const db = require("../config/db");
 const QualityControl = {
   tableName: "quality_control",
 
-  create: async (form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity) => {
+  create: async (form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity, row_number) => {
     const result = await db.one(
-      `INSERT INTO ${QualityControl.tableName} (form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) RETURNING *`,
-      [form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity]
+      `INSERT INTO ${QualityControl.tableName} (form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity, row_number) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING *`,
+      [form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity, row_number]
     );
     return result;
   },

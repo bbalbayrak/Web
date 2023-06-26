@@ -83,7 +83,8 @@ const QRCertificate = () => {
       measured_value_2: null,
       measured_value_3: null,
       work_id: substep.work_id,
-      sample_quantity: substep.sample_quantity
+      sample_quantity: substep.sample_quantity,
+      row_number: substep.row_number
     };
   
     console.log('qualityControlData:', qualityControlData);  // eklediğimiz log

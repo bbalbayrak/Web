@@ -41,9 +41,9 @@ function reformatResponse(response) {
 
 exports.createQualityControl = async (req, res) => {
   try {
-    const { form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity } = req.body;
+    const { form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity, row_number } = req.body;
 
-    const qualityControl = await QualityControl.create(form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity );
+    const qualityControl = await QualityControl.create(form_id, step_name, name, technical_drawing_numbering, tools, description, actual_dimension, lower_tolerance, upper_tolerance, example_visual_url, status, type, image_id, substep_id, measured_value_1, measured_value_2, measured_value_3, work_id, sample_quantity, row_number );
 
     res.status(201).send({ message: "Quality control entry created successfully", qualityControl });
   } catch (error) {
