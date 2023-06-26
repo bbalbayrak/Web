@@ -40,7 +40,8 @@ exports.createOrUpdateForm = async (req, res) => {
               substep.example_visual_url,
               substep.status,
               substep.type,
-              substep.sample_quantity
+              substep.sample_quantity,
+              substep.row_number
             );
           } else {
             await FormSubstep.create(
@@ -56,7 +57,8 @@ exports.createOrUpdateForm = async (req, res) => {
               substep.example_visual_url,
               substep.status,
               substep.type,
-              substep.sample_quantity
+              substep.sample_quantity,
+              substep.row_number
             );
           }
         }

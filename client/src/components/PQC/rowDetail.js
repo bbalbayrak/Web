@@ -1,6 +1,7 @@
 import { uploadImageToAzure } from "./formapi";
 
   export const addRow = (rows, setRows) => () => {
+    console.log("rowDetail: ",rows)
     const newRow = {
       row_number: rows.length + 1,
       name: '',

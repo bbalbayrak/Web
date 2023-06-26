@@ -8,6 +8,8 @@ export const renderFinalPartMeasurement = ({
   addRow,
   saveForm,
 }) => {
+  console.log("renderFinal forms:", form)
+  console.log("rendeFinal Rows:",rows)
   if (!form) return null;
     return (
       <div>
@@ -103,8 +105,8 @@ export const renderFinalPartMeasurement = ({
           ))}
         </tbody>
       </table>
-      <button type="button" onClick={addRow}>Satır Ekle</button>
-      <button type="button" onClick={saveForm}>Kaydet</button>
+        <button type="button" onClick={addRow}>Satır Ekle</button>
+        <button type="button" onClick={() => saveForm(form, rows)}>Kaydet</button>
       </div>
     );
   };

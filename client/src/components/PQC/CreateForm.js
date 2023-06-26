@@ -12,8 +12,6 @@ const FormCreate = () => {
   const [products, setProducts] = useState([]);
   const [activeSegment, setActiveSegment] = useState(1);
   const [rows, setRows] = useState([]);
-  const [formSaved, setFormSaved] = useState(false);
-  const [fileUrl, setFileUrl] = useState(null);
 
   useEffect(() => {
     fetchItems(getVendors, setVendors);
@@ -80,7 +78,7 @@ const FormCreate = () => {
             handleDrop: handleDrop(rows, setRows),
             handleFileSelect: handleFileSelect(rows, setRows),
             addRow: addRow(rows, setRows),
-            saveForm: saveForm(form, setForm, rows, setRows, formSaved, setFormSaved),
+            saveForm: saveForm(form, rows),
           })}
         </div>
       </form>

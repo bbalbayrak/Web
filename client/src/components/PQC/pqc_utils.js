@@ -28,8 +28,12 @@ export const initialFormState = {
     e.preventDefault();
   };
   
-  export const saveForm = (form, rows, setFormSaved) => async () => {
+  export const saveForm = (form, rows) => async () => {
+    console.log("FFFFF", form)
+    console.log("XxXxXxXxX",rows);
     const postData = {
+      ...(form.id && { id: form.id }),
+      id: form.id,
       product_id: form.product_id,
       vendor_id: form.vendor_id,
       steps: segments.map((segment, index) => ({
@@ -46,6 +50,7 @@ export const initialFormState = {
             upper_tolerance,
             sample_quantity,
             example_visual_url,
+            row_number
           } = row;
           return {
             ...(id && { id }),
@@ -57,15 +62,15 @@ export const initialFormState = {
             upper_tolerance,
             sample_quantity,
             example_visual_url,
-            status: "active"
+            row_number
           };
         }) : [],
       })),
     };
-  
+
     try {
+      console.log("postData:", postData)
       await createOrUpdateForm(postData);
-      setFormSaved(true);
     } catch (error) {
       throw new Error(`Error saving form: ${error}`);
     }

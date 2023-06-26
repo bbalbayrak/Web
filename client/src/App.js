@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Provider } from 'react-redux';
-import store from './app/store';
 import "./App.css";
 import HamburgerMenu from "./components/shared/navbar/HamburgerMenu";
 import Login from "./components/Login/Login";
@@ -31,7 +29,6 @@ function App() {
   const [showMenu, setShowMenu] = useState(true);
 
   return (
-    <Provider store={store}>
       <BrowserRouter>
         <div className="App">
         <HamburgerMenu showMenu={showMenu} />
@@ -62,7 +59,6 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
-    </Provider>
   );
 }
 

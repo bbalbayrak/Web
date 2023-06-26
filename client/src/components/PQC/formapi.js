@@ -29,7 +29,7 @@ export const getFormById = async (id) => {
 
 export const createOrUpdateForm = async (formData) => {
   const apiUrl = 'https://portal-test.yenaengineering.nl/api/forms';
-
+  
   const body = {
     ...formData,
     steps: formData.steps.map((step, index) => ({
@@ -47,11 +47,13 @@ export const createOrUpdateForm = async (formData) => {
           : [],
     })),
   };
+  console.log("sssss",formData.id)
 
   if (formData.id) {
+    console.log("sssss",formData.id)
     body.form_id = formData.id;
   }
-
+  console.log("createofasdsa",body)
   await fetch(apiUrl, {
     method: 'POST',
     headers: {

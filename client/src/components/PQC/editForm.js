@@ -34,7 +34,7 @@ const FormEdit = () => {
           setForm(formData);
           setFormSaved(false);
         } catch (error) {
-          // console.error('Error fetching form:', error);
+          
         }
       };
       fetchData();
@@ -79,7 +79,7 @@ const FormEdit = () => {
                 handleDrop: handleDrop(rows, setRows),
                 handleFileSelect: handleFileSelect(rows, setRows),
                 addRow: addRow(rows, setRows),
-                saveForm: saveForm(form, setForm, rows, setRows, formSaved, setFormSaved),
+                saveForm: saveForm(form, rows),
               })}
           </div>
         </div>
