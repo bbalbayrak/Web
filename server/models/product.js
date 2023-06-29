@@ -46,7 +46,16 @@ const Product = {
     });
     return result;
   },
-  // Diğer CRUD işlemleri (güncelleme, silme vb.) için gerekli fonksiyonları buraya ekleyebilirsin.
+
+  findOrCreate: async (odooid, name) => {
+    let product = await db.oneOrNone(`SELECT * FROM ${Product.tableName} WHERE odooid = $1`, [odooid]);
+
+    if (!product) {
+      product = await db.one(`INSERT INTO ${Product.tableName} (odooid, name) VALUES ($1, $2) RETURNING *`, [odooid, name]);
+    }
+
+    return product;
+  },
 };
 
 module.exports = Product;

@@ -33,7 +33,16 @@ const Customer = {
     const result = await db.oneOrNone(`SELECT * FROM ${Customer.tableName} WHERE id = $1`, [id]);
     return result ? result.name : null;
   },  
+  
+  findOrCreate: async (odooid, name) => {
+    let customer = await db.oneOrNone(`SELECT * FROM ${Customer.tableName} WHERE odooid = $1`, [odooid]);
 
+    if (!customer) {
+      customer = await db.one(`INSERT INTO ${Customer.tableName} (odooid, name) VALUES ($1, $2) RETURNING *`, [odooid, name]);
+    }
+
+    return customer;
+  },
 };
 
 module.exports = Customer;

@@ -35,6 +35,15 @@ const Vendor = {
     });
     return result;
   },
+  findOrCreate: async (odooid, name) => {
+    let vendor = await db.oneOrNone(`SELECT * FROM ${Vendor.tableName} WHERE odooid = $1`, [odooid]);
+
+    if (!vendor) {
+      vendor = await db.one(`INSERT INTO ${Vendor.tableName} (odooid, name) VALUES ($1, $2) RETURNING *`, [odooid, name]);
+    }
+
+    return vendor;
+  },
 };
 
 module.exports = Vendor;

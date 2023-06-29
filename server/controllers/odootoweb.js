@@ -1,15 +1,27 @@
+// server\controllers\odootoweb.js
 const axios = require('axios');
-const Work = require("../models/work");
+const OdooToWebWork = require("../models/odootoweb");
+const Vendor = require("../models/vendor");
+const Customer = require("../models/customer");
+const Product = require("../models/product");
 const API_URL = "https://portal-test.yenaengineering.nl/api";
 
 exports.createWork = async (req, reply) => {
   try {
-    const { order_number, project_number, vendor_id, customer_id, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_name, creation_date } = req.body;
-    const newWork = await Work.create(order_number, project_number, vendor_id, customer_id, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_name, creation_date);
+    const { order_number, project_number, vendor_id, vendor_name, customer_id, customer_name, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_name, creation_date, order_id } = req.body;
+
+    // Check and create vendor, customer and product if they do not exist
+    const vendor = await Vendor.findOrCreate(vendor_id, vendor_name);
+    const customer = await Customer.findOrCreate(customer_id, customer_name);
+    for (let productData of req.body.ControlForms) {
+      await Product.findOrCreate(productData.id, productData.name);
+    }
+
+    const newWork = await OdooToWebWork.create(order_number, project_number, vendor_id, customer_id, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_name, creation_date, order_id);
 
     // For each product, make a request to create a new WorkProduct
-    for (let productId of req.body.ControlForms) {
-      await axios.post(`${API_URL}/workproducts`, { work_id: newWork.id, product_id: productId });
+    for (let productData of req.body.ControlForms) {
+      await axios.post(`${API_URL}/workproducts`, { work_id: newWork.id, product_id: productData.id });
     }
 
     // After all WorkProducts have been created, create a new WorkStep
