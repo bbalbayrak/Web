@@ -99,7 +99,7 @@ const WorkOrders = () => {
   };
 
   const getInspectorName = inspectorId => {
-    const inspector = inspectors.find(i => i.id === inspectorId);
+    const inspector = inspectors.find(i => i.odooid === inspectorId);
     return inspector ? inspector.name : 'Unknown Inspector';
   };
 
