@@ -25,11 +25,11 @@ const Form = {
     const result = await db.any(`
       SELECT forms.id, products.name as product_name, vendors.name as vendor_name
       FROM ${Form.tableName}
-      INNER JOIN products ON forms.product_id = products.id
+      INNER JOIN products ON forms.product_id = products.odooid
       INNER JOIN vendors ON forms.vendor_id = vendors.id
     `);
     return result;
-  },  
+  },
 
   findByVendorIdAndProductId: async (vendor_id, product_id) => {
     const result = await db.oneOrNone(
