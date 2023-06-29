@@ -96,7 +96,7 @@ const NewWork = () => {
           </div>
           <div className="work-detail-row">
             <p className="work-detail">Status: {work.data.status}</p>
-            <p className="work-detail">Creator: {work.data.creator_id}</p>
+            <p className="work-detail">Creator: {work.data.creator_name}</p>
           </div>
         </div>
       )}

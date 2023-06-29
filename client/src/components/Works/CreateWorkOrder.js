@@ -25,7 +25,7 @@ const CreateWorkOrder = () => {
     work_type: 'Order',
     state: '',
     status: '',
-    creator_id: 1,
+    creator_name: null,
     creation_date: new Date().toISOString(),
   });
   const [selectedProducts, setSelectedProducts] = useState([]);
