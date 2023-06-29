@@ -38,8 +38,8 @@ export const getWorkById = async (work_id) => {
     return data;
   };
 
-export const getProductById = async (product_id) => {
-    const response = await fetch(`${API_URL}/products/${product_id}`);
+  export const getProductByOdooId = async (odooid) => {
+    const response = await fetch(`${API_URL}/products/${odooid}`);
     const data = await response.json();
     return data;
   };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {  getWorkById, createWorkStep,  updateWorkStepStatus,  getQRQuestionsByWorkId, getProductById, getWorkProducts } from './worksapi';
+import {  getWorkById, createWorkStep,  updateWorkStepStatus,  getQRQuestionsByWorkId, getProductByOdooId, getWorkProducts } from './worksapi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Certificate.css';
 
@@ -32,7 +32,7 @@ const Certificate = () => {
       if (productsData) {
         const fetchedProducts = await Promise.all(
           productsData.data.map(async (productData) => {
-            const product = await getProductById(productData.product_id);
+            const product = await getProductByOdooId(productData.product_id);
 
             return product.data;
           })

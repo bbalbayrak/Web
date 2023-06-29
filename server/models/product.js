@@ -34,11 +34,11 @@ const Product = {
     return result;
   },
 
-  findById: async (id) => {
-    const result = await db.oneOrNone(`SELECT * FROM ${Product.tableName} WHERE id = $1`, [id]);
+  findByOdooId: async (odooid) => {
+    const result = await db.oneOrNone(`SELECT * FROM ${Product.tableName} WHERE odooid = $1`, [odooid]);
     return result;
   },
-
+  
   findByName: async (name) => {
     const result = await db.any("SELECT * FROM ${table:name} WHERE name ILIKE ${name}", {
       table: Product.tableName,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   getWorkById,
-  getProductById,
+  getProductByOdooId,
   getWorkProducts,
   createWorkStep,
   updateWorkStepStatus,
@@ -29,7 +29,8 @@ const NewWork = () => {
       if (productsData) {
         const fetchedProducts = await Promise.all(
           productsData.data.map(async (productData) => {
-            const product = await getProductById(productData.product_id);
+            const product = await getProductByOdooId(productData.product_id);
+            console.log(product)
             return product.data;
           })
         );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getWorkById, createWorkStep, updateWorkStepStatus, getProductById, getCertificatesByWorkId, getWorkProducts, getFormByVendorIdAndProductId, getFormByFormId, createQualityControlEntry } from './worksapi';
+import { getWorkById, createWorkStep, updateWorkStepStatus, getProductByOdooId, getCertificatesByWorkId, getWorkProducts, getFormByVendorIdAndProductId, getFormByFormId, createQualityControlEntry } from './worksapi';
 import "./QRCertificate.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +29,7 @@ const QRCertificate = () => {
       if (productsData) {
         const fetchedProducts = await Promise.all(
           productsData.data.map(async (productData) => {
-            const product = await getProductById(productData.product_id);
+            const product = await getProductByOdooId(productData.product_id);
             const form = await getFormByVendorIdAndProductId(workData.data.vendor_id, product.data.id);
       
             if (!form || !form.form) {

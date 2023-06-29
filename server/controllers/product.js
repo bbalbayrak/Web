@@ -2,7 +2,6 @@ const Product = require("../models/product");
 const Customer = require("../models/customer");
 const { uploadFile } = require("../utils/upload_azure");
 
-
 exports.createProduct = async (request) => {
   try {
     const { name, odooid, customerid } = request.body;
@@ -54,9 +53,9 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
-exports.getProductById = async (req, res) => {
+exports.getProductByOdooId = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findByOdooId(req.params.odooid);
 
     if (!product) {
       return res.status(404).send({

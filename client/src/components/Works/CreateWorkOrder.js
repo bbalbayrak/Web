@@ -168,7 +168,7 @@ const CreateWorkOrder = () => {
           >
             <option value="">Select Vendor</option>
             {vendors.map(vendor => (
-              <option key={vendor.id} value={vendor.id}>
+              <option key={vendor.odooid} value={vendor.odooid}>
                 {vendor.name}
               </option>
             ))}
@@ -185,7 +185,7 @@ const CreateWorkOrder = () => {
           >
             <option value="">Select Customer</option>
             {customers.map(customer => (
-              <option key={customer.id} value={customer.id}>
+              <option key={customer.odooid} value={customer.odooid}>
                 {customer.name}
               </option>
             ))}
@@ -251,7 +251,7 @@ const CreateWorkOrder = () => {
             className="cwo-form-control"
             onChange={handleProductChange}
             options={products.map(product => ({
-              value: product.id,
+              value: product.odooid,
               label: product.name,
             }))}
             isMulti

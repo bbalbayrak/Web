@@ -30,7 +30,7 @@ const routes = (fastify, options, done) => {
 
   fastify.get("/api/products", productControllers.getAllProducts);
   fastify.get("/api/products/search", productControllers.getProductsByName);
-  fastify.get("/api/products/:id", productControllers.getProductById);
+  fastify.get("/api/products/:odooid", productControllers.getProductByOdooId);
   // Diğer CRUD işlemleri (güncelleme, silme vb.) için gerekli yolları buraya ekleyebilirsin.
 
   done();
