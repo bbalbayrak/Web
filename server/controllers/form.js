@@ -93,7 +93,7 @@ exports.getForm = async (req, res) => {
       res.status(404).send({ message: "Form not found" });
       return;
     }
-    const product = await Product.findById(form.product_id);
+    const product = await Product.findByOdooId(form.product_id);
     const vendor = await Vendor.findById(form.vendor_id);
     res.status(200).send({
       form: {
@@ -179,7 +179,7 @@ exports.getAllForm = async (req, res) => {
       res.status(404).send({ message: "Form not found" });
       return;
     }
-    const product = await Product.findById(form.product_id);
+    const product = await Product.findByOdooId(form.product_id);
     const vendor = await Vendor.findById(form.vendor_id);
 
     const formSubsteps = await FormSubstep.findAllByFormId(formId);
