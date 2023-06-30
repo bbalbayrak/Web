@@ -1,13 +1,17 @@
 import axios from 'axios';
 
-const API_URL = "http://portal-test.yenaengineering.nl/api";
+const API_URL = "https://portal-test.yenaengineering.nl/api";
 
-// Tüm Muayene Planlarını almak için endpoint
-export const getAllInspectionPlans = () => {
-  return axios.get(`${API_URL}/inspectionplans`)
-    .then(response => response.data)
-    .catch(err => { throw err; });
-};
+export const getAllInspectionPlans = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/inspectionplans`);
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      // console.error('Error fetching forms:', error);
+      throw error;
+    }
+  };
 
 // Açık durumdaki Muayene Planlarını almak için endpoint
 export const getOpenInspectionPlans = () => {
