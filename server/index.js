@@ -16,6 +16,7 @@ const QualityControlRoutes = require("./routes/quality_control");
 const imageRoutes = require("./routes/image");
 const locationRoutes = require("./routes/location");
 const odootowebRoutes = require("./routes/odootoweb")
+const inspectionPlanRoutes = require("./routes/inspectionplan")
 
 const db = require('./config/db');
 
@@ -80,6 +81,10 @@ locationRoutes.forEach((route) => {
 });
 
 odootowebRoutes.forEach((route) => {
+  fastify.route(route);
+});
+
+inspectionPlanRoutes.forEach((route) => {
   fastify.route(route);
 });
 
