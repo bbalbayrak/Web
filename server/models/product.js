@@ -47,11 +47,11 @@ const Product = {
     return result;
   },
 
-  findOrCreate: async (odooid, name) => {
+  findOrCreate: async (odooid, name, customer_name, customer_id) => {
     let product = await db.oneOrNone(`SELECT * FROM ${Product.tableName} WHERE odooid = $1`, [odooid]);
 
     if (!product) {
-      product = await db.one(`INSERT INTO ${Product.tableName} (odooid, name) VALUES ($1, $2) RETURNING *`, [odooid, name]);
+      product = await db.one(`INSERT INTO ${Product.tableName} (odooid, name, customer, customer_id) VALUES ($1, $2, $3, $4) RETURNING *`, [odooid, name, customer_name, customer_id]);
     }
 
     return product;

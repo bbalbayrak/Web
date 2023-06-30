@@ -25,6 +25,8 @@ import CreateCustomer from "./components/Customers/CreateCustomer";
 import FormCreate from "./components/PQC/createForm";
 import Transfers from "./components/Transfers/Transfers";
 import TransfersDetail from "./components/Transfers/TransfersDetail";
+import Inspection from "./components/InspectionPlan/Inspection";
+
 function App() {
   const [showMenu, setShowMenu] = useState(true);
 
@@ -56,6 +58,7 @@ function App() {
             <Route path="/create-form" element={<RouteGuard setShowMenu={setShowMenu}><FormCreate /></RouteGuard>}/>
             <Route path="/transfers" element={<RouteGuard setShowMenu={setShowMenu}><Transfers /></RouteGuard>}/>
             <Route path="//transfers/:name" element={<RouteGuard setShowMenu={setShowMenu}><TransfersDetail /></RouteGuard>}/>
+            <Route path="/inspection-plan" element={<RouteGuard setShowMenu={setShowMenu}><Inspection /></RouteGuard>}/>
           </Routes>
         </div>
       </BrowserRouter>

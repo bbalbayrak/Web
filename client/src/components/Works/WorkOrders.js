@@ -94,12 +94,12 @@ const WorkOrders = () => {
   };
 
   const getVendorName = vendorId => {
-    const vendor = vendors.find(v => v.id === vendorId);
+    const vendor = vendors.find(v => v.odooid === vendorId);
     return vendor ? vendor.name : 'Unknown Vendor';
   };
 
   const getInspectorName = inspectorId => {
-    const inspector = inspectors.find(i => i.odooid === inspectorId);
+    const inspector = inspectors.find(i => i.id === inspectorId);
     return inspector ? inspector.name : 'Unknown Inspector';
   };
 

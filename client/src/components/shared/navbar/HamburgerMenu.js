@@ -101,6 +101,11 @@ const HamburgerMenu = ({ showMenu = true }) => {
           </Link>
           )}
           {isLoggedIn && (
+          <Link className="link" to="/inspection-plan">
+            Inspection Plan
+          </Link>
+          )}
+          {isLoggedIn && (
             <Link className="link" to="/" onClick={handleLogout}>
               Çıkış Yap
             </Link>

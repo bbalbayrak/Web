@@ -14,7 +14,7 @@ exports.createWork = async (req, reply) => {
     const vendor = await Vendor.findOrCreate(vendor_id, vendor_name);
     const customer = await Customer.findOrCreate(customer_id, customer_name);
     for (let productData of req.body.ControlForms) {
-      await Product.findOrCreate(productData.id, productData.name);
+      await Product.findOrCreate(productData.id, productData.name, customer_name, customer_id);
     }
 
     const newWork = await OdooToWebWork.create(order_number, project_number, vendor_id, customer_id, quality_responsible_id, inspector_id, foreman_id, work_type, state, status, creator_name, creation_date, order_id);

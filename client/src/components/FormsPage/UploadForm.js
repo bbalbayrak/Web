@@ -29,6 +29,7 @@ const UploadForm = () => {
     fetchProducts();
   }, []);
 
+  // <FontAwesomeIcon icon={faFilePdf} size="2x" /> {getFileNameFromUrl(product.guideurl) || 'Kılavuz'}
   const getFileNameFromUrl = (url) => {
     return url.substring(url.lastIndexOf('/') + 1);
   };
@@ -143,7 +144,7 @@ const UploadForm = () => {
                 </td>
                 <td>
                   <a href={`https://drive.google.com/viewerng/viewer?embedded=true&url=${product.guideurl}`} target="_blank" rel="noopener noreferrer">
-                    <FontAwesomeIcon icon={faFilePdf} size="2x" /> {getFileNameFromUrl(product.guideurl) || 'Kılavuz'}
+                    <FontAwesomeIcon icon={faFilePdf} size="2x" /> {product.guideurl || 'Kılavuz'}
                   </a>
                 </td>
               </tr>
