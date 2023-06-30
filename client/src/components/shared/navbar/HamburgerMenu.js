@@ -100,10 +100,27 @@ const HamburgerMenu = ({ showMenu = true }) => {
             Transferler
           </Link>
           )}
-          {isLoggedIn && (
-          <Link className="link" to="/inspection-plan">
-            Inspection Plan
-          </Link>
+                    {isLoggedIn && (
+            <li className="link">
+              Inspection Plan
+                <ul className="sub-menu">
+                <li>
+                    <Link className="link" to="/inspection-plan">
+                      All Inspection
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="link" to="/open-inspection">
+                      Open Inspection
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="link" to="/closed-inspection">
+                      Close Inspection
+                    </Link>
+                  </li>
+                </ul>
+            </li>
           )}
           {isLoggedIn && (
             <Link className="link" to="/" onClick={handleLogout}>

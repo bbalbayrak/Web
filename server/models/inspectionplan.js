@@ -10,6 +10,29 @@ const InspectionPlan = {
     );
     return result;
   },
+
+  getAll: async () => {
+    const result = await db.any(`SELECT * FROM ${InspectionPlan.tableName}`);
+    return result;
+  },
+  
+  getByState: async (state) => {
+    const result = await db.any(`SELECT * FROM ${InspectionPlan.tableName} WHERE state = $1`, [state]);
+    return result;
+  },
+  
+  delete: async (id) => {
+    await db.none(`DELETE FROM ${InspectionPlan.tableName} WHERE id = $1`, [id]);
+  },
+
+  update: async (id, fieldsToUpdate) => {
+    const setClauses = Object.keys(fieldsToUpdate).map((fieldName, index) => `${fieldName} = $${index + 2}`).join(', ');
+    const query = `UPDATE ${InspectionPlan.tableName} SET ${setClauses} WHERE id = $1 RETURNING *`;
+    const values = [id, ...Object.values(fieldsToUpdate)];
+    const result = await db.one(query, values);
+    return result;
+  },
+  
 };
 
 module.exports = InspectionPlan;
