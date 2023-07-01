@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./App.css";
-import HamburgerMenu from "./components/shared/navbar/HamburgerMenu";
 import Login from "./components/Login/Login";
 import Vendors from "./components/Vendors/Vendors";
 import Customers from "./components/Customers/Customers";
@@ -36,7 +35,7 @@ function App() {
   return (
       <BrowserRouter>
         <div className="App">
-        <HamburgerMenu showMenu={showMenu} />
+        <TopBar showMenu={showMenu} />
           <Routes>
             <Route exact path="/" element={<Login setShowMenu={setShowMenu} />}/>
             <Route path="/customers" element={<RouteGuard setShowMenu={setShowMenu}><Customers /></RouteGuard>}/>
@@ -44,8 +43,8 @@ function App() {
             <Route path="/home" element={<RouteGuard setShowMenu={setShowMenu}><Home /></RouteGuard>}/>
             <Route path="/vendors" element={<RouteGuard setShowMenu={setShowMenu}><Vendors /></RouteGuard>}/>
             <Route path="/products" element={<RouteGuard setShowMenu={setShowMenu}><UploadForm /></RouteGuard>}/>
-            <Route path="/forms" element={<RouteGuard setShowMenu={setShowMenu}><FormsPage /></RouteGuard>}/>
-            <Route path="/forms/:id" element={<RouteGuard setShowMenu={setShowMenu}><FormEdit /></RouteGuard>}/>
+            <Route path="/pqc" element={<RouteGuard setShowMenu={setShowMenu}><FormsPage /></RouteGuard>}/>
+            <Route path="/pqc/:id" element={<RouteGuard setShowMenu={setShowMenu}><FormEdit /></RouteGuard>}/>
             <Route path='/gallery' element={<RouteGuard setShowMenu={setShowMenu}><Gallery /></RouteGuard>}/>
             <Route path='/workorders' element={<RouteGuard setShowMenu={setShowMenu}><WorkOrders /></RouteGuard>}/>
             <Route path='/newworks' element={<RouteGuard setShowMenu={setShowMenu}><NewWork /></RouteGuard>}/>
@@ -64,7 +63,6 @@ function App() {
             <Route path="/inspection-plan" element={<RouteGuard setShowMenu={setShowMenu}><Inspection /></RouteGuard>}/>
             <Route path="/open-inspection" element={<RouteGuard setShowMenu={setShowMenu}><OpenInspection /></RouteGuard>}/>
             <Route path="/closed-inspection" element={<RouteGuard setShowMenu={setShowMenu}><ClosedInspection /></RouteGuard>}/>
-            <Route path="/topbar" element={<RouteGuard setShowMenu={setShowMenu}><TopBar /></RouteGuard>}/>
 
           </Routes>
         </div>
