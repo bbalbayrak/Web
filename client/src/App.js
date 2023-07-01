@@ -28,6 +28,7 @@ import TransfersDetail from "./components/Transfers/TransfersDetail";
 import Inspection from "./components/InspectionPlan/Inspection";
 import OpenInspection from "./components/InspectionPlan/openInspection"
 import ClosedInspection from "./components/InspectionPlan/closedInspection"
+import { TopBar } from "./components/TopBarMenu/TopBar";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
@@ -59,10 +60,12 @@ function App() {
             <Route path="/create-customer" element={<RouteGuard setShowMenu={setShowMenu}><CreateCustomer /></RouteGuard>}/>
             <Route path="/create-form" element={<RouteGuard setShowMenu={setShowMenu}><FormCreate /></RouteGuard>}/>
             <Route path="/transfers" element={<RouteGuard setShowMenu={setShowMenu}><Transfers /></RouteGuard>}/>
-            <Route path="//transfers/:name" element={<RouteGuard setShowMenu={setShowMenu}><TransfersDetail /></RouteGuard>}/>
+            <Route path="/transfers/:name" element={<RouteGuard setShowMenu={setShowMenu}><TransfersDetail /></RouteGuard>}/>
             <Route path="/inspection-plan" element={<RouteGuard setShowMenu={setShowMenu}><Inspection /></RouteGuard>}/>
             <Route path="/open-inspection" element={<RouteGuard setShowMenu={setShowMenu}><OpenInspection /></RouteGuard>}/>
             <Route path="/closed-inspection" element={<RouteGuard setShowMenu={setShowMenu}><ClosedInspection /></RouteGuard>}/>
+            <Route path="/topbar" element={<RouteGuard setShowMenu={setShowMenu}><TopBar /></RouteGuard>}/>
+
           </Routes>
         </div>
       </BrowserRouter>
