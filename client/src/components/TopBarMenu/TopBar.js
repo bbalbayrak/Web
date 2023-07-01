@@ -1,7 +1,4 @@
 import menuItems from './MenuItems';
-import { Quality } from './Quality';
-import { Logistics } from './Logistics';
-import { Accounting } from './Accounting';
 import { SubMenuItem } from './SubMenuItem';
 
 export function TopBar() {
