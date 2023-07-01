@@ -32,7 +32,7 @@ const Customers = () => {
       <table className="customers-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th className="customers-th">ID</th>
             <th>İsim</th>
             <th>Odooid</th>
           </tr>

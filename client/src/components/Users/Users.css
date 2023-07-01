@@ -1,8 +1,10 @@
 .users-page-container {
     padding: 2rem;
-    margin-left: 16%;
   }
   
+  .users-page-container h1 {
+    font-size: 3rem;
+  }
   .create-user-link {
     display: inline-block;
     margin-bottom: 1rem;

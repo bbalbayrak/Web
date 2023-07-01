@@ -1,12 +1,15 @@
 .upload-form-container {
-  width: 82%;
-  margin-left: auto;
+  width: 80%;
+  margin: 0 auto;
   padding-top: 2rem;
+  display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .form-table {
-  width: 100%;
+  width: 80%;
+  margin: auto;
   border-collapse: collapse;
 }
 
@@ -27,10 +30,14 @@
 }
 
 .products-form {
+  width: 80%;
+  margin: auto;
   padding-top: 2rem;
 }
 
 .product-list {
+  margin-top: 5rem;
+  padding-bottom: 2rem;
   border-collapse: collapse;
   width: 100%;
 }
@@ -59,31 +66,17 @@
   margin-bottom: 1rem;
   border-radius: 0.25rem;
 }
-
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) { 
-  .upload-form-container {
-    width: 90%;
-  }
+.products-form button[type="submit"] {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
 }
-
-/* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) { 
-  .upload-form-container {
-    width: 86%;
-  }
-}
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) { 
-  .upload-form-container {
-    width: 84%;
-  }
-}
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) { 
-  .upload-form-container {
-    width: 82%;
-  }
+.products-form input[type="text"],
+.products-form input[type="number"],
+.products-form select {
+  border: 1px solid #ccc;
 }

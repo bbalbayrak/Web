@@ -1,16 +1,20 @@
 .customers-container {
   padding: 1.25rem;
-  margin-left: 16%;
 }
 
 .header-container {
-  display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.25rem;
 }
 
+.header-container h1{
+  margin: auto;
+  font-size: 3rem;
+}
+
 .add-customer-button {
+  margin-left: 75%;
   background-color: #007bff;
   border: none;
   color: white;
@@ -21,7 +25,8 @@
 }
 
 .customers-table {
-  width: 100%;
+  width: 80%;
+  margin: auto;
   border-collapse: collapse;
 }
 
@@ -44,30 +49,3 @@
   background-color: #eee;
 }
 
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) { 
-  .customers-container {
-    margin-left: 5%;
-  }
-}
-
-/* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) { 
-  .customers-container {
-    margin-left: 10%;
-  }
-}
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) { 
-  .customers-container {
-    margin-left: 12%;
-  }
-}
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) { 
-  .customers-container {
-    margin-left: 16%;
-  }
-}
