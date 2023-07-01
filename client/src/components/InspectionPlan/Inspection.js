@@ -11,10 +11,9 @@ const Inspection = () => {
     'Product Name',
     'Order Number',
     'Quantity',
-    'Mid Control Responsible',
-    'Mid Control Date',
-    'Final Control Responsible',
-    'Final Control Date',
+    'Control Type',
+    'Control Responsible',
+    'Control Date',
     'Delivery Date',
     'Status',
     'State',
@@ -55,10 +54,9 @@ const Inspection = () => {
                 <td>{plan.product_name}</td>
                 <td>{plan.order_number}</td>
                 <td>{plan.quantity}</td>
-                <td>{plan.mid_control_responsible}</td>
-                <td>{plan.mid_control_date}</td>
-                <td>{plan.final_control_responsible}</td>
-                <td>{plan.final_control_date}</td>
+                <td>{plan.control_type}</td>
+                <td>{plan.control_responsible}</td>
+                <td>{plan.control_date}</td>
                 <td>{plan.delivery_date}</td>
                 <td>{plan.status}</td>
                 <td>{plan.state}</td>
