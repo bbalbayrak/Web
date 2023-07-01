@@ -3,14 +3,13 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    width: 80%;
-    margin: auto;
+    font-family: 'Arial', sans-serif;
 }
   
 .inspection-title {
     font-size: 2rem;
     color: #4a4a4a;
-    margin-bottom: 2rem;
+    margin-bottom: 20px;
 }
   
 .create-button {

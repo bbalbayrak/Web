@@ -3,15 +3,15 @@ import axios from 'axios';
 const API_URL = "https://portal-test.yenaengineering.nl/api";
 
 export const getAllInspectionPlans = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/inspectionplans`);
-      console.log(response.data)
-      return response.data;
-    } catch (error) {
-      // console.error('Error fetching forms:', error);
-      throw error;
-    }
-  };
+  try {
+    const response = await axios.get(`${API_URL}/inspectionplans`);
+    console.log(response.data)
+    return response.data.inspectionPlans;  // Update this line
+  } catch (error) {
+    // console.error('Error fetching forms:', error);
+    throw error;
+  }
+};
 
 // Açık durumdaki Muayene Planlarını almak için endpoint
 export const getOpenInspectionPlans = () => {
@@ -39,4 +39,15 @@ export const updateInspectionPlan = (id, updateData) => {
   return axios.put(`${API_URL}/inspectionplans/${id}`, updateData)
     .then(response => response.data)
     .catch(err => { throw err; });
+};
+
+export const getAllUsers = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/allusers`);
+    console.log(response.data)
+    return response.data.data;  // Update this line
+  } catch (error) {
+    // console.error('Error fetching forms:', error);
+    throw error;
+  }
 };

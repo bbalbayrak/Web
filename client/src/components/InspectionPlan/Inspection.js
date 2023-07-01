@@ -1,38 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import './Inspection.css';
-import { getAllInspectionPlans } from './inspectionapi';
+import { getAllInspectionPlans, getAllUsers } from './inspectionapi';
+import { columns, control_type } from './enumerated_inspection';
+import { fetchItems } from './inspection_utils';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Inspection = () => {
   const [inspectionPlans, setInspectionPlans] = useState([]);
-
-  const columns = [
-    'Vendor Name',
-    'Customer Name',
-    'Product Name',
-    'Order Number',
-    'Quantity',
-    'Control Type',
-    'Control Responsible',
-    'Control Date',
-    'Delivery Date',
-    'Status',
-    'State',
-  ];
+  const [users, setUsers] = useState([]);
+  const [descriptions, setDescriptions] = useState({});
+  const [documents, setDocuments] = useState({});
 
   useEffect(() => {
-    fetchInspectionPlans();
+    fetchItems(getAllInspectionPlans, setInspectionPlans);
+    fetchItems(getAllUsers, setUsers)
   }, []);
 
-  const fetchInspectionPlans = async () => {
-    try {
-      const response = await getAllInspectionPlans();
-      setInspectionPlans(response.inspectionPlans);
-      console.log(response.inspectionPlans)
-    } catch (error) {
-      // console.error('Could not fetch inspection plans:', error);
-    }
+  const handleDateChange = (date, id) => {
+    setInspectionPlans(prevPlans =>
+      prevPlans.map(plan => 
+        plan.id === id ? {...plan, control_date: date} : plan
+      )
+    );
   };
 
+  const handleDescriptionChange = (e, id) => {
+    setDescriptions(prev => ({...prev, [id]: e.target.value}))
+  }
+
+  const handleFileChange = (e, id) => {
+    setDocuments(prev => ({...prev, [id]: e.target.files[0]}))
+  }
 
   return (
     <div className="inspection-container">
@@ -49,15 +48,41 @@ const Inspection = () => {
           <tbody>
             {inspectionPlans.map(plan => (
               <tr key={plan.id}>
-                <td>{plan.vendor_name}</td>
-                <td>{plan.customer_name}</td>
+                <td>{plan.vendor_name.substring(0, 12)}</td>
+                <td>{plan.customer_name.substring(0, 12)}</td>
                 <td>{plan.product_name}</td>
                 <td>{plan.order_number}</td>
                 <td>{plan.quantity}</td>
-                <td>{plan.control_type}</td>
-                <td>{plan.control_responsible}</td>
-                <td>{plan.control_date}</td>
-                <td>{plan.delivery_date}</td>
+                <td>
+                  <select value={plan.control_type}>
+                    {control_type.map((type, index) => (
+                      <option key={index} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <select value={plan.control_responsible}>
+                    {users.map((user, index) => (
+                      <option key={index} value={user.id}>{user.name}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <DatePicker
+                    selected={plan.control_date ? new Date(plan.control_date) : null}
+                    onChange={date => handleDateChange(date, plan.id)}
+                    dateFormat="dd.MM.yyyy"
+                  />
+                </td>
+                <td>
+                  <textarea
+                    placeholder="Description"
+                    style={{resize: 'vertical'}}
+                    value={descriptions[plan.id] || ''}
+                    onChange={e => handleDescriptionChange(e, plan.id)}
+                  />
+                </td>
+                <td>{plan.delivery_date ? new Date(plan.delivery_date).toLocaleDateString('tr-TR') : ""}</td>
                 <td>{plan.status}</td>
                 <td>{plan.state}</td>
               </tr>
@@ -67,7 +92,6 @@ const Inspection = () => {
       </div>
     </div>
   );
-  };
-  
-  export default Inspection;
-  
+};
+
+export default Inspection;
