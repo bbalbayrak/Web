@@ -3,8 +3,6 @@ import './Inspection.css';
 import { getAllInspectionPlans, getAllUsers } from './inspectionapi';
 import { columns, control_type } from './enumerated_inspection';
 import { fetchItems } from './inspection_utils';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const Inspection = () => {
   const [inspectionPlans, setInspectionPlans] = useState([]);
@@ -68,7 +66,8 @@ const Inspection = () => {
                   </select>
                 </td>
                 <td>
-                  <DatePicker
+                  <input
+                    type='date'
                     selected={plan.control_date ? new Date(plan.control_date) : null}
                     onChange={date => handleDateChange(date, plan.id)}
                     dateFormat="dd.MM.yyyy"
