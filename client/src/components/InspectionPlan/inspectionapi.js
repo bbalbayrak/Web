@@ -13,34 +13,6 @@ export const getAllInspectionPlans = async () => {
   }
 };
 
-// Açık durumdaki Muayene Planlarını almak için endpoint
-export const getOpenInspectionPlans = () => {
-  return axios.get(`${API_URL}/inspectionplans/open`)
-    .then(response => response.data)
-    .catch(err => { throw err; });
-};
-
-// Kapalı durumdaki Muayene Planlarını almak için endpoint
-export const getClosedInspectionPlans = () => {
-  return axios.get(`${API_URL}/inspectionplans/closed`)
-    .then(response => response.data)
-    .catch(err => { throw err; });
-};
-
-// Bir Muayene Planını silmek için endpoint
-export const deleteInspectionPlan = (id) => {
-  return axios.delete(`${API_URL}/inspectionplans/${id}`)
-    .then(response => response.data)
-    .catch(err => { throw err; });
-};
-
-// Bir Muayene Planını güncellemek için endpoint
-export const updateInspectionPlan = (id, updateData) => {
-  return axios.put(`${API_URL}/inspectionplans/${id}`, updateData)
-    .then(response => response.data)
-    .catch(err => { throw err; });
-};
-
 export const getAllUsers = async () => {
   try {
     const response = await axios.get(`${API_URL}/allusers`);
@@ -51,3 +23,17 @@ export const getAllUsers = async () => {
     throw error;
   }
 };
+
+export const updateInspectionPlan = async (plan) => {
+  const data = {
+    control_type: plan.control_type,
+    control_responsible: plan.control_responsible,
+    control_date: plan.control_date,
+    status: 'waiting',
+  };
+  await axios.put(`${API_URL}/inspectionplans/${plan.id}`, data);
+}
+
+export const deleteInspectionPlan = async (id) => {
+  await axios.delete(`${API_URL}/inspectionplans/${id}`);
+}

@@ -1,34 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import './Inspection.css';
-import { getAllInspectionPlans, getAllUsers } from './inspectionapi';
 import { columns, control_type } from './enumerated_inspection';
-import { fetchItems } from './inspection_utils';
+import { fetchItems, handleDateChange, handleControlTypeChange, handleControlResponsibleChange, handleDescriptionChange } from './inspection_utils';
+import { updateInspectionPlan, deleteInspectionPlan, getAllInspectionPlans, getAllUsers } from './inspectionapi';
 
 const Inspection = () => {
   const [inspectionPlans, setInspectionPlans] = useState([]);
   const [users, setUsers] = useState([]);
   const [descriptions, setDescriptions] = useState({});
-  const [documents, setDocuments] = useState({});
 
   useEffect(() => {
     fetchItems(getAllInspectionPlans, setInspectionPlans);
     fetchItems(getAllUsers, setUsers)
   }, []);
 
-  const handleDateChange = (date, id) => {
-    setInspectionPlans(prevPlans =>
-      prevPlans.map(plan => 
-        plan.id === id ? {...plan, control_date: date} : plan
-      )
-    );
-  };
-
-  const handleDescriptionChange = (e, id) => {
-    setDescriptions(prev => ({...prev, [id]: e.target.value}))
+  const handleTickClick = async (id) => {
+    const plan = inspectionPlans.find(plan => plan.id === id);
+    updateInspectionPlan(plan);
   }
 
-  const handleFileChange = (e, id) => {
-    setDocuments(prev => ({...prev, [id]: e.target.files[0]}))
+  const handleCrossClick = async (id) => {
+    deleteInspectionPlan(id);
+    setInspectionPlans(prevPlans => prevPlans.filter(plan => plan.id !== id));
   }
 
   return (
@@ -52,14 +45,20 @@ const Inspection = () => {
                 <td>{plan.order_number}</td>
                 <td>{plan.quantity}</td>
                 <td>
-                  <select value={plan.control_type}>
+                  <select 
+                    value={plan.control_type} 
+                    onChange={event => handleControlTypeChange(event, plan.id)} // here
+                  >
                     {control_type.map((type, index) => (
                       <option key={index} value={type}>{type}</option>
                     ))}
                   </select>
                 </td>
                 <td>
-                  <select value={plan.control_responsible}>
+                  <select 
+                    value={plan.control_responsible} 
+                    onChange={event => handleControlResponsibleChange(event, plan.id)} // and here
+                  >
                     {users.map((user, index) => (
                       <option key={index} value={user.id}>{user.name}</option>
                     ))}
@@ -68,9 +67,8 @@ const Inspection = () => {
                 <td>
                   <input
                     type='date'
-                    selected={plan.control_date ? new Date(plan.control_date) : null}
-                    onChange={date => handleDateChange(date, plan.id)}
-                    dateFormat="dd.MM.yyyy"
+                    value={plan.control_date ? new Date(plan.control_date).toISOString().split('T')[0] : ""}
+                    onChange={event => handleDateChange(event, plan.id)}
                   />
                 </td>
                 <td>
@@ -84,6 +82,10 @@ const Inspection = () => {
                 <td>{plan.delivery_date ? new Date(plan.delivery_date).toLocaleDateString('tr-TR') : ""}</td>
                 <td>{plan.status}</td>
                 <td>{plan.state}</td>
+                <td>
+                  <button onClick={() => handleTickClick(plan.id)}>✔️</button>
+                  <button onClick={() => handleCrossClick(plan.id)}>❌</button>
+                </td>
               </tr>
             ))}
           </tbody>
