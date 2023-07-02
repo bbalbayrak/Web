@@ -45,20 +45,14 @@ const Inspection = () => {
                 <td>{plan.order_number}</td>
                 <td>{plan.quantity}</td>
                 <td>
-                  <select 
-                    value={plan.control_type} 
-                    onChange={event => handleControlTypeChange(event, plan.id)} // here
-                  >
+                  <select value={plan.control_type}>
                     {control_type.map((type, index) => (
                       <option key={index} value={type}>{type}</option>
                     ))}
                   </select>
                 </td>
                 <td>
-                  <select 
-                    value={plan.control_responsible} 
-                    onChange={event => handleControlResponsibleChange(event, plan.id)} // and here
-                  >
+                  <select value={plan.control_responsible}>
                     {users.map((user, index) => (
                       <option key={index} value={user.id}>{user.name}</option>
                     ))}
@@ -67,8 +61,9 @@ const Inspection = () => {
                 <td>
                   <input
                     type='date'
-                    value={plan.control_date ? new Date(plan.control_date).toISOString().split('T')[0] : ""}
-                    onChange={event => handleDateChange(event, plan.id)}
+                    selected={plan.control_date ? new Date(plan.control_date) : null}
+                    onChange={date => handleDateChange(date, plan.id)}
+                    dateFormat="dd.MM.yyyy"
                   />
                 </td>
                 <td>
@@ -82,10 +77,6 @@ const Inspection = () => {
                 <td>{plan.delivery_date ? new Date(plan.delivery_date).toLocaleDateString('tr-TR') : ""}</td>
                 <td>{plan.status}</td>
                 <td>{plan.state}</td>
-                <td>
-                  <button onClick={() => handleTickClick(plan.id)}>✔️</button>
-                  <button onClick={() => handleCrossClick(plan.id)}>❌</button>
-                </td>
               </tr>
             ))}
           </tbody>
