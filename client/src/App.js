@@ -29,6 +29,7 @@ import OpenInspection from "./components/InspectionPlan/openInspection"
 import ClosedInspection from "./components/InspectionPlan/closedInspection"
 import { TopBar } from "./components/TopBarMenu/TopBar";
 
+
 function App() {
   const [showMenu, setShowMenu] = useState(true);
  
