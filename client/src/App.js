@@ -28,7 +28,7 @@ import Inspection from "./components/InspectionPlan/Inspection";
 import OpenInspection from "./components/InspectionPlan/openInspection"
 import ClosedInspection from "./components/InspectionPlan/closedInspection"
 import { TopBar } from "./components/TopBarMenu/TopBar";
-
+import LandingPage from "./components/LandingPage/LandingPage";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
@@ -64,6 +64,7 @@ function App() {
             <Route path="/inspection-plan" element={<RouteGuard setShowMenu={setShowMenu}><Inspection /></RouteGuard>}/>
             <Route path="/open-inspection" element={<RouteGuard setShowMenu={setShowMenu}><OpenInspection /></RouteGuard>}/>
             <Route path="/closed-inspection" element={<RouteGuard setShowMenu={setShowMenu}><ClosedInspection /></RouteGuard>}/>
+            <Route path="/landing-page" element={<RouteGuard setShowMenu={setShowMenu}><LandingPage /></RouteGuard>}/>
 
           </Routes>
         </div>
