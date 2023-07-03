@@ -56,3 +56,20 @@
   display: inline-block;
   font: inherit;
 }
+
+.segment-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.form-select {
+  border: 1px solid #ccc;
+}
+.segments .segment-button {
+  margin-right: 5px;
+}
+
+.segments .segment-button.active {
+  background-color: #007bff;
+  color: white;
+}
