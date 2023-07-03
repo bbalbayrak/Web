@@ -46,7 +46,7 @@ const FormsPage = () => {
               <td>{form.product_name}</td>
               <td>{form.vendor_name}</td>
               <td>
-                <Link to={`/forms/${form.id}`}>
+                <Link to={`/pqc/${form.id}`}>
                   <FontAwesomeIcon icon={faEdit} />
                 </Link>
               </td>

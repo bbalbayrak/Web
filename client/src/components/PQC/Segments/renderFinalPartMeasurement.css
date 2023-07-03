@@ -1,0 +1,8 @@
+.form-input {
+    border: 1px solid black;
+  }
+
+.addRow-button,
+.submit-button {
+  background-color: #3498db;
+}
