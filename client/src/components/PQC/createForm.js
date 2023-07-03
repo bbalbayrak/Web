@@ -35,7 +35,7 @@ const FormCreate = () => {
             >
               <option value="" disabled>Please Select Product</option>
               {products.map((product) => (
-                <option key={product.id} value={product.id}>
+                <option key={product.odooid} value={product.odooid}>
                   {product.name}
                 </option>
               ))}
