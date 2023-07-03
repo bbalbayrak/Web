@@ -38,10 +38,10 @@ const FormCreate = () => {
       <h2>Create New Form</h2>
       <form>
         <div>
-          <label htmlFor="product_odooid">Product:</label>
+          <label htmlFor="product_id">Product:</label>
           <select
-            name="product_odooid"
-            value={form.product_odooid || ''}
+            name="product_id"
+            value={form.product_id || ''}
             onChange={handleFormChange(form, setForm)}
             className="form-select"
           >
@@ -49,7 +49,7 @@ const FormCreate = () => {
               Please Select Product
             </option>
             {products.map(product => (
-              <option key={product.odooid} value={product.odooid} className="select-option">
+              <option key={product.id} value={product.odooid} className="select-option">
                 {product.name}
               </option>
             ))}

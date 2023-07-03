@@ -54,6 +54,10 @@
   align-items: center;
 }
 
+.card-info .title{
+  font-size: 1rem;
+}
+
 .number {
   font-size: 1.5rem;
   font-weight: bold;
