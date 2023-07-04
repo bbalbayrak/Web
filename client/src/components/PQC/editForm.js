@@ -79,7 +79,7 @@ const FormEdit = () => {
             {renderSegmentContent({
               activeSegment,
               form,
-              rows,
+              rows: rows.sort((a, b) => parseInt(a.row_number, 10) - parseInt(b.row_number, 10)), // sort rows just before they are rendered
               handleInputChange: handleInputChange(rows, setRows),
               handleDragOver,
               handleDrop: handleDrop(rows, setRows),
