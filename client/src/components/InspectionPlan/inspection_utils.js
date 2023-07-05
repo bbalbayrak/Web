@@ -7,6 +7,7 @@ export const fetchItems = async (getter, setter) => {
   }
 };
 
+
 export const handleDateChange = (event, id, setInspectionPlans) => {
   const date = event.target.value; // extract value from event
   setInspectionPlans(prevPlans =>
