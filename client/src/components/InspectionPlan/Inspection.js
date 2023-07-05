@@ -28,23 +28,30 @@ const Inspection = () => {
   const [descriptionControls, setDescriptionControls] = useState({});
 
   useEffect(() => {
-    fetchItems(getAllInspectionPlans, async (data) => { 
-      data.sort((a, b) => a.order_number.localeCompare(b.order_number));
+    const fetchData = async () => {
+      const plansData = await getAllInspectionPlans();
+      plansData.sort((a, b) => a.order_number.localeCompare(b.order_number));
+      setInspectionPlans(plansData);
+
+      const descriptionData = await getDescriptionControl();
       const descriptionControls = {};
-      for (let plan of data) {
-        try {
-          descriptionControls[plan.id] = await getDescriptionControl(plan.id);
-        } catch (error) {
-          console.error(`Failed to fetch description control for plan ${plan.id}:`, error);
-        }
+      for (let desc of descriptionData.data) {
+        descriptionControls[desc.inspectionplan_id] = desc.description;
       }
       setDescriptionControls(descriptionControls); 
-      setInspectionPlans(data);
+
+      const usersData = await getAllUsers();
+      setUsers(usersData);
+
+      const userRole = getUserRole();
+      setCurrentUserRole(userRole.role);
+      setCurrentUserId(userRole.user_id);
+    };
+
+    fetchData().catch(error => {
+      console.error("Failed to fetch data:", error);
     });
-    fetchItems(getAllUsers, setUsers);
-    const userRole = getUserRole();
-    setCurrentUserRole(userRole.role);
-    setCurrentUserId(userRole.user_id);
+
   }, [updateTrigger]);
   
   return (
@@ -116,8 +123,8 @@ const Inspection = () => {
                   <textarea
                     placeholder="Description"
                     style={{ resize: 'vertical' }}
-                    value={descriptions[plan.id] || ''}
-                    onChange={e => handleDescriptionChange(e, plan.id, setDescriptions)}
+                    value={descriptionControls[plan.id] || ''}
+                    onChange={e => handleDescriptionChange(e, plan.id, descriptionControls, setDescriptionControls)}
                   />
                 </td>
                 <td>

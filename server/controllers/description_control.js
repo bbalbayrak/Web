@@ -33,11 +33,9 @@ exports.createOrUpdateDescriptionControl = async (request) => {
   }
 };
 
-exports.getDescriptionControl = async (request) => {
+exports.getDescriptionControl = async () => {
   try {
-    const { inspectionplan_id } = request.params;
-
-    const result = await DescriptionControl.getByInspectionPlanId(inspectionplan_id);
+    const result = await DescriptionControl.getAll();
     return {
       status: "success",
       statusCode: 200,

@@ -19,13 +19,13 @@ const DescriptionControl = {
     return result;
   },
   
-  getByInspectionPlanId: async (inspectionplan_id) => {
-    const result = await db.oneOrNone(
-      `SELECT * FROM ${DescriptionControl.tableName} WHERE inspectionplan_id = $1`,
-      [inspectionplan_id]
+  getAll: async () => {
+    const result = await db.manyOrNone(
+      `SELECT * FROM ${DescriptionControl.tableName}`
     );
     return result;
-  },
+},
+
 
   update: async (inspectionplan_id, description, document_url, creator_id) => {
     const result = await db.one(

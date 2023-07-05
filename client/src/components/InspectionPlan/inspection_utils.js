@@ -57,10 +57,11 @@ export const handleControlResponsibleChange = (event, id, setInspectionPlans) =>
   );
 };
 
-export const handleDescriptionChange = (event, id, setDescriptions) => {
-  const newDescription = event.target.value;
-  setDescriptions(prevDescriptions => ({
-    ...prevDescriptions,
-    [id]: newDescription,
-  }));
+export const handleDescriptionChange = (event, planId, descriptionControls, setDescriptionControls) => {
+  const updatedDescriptions = {
+    ...descriptionControls,
+    [planId]: event.target.value
+  };
+  setDescriptionControls(updatedDescriptions);
 };
+

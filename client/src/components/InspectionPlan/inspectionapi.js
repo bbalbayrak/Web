@@ -69,9 +69,9 @@ export const createDescriptionControl = async (plan, file, description, currentU
   }
 };
 
-export const getDescriptionControl = async (inspectionplan_id) => {
+export const getDescriptionControl = async () => {
   try {
-    const response = await axios.get(`${API_URL}/description_controls/${inspectionplan_id}`);
+    const response = await axios.get(`${API_URL}/description_controls`);
     return response.data;
   } catch (error) {
     throw error;
