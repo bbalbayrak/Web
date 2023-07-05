@@ -28,29 +28,24 @@ const Inspection = () => {
   const [descriptionControls, setDescriptionControls] = useState({});
 
   useEffect(() => {
-    const fetchData = async () => {
-      const plansData = await getAllInspectionPlans();
-      plansData.sort((a, b) => a.order_number.localeCompare(b.order_number));
-      setInspectionPlans(plansData);
+    fetchItems(getAllInspectionPlans, async (data) => {
+      data.sort((a, b) => a.order_number.localeCompare(b.order_number));
 
       const descriptionData = await getDescriptionControl();
       const descriptionControls = {};
       for (let desc of descriptionData.data) {
         descriptionControls[desc.inspectionplan_id] = desc.description;
       }
+      
       setDescriptionControls(descriptionControls); 
-
-      const usersData = await getAllUsers();
-      setUsers(usersData);
-
-      const userRole = getUserRole();
-      setCurrentUserRole(userRole.role);
-      setCurrentUserId(userRole.user_id);
-    };
-
-    fetchData().catch(error => {
-      console.error("Failed to fetch data:", error);
+      setInspectionPlans(data);
     });
+    
+    fetchItems(getAllUsers, setUsers);
+
+    const userRole = getUserRole();
+    setCurrentUserRole(userRole.role);
+    setCurrentUserId(userRole.user_id);
 
   }, [updateTrigger]);
   
