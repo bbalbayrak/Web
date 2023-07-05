@@ -10,17 +10,33 @@ const routes = (fastify, options, done) => {
     async (request, reply) => {
       try {
         const document = request.file;
-  
+
         // Add the file to the request object
         request.body.documents = document;
-  
-        const result = await descriptionControlControllers.createDescriptionControl(request);
-        reply.code(201).send(result);
+
+        const result = await descriptionControlControllers.createOrUpdateDescriptionControl(request);
+        reply.code(result.statusCode).send(result);
       } catch (err) {
         console.error(err);
         reply.code(500).send({
           status: "error",
-          message: "Açıklama kontrolü oluşturulurken bir hata oluştu.",
+          message: "Açıklama kontrolü oluşturulurken/güncellenirken bir hata oluştu.",
+        });
+      }
+    }
+  );
+  
+  fastify.get(
+    "/api/description_controls/:inspectionplan_id",
+    async (request, reply) => {
+      try {
+        const result = await descriptionControlControllers.getDescriptionControl(request);
+        reply.code(200).send(result);
+      } catch (err) {
+        console.error(err);
+        reply.code(500).send({
+          status: "error",
+          message: "Açıklama kontrolü getirilirken bir hata oluştu.",
         });
       }
     }

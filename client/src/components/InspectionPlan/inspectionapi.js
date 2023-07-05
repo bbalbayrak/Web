@@ -43,5 +43,37 @@ export const getUserRole = () => {
 
   const decodedToken = jwt_decode(token);
   console.log(decodedToken);
-  return decodedToken.role; // Rol bilgisinin anahtarının "role" olduğunu varsayıyoruz. Token yapınıza bağlı olarak bu değişebilir.
+  return decodedToken;
+};
+
+export const createDescriptionControl = async (plan, file, description, currentUserId) => {
+  
+  const formData = new FormData();
+  formData.append('inspectionplan_id', plan.id);
+  formData.append('description', description);
+  formData.append('documents', file);
+  formData.append('creator_id', currentUserId);
+
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  };
+
+  try {
+    const response = await axios.post(`${API_URL}/description_controls`, formData, config);
+    return response.data;
+    
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getDescriptionControl = async (inspectionplan_id) => {
+  try {
+    const response = await axios.get(`${API_URL}/description_controls/${inspectionplan_id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
