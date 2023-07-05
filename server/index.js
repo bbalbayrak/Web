@@ -17,6 +17,7 @@ const imageRoutes = require("./routes/image");
 const locationRoutes = require("./routes/location");
 const odootowebRoutes = require("./routes/odootoweb")
 const inspectionPlanRoutes = require("./routes/inspectionplan")
+const descriptionControlRoutes =require("./routes/description_control")
 
 const db = require('./config/db');
 
@@ -87,6 +88,8 @@ odootowebRoutes.forEach((route) => {
 inspectionPlanRoutes.forEach((route) => {
   fastify.route(route);
 });
+
+fastify.register(descriptionControlRoutes);
 
 const start = async () => {
   try {
