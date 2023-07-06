@@ -27,7 +27,7 @@ const routes = (fastify, options, done) => {
   );
   
   fastify.get(
-    "/api/description_controls/",
+    "/api/description_controls",
     async (request, reply) => {
       try {
         const result = await descriptionControlControllers.getDescriptionControl(request);

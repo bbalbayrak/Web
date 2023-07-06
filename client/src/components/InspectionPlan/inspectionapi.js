@@ -6,9 +6,8 @@ const API_URL = 'https://portal-test.yenaengineering.nl/api';
 export const getAllInspectionPlans = async () => {
   try {
     const response = await axios.get(`${API_URL}/inspectionplans`);
-    return response.data.inspectionPlans; // Update this line
+    return response.data.inspectionPlans; 
   } catch (error) {
-    // console.error('Error fetching forms:', error);
     throw error;
   }
 };
@@ -16,9 +15,8 @@ export const getAllInspectionPlans = async () => {
 export const getAllUsers = async () => {
   try {
     const response = await axios.get(`${API_URL}/allusers`);
-    return response.data.data; // Update this line
+    return response.data.data;
   } catch (error) {
-    // console.error('Error fetching forms:', error);
     throw error;
   }
 };
@@ -33,6 +31,23 @@ export const updateInspectionPlan = async plan => {
   await axios.put(`${API_URL}/inspectionplans/${plan.id}`, data);
 };
 
+export const approveInspectionPlan = async (plan, description, continueApproval) => {
+  // Update the current plan
+  const updateData = {
+    status: 'approved',
+    state: continueApproval ? 'open' : 'closed'
+  };
+  await axios.put(`${API_URL}/inspectionplans/${plan.id}`, updateData);
+
+  if (continueApproval) {
+    const { id, ...planDetails } = plan;
+    planDetails.note = description;
+    console.log(planDetails)
+    await axios.post(`${API_URL}/inspectionplans`, planDetails);
+  }
+};
+
+
 export const deleteInspectionPlan = async id => {
   await axios.delete(`${API_URL}/inspectionplans/${id}`);
 };
@@ -40,9 +55,7 @@ export const deleteInspectionPlan = async id => {
 export const getUserRole = () => {
   const token = localStorage.getItem('token');
   if (!token) return null;
-
   const decodedToken = jwt_decode(token);
-  console.log(decodedToken);
   return decodedToken;
 };
 

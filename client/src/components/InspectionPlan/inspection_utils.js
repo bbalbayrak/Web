@@ -1,5 +1,6 @@
 import {
   updateInspectionPlan,
+  approveInspectionPlan,
   deleteInspectionPlan,
   createDescriptionControl
 } from './inspectionapi';
@@ -13,7 +14,7 @@ export const fetchItems = async (getter, setter) => {
   }
 };
 
-export const handleTickClick = async (id, inspectionPlans, descriptions, currentUserId, setUpdateTrigger) => {
+export const handleUpdateClick = async (id, inspectionPlans, descriptions, currentUserId, setUpdateTrigger) => {
   const plan = inspectionPlans.find(plan => plan.id === id);
 
   if (descriptions || plan.documents) {
@@ -22,6 +23,15 @@ export const handleTickClick = async (id, inspectionPlans, descriptions, current
   await updateInspectionPlan(plan);
   setUpdateTrigger(prevState => !prevState);
 };
+
+export const handleApproveClick = async (planId, inspectionPlans, description, setUpdateTrigger) => {
+
+  const plan = inspectionPlans.find(plan => plan.id === planId);
+  const continueApproval = window.confirm("Do you want to continue or finish? Click 'OK' to continue, 'Cancel' to finish");
+  await approveInspectionPlan(plan, description, continueApproval);
+  setUpdateTrigger(prev => !prev);
+};
+
 
 export const handleCrossClick = async (id, setInspectionPlans) => {
   if (window.confirm('Silmek istediğinize emin misiniz?')) {

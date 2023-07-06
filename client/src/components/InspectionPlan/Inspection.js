@@ -14,14 +14,14 @@ import {
   handleDateChange,
   handleControlTypeChange,
   handleDescriptionChange,
-  handleTickClick,
-  handleCrossClick
+  handleUpdateClick,
+  handleApproveClick,
+  handleCrossClick,
   } from './inspection_utils';
 
 const Inspection = () => {
   const [inspectionPlans, setInspectionPlans] = useState([]);
   const [users, setUsers] = useState([]);
-  const [descriptions, setDescriptions] = useState({});
   const [currentUserRole, setCurrentUserRole] = useState('');
   const [currentUserId, setCurrentUserId] = useState('');
   const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -133,18 +133,27 @@ const Inspection = () => {
                 <button
                     className="inspection-button"
                     onClick={() => {
-                      handleTickClick(plan.id, inspectionPlans, descriptions[plan.id], currentUserId, setUpdateTrigger);
+                      handleUpdateClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger);
+                      setUpdateTrigger(prev => !prev); 
                     }}
-                  >
-                    Update
-                  </button>
+                >
+                  Update
+                </button>
                   {currentUserRole === 'Quality Manager' && (
                     <>
-                      <button className="inspection-button">Approve</button>
+                      <button
+                          className="inspection-button"
+                          onClick={() => {
+                            handleApproveClick(plan.id, inspectionPlans, descriptionControls[plan.id], setUpdateTrigger);
+                            setUpdateTrigger(prev => !prev); 
+                          }}
+                      >
+                        Approve
+                      </button>
                       <button className="inspection-button">Reject</button>
                       <button
                         className="inspection-button"
-                        onClick={() => handleCrossClick(plan.id, setInspectionPlans)} // Remove extra function call
+                        onClick={() => handleCrossClick(plan.id, setInspectionPlans)} 
                       >
                         Delete
                       </button>
