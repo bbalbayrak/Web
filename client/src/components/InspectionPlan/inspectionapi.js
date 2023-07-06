@@ -12,6 +12,24 @@ export const getAllInspectionPlans = async () => {
   }
 };
 
+export const getOpenInspectionPlans = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/inspectionplans/open`);
+    return response.data.inspectionPlans; 
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getCloseInspectionPlans = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/inspectionplans/closed`);
+    return response.data.inspectionPlans; 
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getAllUsers = async () => {
   try {
     const response = await axios.get(`${API_URL}/allusers`);
@@ -26,7 +44,7 @@ export const updateInspectionPlan = async plan => {
     control_type: plan.control_type,
     control_responsible: plan.control_responsible,
     control_date: plan.control_date,
-    status: 'waiting',
+    status: 'Waiting',
   };
   await axios.put(`${API_URL}/inspectionplans/${plan.id}`, data);
 };
@@ -34,16 +52,16 @@ export const updateInspectionPlan = async plan => {
 export const approveInspectionPlan = async (plan, description, continueApproval) => {
   // Update the current plan
   const updateData = {
-    status: 'approved',
-    state: 'closed'
+    status: 'Approved',
+    state: 'Closed'
   };
   await axios.put(`${API_URL}/inspectionplans/${plan.id}`, updateData);
 
   if (continueApproval) {
     const { id, ...planDetails } = plan;
     planDetails.note = description;
-    planDetails.state = 'open'; 
-    planDetails.status = 'draft';  
+    planDetails.state = 'Open'; 
+    planDetails.status = 'Draft';  
     console.log([planDetails]);  
     await axios.post(`${API_URL}/inspectionplans`, [planDetails]);
   }
@@ -52,16 +70,16 @@ export const approveInspectionPlan = async (plan, description, continueApproval)
 export const rejectInspectionPlan = async (plan, description, continueApproval) => {
   // Update the current plan
   const updateData = {
-    status: 'rejected',
-    state: 'closed'
+    status: 'Rejected',
+    state: 'Closed'
   };
   await axios.put(`${API_URL}/inspectionplans/${plan.id}`, updateData);
 
   if (continueApproval) {
     const { id, ...planDetails } = plan;
     planDetails.note = description;
-    planDetails.state = 'open'; 
-    planDetails.status = 'draft';  
+    planDetails.state = 'Open'; 
+    planDetails.status = 'Draft';  
     console.log([planDetails]);  
     await axios.post(`${API_URL}/inspectionplans`, [planDetails]);
   }
