@@ -1,6 +1,7 @@
 import {
   updateInspectionPlan,
   approveInspectionPlan,
+  rejectInspectionPlan,
   deleteInspectionPlan,
   createDescriptionControl
 } from './inspectionapi';
@@ -24,14 +25,29 @@ export const handleUpdateClick = async (id, inspectionPlans, descriptions, curre
   setUpdateTrigger(prevState => !prevState);
 };
 
-export const handleApproveClick = async (planId, inspectionPlans, description, setUpdateTrigger) => {
-
+export const handleApproveClick = async (planId, inspectionPlans, description, currentUserId, setUpdateTrigger) => {
   const plan = inspectionPlans.find(plan => plan.id === planId);
+
+  if (description || plan.documents) {
+    await createDescriptionControl(plan, plan.documents, description, currentUserId); 
+  }
+
   const continueApproval = window.confirm("Do you want to continue or finish? Click 'OK' to continue, 'Cancel' to finish");
   await approveInspectionPlan(plan, description, continueApproval);
   setUpdateTrigger(prev => !prev);
 };
 
+export const handleRejectClick = async (planId, inspectionPlans, description, currentUserId, setUpdateTrigger) => {
+  const plan = inspectionPlans.find(plan => plan.id === planId);
+
+  if (description || plan.documents) {
+    await createDescriptionControl(plan, plan.documents, description, currentUserId); 
+  }
+
+  const continueApproval = window.confirm("Do you want to continue or finish? Click 'OK' to continue, 'Cancel' to finish");
+  await rejectInspectionPlan(plan, description, continueApproval);
+  setUpdateTrigger(prev => !prev);
+};
 
 export const handleCrossClick = async (id, setInspectionPlans) => {
   if (window.confirm('Silmek istediğinize emin misiniz?')) {

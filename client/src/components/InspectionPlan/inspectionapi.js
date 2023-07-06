@@ -35,18 +35,37 @@ export const approveInspectionPlan = async (plan, description, continueApproval)
   // Update the current plan
   const updateData = {
     status: 'approved',
-    state: continueApproval ? 'open' : 'closed'
+    state: 'closed'
   };
   await axios.put(`${API_URL}/inspectionplans/${plan.id}`, updateData);
 
   if (continueApproval) {
     const { id, ...planDetails } = plan;
     planDetails.note = description;
-    console.log(planDetails)
-    await axios.post(`${API_URL}/inspectionplans`, planDetails);
+    planDetails.state = 'open'; 
+    planDetails.status = 'draft';  
+    console.log([planDetails]);  
+    await axios.post(`${API_URL}/inspectionplans`, [planDetails]);
   }
 };
 
+export const rejectInspectionPlan = async (plan, description, continueApproval) => {
+  // Update the current plan
+  const updateData = {
+    status: 'rejected',
+    state: 'closed'
+  };
+  await axios.put(`${API_URL}/inspectionplans/${plan.id}`, updateData);
+
+  if (continueApproval) {
+    const { id, ...planDetails } = plan;
+    planDetails.note = description;
+    planDetails.state = 'open'; 
+    planDetails.status = 'draft';  
+    console.log([planDetails]);  
+    await axios.post(`${API_URL}/inspectionplans`, [planDetails]);
+  }
+};
 
 export const deleteInspectionPlan = async id => {
   await axios.delete(`${API_URL}/inspectionplans/${id}`);

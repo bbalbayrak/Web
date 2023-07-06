@@ -16,6 +16,7 @@ import {
   handleDescriptionChange,
   handleUpdateClick,
   handleApproveClick,
+  handleRejectClick,
   handleCrossClick,
   } from './inspection_utils';
 
@@ -144,13 +145,21 @@ const Inspection = () => {
                       <button
                           className="inspection-button"
                           onClick={() => {
-                            handleApproveClick(plan.id, inspectionPlans, descriptionControls[plan.id], setUpdateTrigger);
+                            handleApproveClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger);
                             setUpdateTrigger(prev => !prev); 
                           }}
                       >
                         Approve
                       </button>
-                      <button className="inspection-button">Reject</button>
+                      <button
+                          className="inspection-button"
+                          onClick={() => {
+                            handleRejectClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger);
+                            setUpdateTrigger(prev => !prev); 
+                          }}
+                      >
+                        Reject
+                      </button>
                       <button
                         className="inspection-button"
                         onClick={() => handleCrossClick(plan.id, setInspectionPlans)} 
