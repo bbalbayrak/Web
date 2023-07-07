@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const useAuth = () => {
+export const useAuth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(null);
@@ -39,4 +39,14 @@ const useAuth = () => {
   };
 };
 
-export default useAuth;
+export function logout() {
+  // localStorage'daki token'ı temizle
+  localStorage.removeItem('token');
+  
+  // kullanıcıyı login sayfasına yönlendir
+  window.location = '/landing-page';
+}
+
+export function isLoggedIn() {
+  return localStorage.getItem('token') ? true : false;
+}

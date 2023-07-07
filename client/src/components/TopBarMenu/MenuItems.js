@@ -3,8 +3,11 @@ import {
   CursorArrowRaysIcon, 
   FingerPrintIcon, 
   ArrowPathIcon, 
-  SquaresPlusIcon 
+  SquaresPlusIcon,
+  ArrowLeftOnRectangleIcon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline'
+import { logout, isLoggedIn } from '../Login/useAuth';
 
 const menuItems = [
   { 
@@ -17,6 +20,7 @@ const menuItems = [
   },
   { 
     name: 'Quality', 
+    isAuthRequired: true,
     subItems: [
       { name: 'Products', href: '/products', icon: ChartPieIcon },
       { name: 'PQC', href: '/pqc', icon: CursorArrowRaysIcon },
@@ -41,18 +45,34 @@ const menuItems = [
   },
   { 
     name: 'Logistics', 
+    isAuthRequired: true,
     subItems: [
       { name: 'Transfers', href: '/transfers', icon: SquaresPlusIcon },
     ] 
   },
   { 
     name: 'Parameters', 
+    isAuthRequired: true,
     subItems: [
       { name: 'Vendors', href: '/vendors', icon: ChartPieIcon },
       { name: 'Customers', href: '/customers', icon: CursorArrowRaysIcon },
       { name: 'Users', href: '/users', icon: FingerPrintIcon },
     ] 
   },
+  {
+    name: 'Auth',
+    type: 'auth',
+    login: {
+      name: 'Login',
+      href: '/login',
+      icon: ArrowRightOnRectangleIcon
+    },
+    logout: {
+      name: 'Logout',
+      action: logout,
+      icon: ArrowLeftOnRectangleIcon
+    }
+  }
 ]
 
 export default menuItems;

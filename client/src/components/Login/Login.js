@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useAuth from './useAuth';
+import { useAuth } from './useAuth';
 
 const Login = ({ setShowMenu }) => {
   const {

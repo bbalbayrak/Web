@@ -38,7 +38,7 @@ function App() {
         <div className="App">
         <TopBar showMenu={showMenu} />
           <Routes>
-            <Route exact path="/" element={<Login setShowMenu={setShowMenu} />}/>
+            <Route exact path="/" element={<LandingPage setShowMenu={setShowMenu} />} /> 
             <Route path="/customers" element={<RouteGuard setShowMenu={setShowMenu}><Customers /></RouteGuard>}/>
             <Route path="/login" element={<Login setShowMenu={setShowMenu} />}/>
             <Route path="/home" element={<RouteGuard setShowMenu={setShowMenu}><Home /></RouteGuard>}/>
@@ -64,8 +64,7 @@ function App() {
             <Route path="/inspection-plan" element={<RouteGuard setShowMenu={setShowMenu}><Inspection /></RouteGuard>}/>
             <Route path="/open-inspection" element={<RouteGuard setShowMenu={setShowMenu}><OpenInspection /></RouteGuard>}/>
             <Route path="/closed-inspection" element={<RouteGuard setShowMenu={setShowMenu}><ClosedInspection /></RouteGuard>}/>
-            <Route path="/landing-page" element={<RouteGuard setShowMenu={setShowMenu}><LandingPage /></RouteGuard>}/>
-
+            <Route path="/landing-page" element={<LandingPage setShowMenu={setShowMenu} />} /> 
           </Routes>
         </div>
       </BrowserRouter>
