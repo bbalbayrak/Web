@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { columns, control_type } from './enumerated_inspection';
 import {
   handleControlResponsibleChange,
@@ -10,21 +10,87 @@ import {
   handleRejectClick,
   handleCrossClick,
 } from './inspection_utils';
+import MultipleFilter from '../../functions/MultipleFilter';
 
 const InspectionUI = ({
   inspectionPlans,
-  setInspectionPlans, 
-  users, 
-  currentUserRole, 
-  currentUserId, 
-  updateTrigger, 
-  setUpdateTrigger, 
-  descriptionControls, 
-  setDescriptionControls
+  setInspectionPlans,
+  users,
+  currentUserRole,
+  currentUserId,
+  updateTrigger,
+  setUpdateTrigger,
+  descriptionControls,
+  setDescriptionControls,
 }) => {
+  const [filters, setFilters] = useState([]);
+
+  const addNewFilter = () => {
+    setFilters(prevFilters => [
+      ...prevFilters,
+      { id: Math.random().toString() },
+    ]);
+  };
+
+  const handleFilterChange = (filterId, updatedFilter) => {
+    setFilters(prevFilters =>
+      prevFilters.map(filter =>
+        filter.id === filterId ? { id: filterId, ...updatedFilter } : filter
+      )
+    );
+  };
+
+  const applyFilters = () => {
+    return inspectionPlans.filter(plan => {
+      for (let i = 0; i < filters.length; i++) {
+        const { column, query } = filters[i];
+
+        // if there's no column or query, this filter doesn't affect the result
+        if (!column || !query) continue;
+
+        const columnValue = plan[column];
+        // if the column doesn't exist in the plan, this filter is not met
+        if (!columnValue) return false;
+
+        // if the column value doesn't match the query, this filter is not met
+        if (!columnValue.toString().toLowerCase().includes(query.toLowerCase()))
+          return false;
+      }
+
+      // if we made it here, all filters are met
+      return true;
+    });
+  };
+  const getStatusStyle = status => {
+    switch (status.toLowerCase()) {
+      case 'approved':
+        return 'inline-block text-white bg-green-600 px-2 py-1 rounded-full border border-green-800';
+      case 'rejected':
+        return 'inline-block text-white bg-red-600 px-2 py-1 rounded-full border border-red-800';
+      case 'draft':
+        return 'inline-block text-white bg-gray-600 px-2 py-1 rounded-full border border-gray-800';
+      case 'waiting':
+        return 'inline-block text-white bg-blue-600 px-2 py-1 rounded-full border border-blue-800';
+      default:
+        return 'inline-block text-black px-2 py-1 rounded-full border border-black';
+    }
+  };
+  const filteredPlans = applyFilters();
+
   return (
     <div className="inspection-container">
       <h1 className="inspection-title">Inspection Plan</h1>
+
+      {filters.map(filter => (
+        <MultipleFilter
+          key={filter.id}
+          id={filter.id}
+          columns={columns}
+          onFilterChange={handleFilterChange}
+        />
+      ))}
+      <button onClick={addNewFilter}>Add filter</button>
+
       <div className="inspection-table-container">
         <table className="inspection-table">
           <thead>
@@ -35,7 +101,7 @@ const InspectionUI = ({
             </tr>
           </thead>
           <tbody>
-            {inspectionPlans.map(plan => (
+            {filteredPlans.map(plan => (
               <tr key={plan.id}>
                 <td>{plan.vendor_name.substring(0, 12)}</td>
                 <td>{plan.customer_name.substring(0, 12)}</td>
@@ -120,7 +186,13 @@ const InspectionUI = ({
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
                     : ''}
                 </td>
-                <td>{plan.status}</td>
+                <td>
+                  <div className="flex items-center justify-center h-full">
+                    <span className={getStatusStyle(plan.status)}>
+                      {plan.status}
+                    </span>
+                  </div>
+                </td>
                 <td>{plan.state}</td>
                 <td>
                   <button

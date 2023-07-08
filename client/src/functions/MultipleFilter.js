@@ -1,38 +1,44 @@
-import React, { useState } from 'react';
-import Filter from './Filter';
+import React, { useState, useEffect } from 'react';
+import { columnDisplayToDataMap } from '../components/InspectionPlan/enumerated_inspection';
 
-const MultipleFilter = ({ columns = [] }) => {
-  const [filters, setFilters] = useState([{ column: "", query: "" }]);
+const MultipleFilter = ({ id, columns, onFilterChange }) => {
+  const [selectedColumn, setSelectedColumn] = useState('');
+  const [filterText, setFilterText] = useState('');
 
-  const handleFilterChange = (type, value, index) => {
-    const newFilters = [...filters];
-    newFilters[index] = { ...newFilters[index], [type]: value };
-    setFilters(newFilters);
+  const handleColumnSelect = (e) => {
+    setSelectedColumn(e.target.value);
   };
 
-  const handleAddFilter = () => {
-    setFilters([...filters, { column: "", query: "" }]);
+  const handleFilterTextChange = (e) => {
+    setFilterText(e.target.value);
   };
 
-  const handleRemoveFilter = (index) => {
-    const newFilters = filters.filter((filter, idx) => idx !== index);
-    setFilters(newFilters);
-  };
+  useEffect(() => {
+    if (selectedColumn && filterText) {
+      const newFilter = {
+        column: columnDisplayToDataMap[selectedColumn],
+        query: filterText,
+      };
+      onFilterChange(id, newFilter);
+    } else {
+      onFilterChange(id, { column: null, query: null });
+    }
+  }, [filterText, selectedColumn, onFilterChange, id]);
 
   return (
-    <div className="multiple-filter-container">
-      {filters.map((filter, index) => (
-        <div key={index} className="filter-section">
-          <Filter
-            columns={columns}
-            onFilterChange={(type, value) => handleFilterChange(type, value, index)}
-            currentColumn={filter.column}
-            currentQuery={filter.query}
-          />
-          <button onClick={() => handleRemoveFilter(index)}>Remove</button>
-        </div>
-      ))}
-      <button onClick={handleAddFilter}>Add Filter</button>
+    <div className="filter-container">
+      <select value={selectedColumn} onChange={handleColumnSelect}>
+        <option value="">Filter by...</option>
+        {columns.map((column) => (
+          <option key={column}>{column}</option>
+        ))}
+      </select>
+      <input
+        type="text"
+        placeholder="Filter text"
+        value={filterText}
+        onChange={handleFilterTextChange}
+      />
     </div>
   );
 };
