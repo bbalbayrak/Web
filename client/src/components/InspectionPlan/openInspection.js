@@ -5,8 +5,9 @@ import {
   getOpenInspectionPlans,
   getAllUsers,
   getUserRole,
-  getDescriptionControl 
+  getDescriptionControl,
 } from './inspectionapi';
+import MultipleFilter from '../../functions/MultipleFilter';
 
 import {
   fetchItems,
@@ -18,7 +19,7 @@ import {
   handleApproveClick,
   handleRejectClick,
   handleCrossClick,
-  } from './inspection_utils';
+} from './inspection_utils';
 
 const Inspection = () => {
   const [inspectionPlans, setInspectionPlans] = useState([]);
@@ -27,9 +28,43 @@ const Inspection = () => {
   const [currentUserId, setCurrentUserId] = useState('');
   const [updateTrigger, setUpdateTrigger] = useState(false);
   const [descriptionControls, setDescriptionControls] = useState({});
+  const [filters, setFilters] = useState([]);
+
+  const addNewFilter = () => {
+    setFilters(prevFilters => [
+      ...prevFilters,
+      { id: Math.random().toString() },
+    ]);
+  };
+
+  const handleFilterChange = (filterId, updatedFilter) => {
+    setFilters(prevFilters =>
+      prevFilters.map(filter =>
+        filter.id === filterId ? { id: filterId, ...updatedFilter } : filter
+      )
+    );
+  };
+
+  const applyFilters = () => {
+    return inspectionPlans.filter(plan => {
+      for (let i = 0; i < filters.length; i++) {
+        const { column, query } = filters[i];
+
+        if (!column || !query) continue;
+
+        const columnValue = plan[column];
+        if (!columnValue) return false;
+
+        if (!columnValue.toString().toLowerCase().includes(query.toLowerCase()))
+          return false;
+      }
+
+      return true;
+    });
+  };
 
   useEffect(() => {
-    fetchItems(getOpenInspectionPlans, async (data) => {
+    fetchItems(getOpenInspectionPlans, async data => {
       data.sort((a, b) => a.order_number.localeCompare(b.order_number));
 
       const descriptionData = await getDescriptionControl();
@@ -37,22 +72,34 @@ const Inspection = () => {
       for (let desc of descriptionData.data) {
         descriptionControls[desc.inspectionplan_id] = desc.description;
       }
-      
-      setDescriptionControls(descriptionControls); 
+
+      setDescriptionControls(descriptionControls);
       setInspectionPlans(data);
     });
-    
+
     fetchItems(getAllUsers, setUsers);
 
     const userRole = getUserRole();
     setCurrentUserRole(userRole.role);
     setCurrentUserId(userRole.user_id);
-
   }, [updateTrigger]);
-  
+
+  const filteredPlans = applyFilters();
+
   return (
     <div className="inspection-container">
       <h1 className="inspection-title">Inspection Plan</h1>
+
+      {filters.map(filter => (
+        <MultipleFilter
+          key={filter.id}
+          id={filter.id}
+          columns={columns}
+          onFilterChange={handleFilterChange}
+        />
+      ))}
+      <button onClick={addNewFilter}>Add filter</button>
+
       <div className="inspection-table-container">
         <table className="inspection-table">
           <thead>
@@ -63,7 +110,7 @@ const Inspection = () => {
             </tr>
           </thead>
           <tbody>
-            {inspectionPlans.map(plan => (
+            {filteredPlans.map(plan => (
               <tr key={plan.id}>
                 <td>{plan.vendor_name.substring(0, 12)}</td>
                 <td>{plan.customer_name.substring(0, 12)}</td>
@@ -74,11 +121,15 @@ const Inspection = () => {
                 <td>
                   <select
                     value={plan.control_type || ''}
-                    onChange={event => handleControlTypeChange(event, plan.id, setInspectionPlans)} // here
+                    onChange={event =>
+                      handleControlTypeChange(
+                        event,
+                        plan.id,
+                        setInspectionPlans
+                      )
+                    }
                   >
-                    <option value="">
-                      Select Control Type
-                    </option>
+                    <option value="">Select Control Type</option>
                     {control_type.map((type, index) => (
                       <option key={index} value={type}>
                         {type}
@@ -89,7 +140,13 @@ const Inspection = () => {
                 <td>
                   <select
                     value={plan.control_responsible || 'unselected'}
-                    onChange={event => handleControlResponsibleChange(event, plan.id, setInspectionPlans)} // here
+                    onChange={event =>
+                      handleControlResponsibleChange(
+                        event,
+                        plan.id,
+                        setInspectionPlans
+                      )
+                    }
                   >
                     <option value="unselected">
                       Select Control Responsible
@@ -107,11 +164,14 @@ const Inspection = () => {
                     type="date"
                     value={
                       plan.control_date
-                        ? new Date(plan.control_date).toISOString().split('T')[0]
+                        ? new Date(plan.control_date)
+                            .toISOString()
+                            .split('T')[0]
                         : ''
                     }
-                    onChange={date => handleDateChange(date, plan.id, setInspectionPlans)}
-               
+                    onChange={date =>
+                      handleDateChange(date, plan.id, setInspectionPlans)
+                    }
                   />
                 </td>
                 <td>{plan.note}</td>
@@ -120,7 +180,14 @@ const Inspection = () => {
                     placeholder="Description"
                     style={{ resize: 'vertical' }}
                     value={descriptionControls[plan.id] || ''}
-                    onChange={e => handleDescriptionChange(e, plan.id, descriptionControls, setDescriptionControls)}
+                    onChange={e =>
+                      handleDescriptionChange(
+                        e,
+                        plan.id,
+                        descriptionControls,
+                        setDescriptionControls
+                      )
+                    }
                   />
                 </td>
                 <td>
@@ -131,43 +198,70 @@ const Inspection = () => {
                 <td>{plan.status}</td>
                 <td>{plan.state}</td>
                 <td>
-                <button
+                  <button
                     className="inspection-button"
                     onClick={() => {
-                      handleUpdateClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger);
-                      setUpdateTrigger(prev => !prev); 
+                      handleUpdateClick(
+                        plan.id,
+                        inspectionPlans,
+                        descriptionControls[plan.id],
+                        currentUserId,
+                        setUpdateTrigger
+                      );
+                      setUpdateTrigger(prev => !prev);
                     }}
-                >
-                  Update
-                </button>
+                  >
+                    Update
+                  </button>
                   {currentUserRole === 'Quality Manager' && (
                     <>
                       <button
-                          className="inspection-button"
-                          onClick={() => {
-                            handleApproveClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger);
-                            setUpdateTrigger(prev => !prev); 
-                          }}
+                        className="inspection-button"
+                        onClick={() => {
+                          handleApproveClick(
+                            plan.id,
+                            inspectionPlans,
+                            descriptionControls[plan.id],
+                            currentUserId,
+                            setUpdateTrigger
+                          );
+                          setUpdateTrigger(prev => !prev);
+                        }}
                       >
                         Approve
                       </button>
                       <button
-                          className="inspection-button"
-                          onClick={() => {
-                            handleRejectClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger);
-                            setUpdateTrigger(prev => !prev); 
-                          }}
+                        className="inspection-button"
+                        onClick={() => {
+                          handleRejectClick(
+                            plan.id,
+                            inspectionPlans,
+                            descriptionControls[plan.id],
+                            currentUserId,
+                            setUpdateTrigger
+                          );
+                          setUpdateTrigger(prev => !prev);
+                        }}
                       >
                         Reject
                       </button>
-                      <button
-                        className="inspection-button"
-                        onClick={() => handleCrossClick(plan.id, setInspectionPlans)} 
-                      >
-                        Delete
-                      </button>
                     </>
                   )}
+                  <button
+                    className="inspection-button"
+                    onClick={() => {
+                      handleCrossClick(
+                        plan.id,
+                        inspectionPlans,
+                        descriptionControls[plan.id],
+                        currentUserId,
+                        setUpdateTrigger
+                      );
+                      setUpdateTrigger(prev => !prev);
+                    }}
+                  >
+                    Cross
+                  </button>
                 </td>
               </tr>
             ))}
