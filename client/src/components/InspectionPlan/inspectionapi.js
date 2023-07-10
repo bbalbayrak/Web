@@ -41,6 +41,7 @@ export const getAllUsers = async () => {
 
 export const updateInspectionPlan = async plan => {
   const data = {
+    control_method: plan.control_method,
     control_type: plan.control_type,
     control_responsible: plan.control_responsible,
     control_date: plan.control_date,
