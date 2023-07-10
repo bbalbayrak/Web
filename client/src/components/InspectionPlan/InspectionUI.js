@@ -75,6 +75,22 @@ const InspectionUI = ({
         return 'inline-block text-black px-2 py-1 rounded-full border border-black';
     }
   };
+
+  const getStateStyle = state => {
+    switch (state.toLowerCase()) {
+      case 'open':
+        return 'inline-block text-white bg-green-600 px-2 py-1 rounded-full border border-green-800';
+      case 'closed':
+        return 'inline-block text-white bg-red-600 px-2 py-1 rounded-full border border-red-800';
+      case 'in progress':
+        return 'inline-block text-white bg-yellow-600 px-2 py-1 rounded-full border border-yellow-800';
+      case 'awaiting approval':
+        return 'inline-block text-white bg-blue-600 px-2 py-1 rounded-full border border-blue-800';
+      default:
+        return 'inline-block text-black px-2 py-1 rounded-full border border-black';
+    }
+  };
+
   const filteredPlans = applyFilters();
 
   return (
@@ -193,7 +209,13 @@ const InspectionUI = ({
                     </span>
                   </div>
                 </td>
-                <td>{plan.state}</td>
+                <td>
+                  <div className="flex items-center justify-center h-full">
+                    <span className={getStateStyle(plan.state)}>
+                      {plan.state}
+                    </span>
+                  </div>
+                </td>
                 <td>
                   <button
                     className="inspection-button"
