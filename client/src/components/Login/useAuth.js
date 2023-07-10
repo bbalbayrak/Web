@@ -17,7 +17,7 @@ export const useAuth = () => {
         setMessage(response.data.msg);
         if (response.status === 200) {
           localStorage.setItem('token', response.data.token);
-          navigate('/home');
+          navigate('/landing-page');
           window.location.reload();
         }
       })
