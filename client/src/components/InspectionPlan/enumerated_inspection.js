@@ -5,6 +5,7 @@ export const columns = [
     'Order Number',
     'Project Number',
     'Quantity',
+    'Method',
     'Control Type',
     'Control Responsible',
     'Control Date',
@@ -20,6 +21,12 @@ export const control_type = [
     'Final Control'
 ];
 
+export const control_method = [
+  'On Field',
+  'Remote',
+  'On App'
+];
+
 export const columnDisplayToDataMap = {
   'Vendor Name': 'vendor_name',
   'Customer Name': 'customer_name',
@@ -27,6 +34,7 @@ export const columnDisplayToDataMap = {
   'Order Number': 'order_number',
   'Project Number': 'project_number',
   'Quantity': 'quantity',
+  'Method': 'control_method',
   'Control Type': 'control_type',
   'Control Responsible': 'control_responsible',
   'Control Date': 'control_date',

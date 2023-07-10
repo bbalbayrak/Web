@@ -74,6 +74,15 @@ export const handleControlTypeChange = (event, id, setInspectionPlans) => {
   );
 };
 
+export const handleControlMethod = (event, id, setInspectionPlans) => {
+  const newControlMethod = event.target.value;
+  setInspectionPlans(prevPlans =>
+    prevPlans.map(plan =>
+      plan.id === id ? { ...plan, control_type: newControlMethod } : plan
+    )
+  );
+};
+
 export const handleControlResponsibleChange = (event, id, setInspectionPlans) => {
   const newControlResponsible = event.target.value;
   setInspectionPlans(prevPlans =>

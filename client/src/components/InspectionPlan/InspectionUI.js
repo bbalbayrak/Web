@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { columns, control_type } from './enumerated_inspection';
+import { columns, control_type, control_method } from './enumerated_inspection';
 import {
   handleControlResponsibleChange,
   handleDateChange,
+  handleControlMethod,
   handleControlTypeChange,
   handleDescriptionChange,
   handleUpdateClick,
@@ -125,6 +126,25 @@ const InspectionUI = ({
                 <td>{plan.order_number}</td>
                 <td>{plan.project_number}</td>
                 <td>{plan.quantity}</td>
+                <td>
+                  <select
+                    value={plan.control_method || ''}
+                    onChange={event =>
+                      handleControlMethod(
+                        event,
+                        plan.id,
+                        setInspectionPlans
+                      )
+                    }
+                  >
+                    <option value="">Select Control Method</option>
+                    {control_method.map((method, index) => (
+                      <option key={index} value={method}>
+                        {method}
+                      </option>
+                    ))}
+                  </select>
+                </td>
                 <td>
                   <select
                     value={plan.control_type || ''}
