@@ -78,7 +78,7 @@ export const handleControlMethod = (event, id, setInspectionPlans) => {
   const newControlMethod = event.target.value;
   setInspectionPlans(prevPlans =>
     prevPlans.map(plan =>
-      plan.id === id ? { ...plan, control_type: newControlMethod } : plan
+      plan.id === id ? { ...plan, control_method: newControlMethod } : plan
     )
   );
 };
