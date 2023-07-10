@@ -15,27 +15,43 @@ export const segments = [
 export const renderSegmentContent = ({
     activeSegment,
     form,
-    rows,
-    handleInputChange,
+    finalRows,
+    subpartRows,
+    handleFinalInputChange,
+    handleSubpartInputChange,
     handleDragOver,
-    handleDrop,
-    handleFileSelect,
-    addRow,
-    saveForm,
+    handleFinalDrop,
+    handleSubpartDrop,
+    handleFinalFileSelect,
+    handleSubpartFileSelect,
+    addFinalRow,
+    addSubpartRow,
+    saveSubForm,
+    saveFinalForm,
   }) => {
+    
     switch (activeSegment) {
       case 1:
-        return renderSubPartDimensiol(form);
+        return renderSubPartDimensiol({
+          form,
+          subpartRows,
+          handleInputChange: handleSubpartInputChange,
+          handleDragOver,
+          handleDrop: handleSubpartDrop,
+          handleFileSelect: handleSubpartFileSelect,
+          addRow: addSubpartRow,
+          saveSubForm,
+        });
       case 2:
         return renderFinalPartMeasurement({
           form,
-          rows,
-          handleInputChange,
+          finalRows,
+          handleInputChange: handleFinalInputChange,
           handleDragOver,
-          handleDrop,
-          handleFileSelect,
-          addRow,
-          saveForm,
+          handleDrop: handleFinalDrop,
+          handleFileSelect: handleFinalFileSelect,
+          addRow: addFinalRow,
+          saveFinalForm,
         });
       case 3:
         return renderPaintReport(form);

@@ -22,7 +22,18 @@ const FormCreate = () => {
   const [vendors, setVendors] = useState([]);
   const [products, setProducts] = useState([]);
   const [activeSegment, setActiveSegment] = useState(1);
-  const [rows, setRows] = useState([]);
+  const [finalRows, setFinalRows] = useState([]);
+  const [subpartRows, setSubpartRows] = useState([]);
+
+  const addFinalRow = addRow(finalRows, setFinalRows);
+  const handleFinalInputChange = handleInputChange(finalRows, setFinalRows);
+  const handleFinalDrop = handleDrop(finalRows, setFinalRows);
+  const handleFinalFileSelect = handleFileSelect(finalRows, setFinalRows);
+
+  const addSubpartRow = addRow(subpartRows, setSubpartRows);
+  const handleSubpartInputChange = handleInputChange(subpartRows, setSubpartRows);
+  const handleSubpartDrop = handleDrop(subpartRows, setSubpartRows);
+  const handleSubpartFileSelect = handleFileSelect(subpartRows, setSubpartRows);
 
   useEffect(() => {
     fetchItems(getVendors, setVendors);
@@ -67,7 +78,7 @@ const FormCreate = () => {
               Please Select Vendor
             </option>
             {vendors.map(vendor => (
-              <option key={vendor.id} value={vendor.id} className="select-option">
+              <option key={vendor.id} value={vendor.odooid} className="select-option">
                 {vendor.name}
               </option>
             ))}
@@ -91,13 +102,19 @@ const FormCreate = () => {
           {renderSegmentContent({
             activeSegment,
             form,
-            rows,
-            handleInputChange: handleInputChange(rows, setRows),
+            finalRows,
+            subpartRows,
+            handleFinalInputChange,
+            handleSubpartInputChange,
             handleDragOver,
-            handleDrop: handleDrop(rows, setRows),
-            handleFileSelect: handleFileSelect(rows, setRows),
-            addRow: addRow(rows, setRows),
-            saveForm: saveForm(form, rows),
+            handleFinalDrop,
+            handleSubpartDrop,
+            handleFinalFileSelect,
+            handleSubpartFileSelect,
+            addFinalRow,
+            addSubpartRow,
+            saveSubForm: saveForm(form, subpartRows, 0),
+            saveFinalForm: saveForm(form, finalRows, 1),
           })}
         </div>
       </form>

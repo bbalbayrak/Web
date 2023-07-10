@@ -46,7 +46,7 @@ const ProductSegment = ({ product, vendorId, work_id }) => {
   };
 
   const fetchForm = useCallback(async () => {
-    const form = await getFormByVendorIdAndProductId(vendorId, product.id);
+    const form = await getFormByVendorIdAndProductId(vendorId, product.odooid);
     setFormInfo(form);
 
     if (form) {

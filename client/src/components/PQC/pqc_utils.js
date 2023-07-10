@@ -28,9 +28,9 @@ export const initialFormState = {
     e.preventDefault();
   };
   
-  export const saveForm = (form, rows) => async () => {
-    console.log("FFFFF", form)
-    console.log("XxXxXxXxX",rows);
+  export const saveForm = (form, rows, segmentIndex) => async () => {
+    console.log("rows:",rows);
+    console.log("segmentIndex", segmentIndex)
     const postData = {
       ...(form.id && { id: form.id }),
       id: form.id,
@@ -39,35 +39,10 @@ export const initialFormState = {
       steps: segments.map((segment, index) => ({
         name: segment.name,
         order: segment.order,
-        substeps: index === 1 ? rows.map(row => {
-          const {
-            id,
-            technical_drawing_numbering,
-            tools,
-            description,
-            actual_dimension,
-            lower_tolerance,
-            upper_tolerance,
-            sample_quantity,
-            example_visual_url,
-            row_number
-          } = row;
-          return {
-            ...(id && { id }),
-            technical_drawing_numbering,
-            tools,
-            description,
-            actual_dimension,
-            lower_tolerance,
-            upper_tolerance,
-            sample_quantity,
-            example_visual_url,
-            row_number
-          };
-        }) : [],
+        substeps: index === segmentIndex ? rows.map(row => mapRowToSubstep(row)) : [],
       })),
     };
-
+  
     try {
       console.log("postData:", postData)
       await createOrUpdateForm(postData);
@@ -76,3 +51,29 @@ export const initialFormState = {
     }
   };
   
+  const mapRowToSubstep = (row) => {
+    const {
+      id,
+      technical_drawing_numbering,
+      tools,
+      description,
+      actual_dimension,
+      lower_tolerance,
+      upper_tolerance,
+      sample_quantity,
+      example_visual_url,
+      row_number
+    } = row;
+    return {
+      ...(id && { id }),
+      technical_drawing_numbering,
+      tools,
+      description,
+      actual_dimension,
+      lower_tolerance,
+      upper_tolerance,
+      sample_quantity,
+      example_visual_url,
+      row_number
+    };
+  };  

@@ -32,28 +32,25 @@ export const createOrUpdateForm = async (formData) => {
   
   const body = {
     ...formData,
-    steps: formData.steps.map((step, index) => ({
+    steps: formData.steps.map((step) => ({
       ...step,
-      substeps:
-        index === 1
-          ? step.substeps.map((substep) => {
-              if (substep.id) {
-                return substep;
-              } else {
-                const { id, ...rest } = substep;
-                return rest;
-              }
-            })
-          : [],
+      substeps: step.substeps.map((substep) => {
+        if (substep.id) {
+          return substep;
+        } else {
+          const { id, ...rest } = substep;
+          return rest;
+        }
+      }),
     })),
   };
-  console.log("sssss",formData.id)
-
+  console.log("Form", body);
   if (formData.id) {
-    console.log("sssss",formData.id)
     body.form_id = formData.id;
   }
-  console.log("createofasdsa",body)
+
+  console.log("Body before sending:", body);
+  
   await fetch(apiUrl, {
     method: 'POST',
     headers: {
@@ -61,7 +58,10 @@ export const createOrUpdateForm = async (formData) => {
     },
     body: JSON.stringify(body),
   });
+
+  console.log("Form sent successfully");
 };
+
 
 
 export const getVendors = async () => {

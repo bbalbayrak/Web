@@ -16,6 +16,7 @@ const Form = {
     return result;
   },
 
+
   findByProductIdAndVendorId: async (product_id, vendor_id) => {
     const result = await db.oneOrNone(`SELECT * FROM ${Form.tableName} WHERE product_id = $1 AND vendor_id = $2`, [product_id, vendor_id]);
     return result;
@@ -26,7 +27,7 @@ const Form = {
       SELECT forms.id, products.name as product_name, vendors.name as vendor_name
       FROM ${Form.tableName}
       INNER JOIN products ON forms.product_id = products.odooid
-      INNER JOIN vendors ON forms.vendor_id = vendors.id
+      INNER JOIN vendors ON forms.vendor_id = vendors.odooid
     `);
     return result;
   },

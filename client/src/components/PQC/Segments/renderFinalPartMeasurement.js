@@ -2,16 +2,14 @@ import './renderFinalPartMeasurement.css'
 
 export const renderFinalPartMeasurement = ({
   form,
-  rows,
+  finalRows,
   handleInputChange,
   handleDragOver,
   handleDrop,
   handleFileSelect,
   addRow,
-  saveForm,
+  saveFinalForm,
 }) => {
-  console.log('renderFinal forms:', form);
-  console.log('rendeFinal Rows:', rows);
   if (!form) return null;
   return (
     <div>
@@ -31,7 +29,7 @@ export const renderFinalPartMeasurement = ({
           </tr>
         </thead>
         <tbody>
-          {rows.map(row => (
+          {finalRows.map(row => (
             <tr key={row.row_number}>
               <td>{row.row_number}</td>
               <td>
@@ -137,7 +135,7 @@ export const renderFinalPartMeasurement = ({
       <button type="button" className='addRow-button' onClick={addRow}>
         Satır Ekle
       </button>
-      <button type="button" onClick={() => saveForm(form, rows)} className='submit-button'>
+      <button type="button" onClick={() => saveFinalForm(form, finalRows, 1)} className='submit-button'>
         Kaydet
       </button>
     </div>

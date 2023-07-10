@@ -180,7 +180,7 @@ exports.getAllForm = async (req, res) => {
       return;
     }
     const product = await Product.findByOdooId(form.product_id);
-    const vendor = await Vendor.findById(form.vendor_id);
+    const vendor = await Vendor.findByOdooId(form.vendor_id);
 
     const formSubsteps = await FormSubstep.findAllByFormId(formId);
     const stepsWithSubsteps = FIXED_STEPS.map((fixedStep) => {

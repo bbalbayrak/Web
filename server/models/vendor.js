@@ -35,6 +35,13 @@ const Vendor = {
     });
     return result;
   },
+
+  findByOdooId: async (odooid) => {
+    const result = await db.oneOrNone(`SELECT * FROM ${Vendor.tableName} WHERE odooid = $1`, [odooid]);
+    return result;
+  },
+
+  
   findOrCreate: async (odooid, name) => {
     let vendor = await db.oneOrNone(`SELECT * FROM ${Vendor.tableName} WHERE odooid = $1`, [odooid]);
 

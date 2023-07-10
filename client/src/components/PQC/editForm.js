@@ -4,54 +4,56 @@ import ErrorPage from '../PageNotFound/ErrorPage';
 import { getFormById } from './formapi';
 import { segments } from './renderSegmentContent';
 import { renderSegmentContent } from './renderSegmentContent';
-import { initialFormState, fetchItems, handleFormChange, saveForm, handleDragOver } from './pqc_utils';
+import { initialFormState, handleFormChange, saveForm, handleDragOver } from './pqc_utils';
 import { addRow, handleInputChange, handleDrop, handleFileSelect } from './rowDetail';
 
 const FormEdit = () => {
   const { id } = useParams();
   const [form, setForm] = useState(null);
   const [activeSegment, setActiveSegment] = useState(1);
-  const [formSaved, setFormSaved] = useState(false);
-  const [rows, setRows] = useState([]);
+  const [finalRows, setFinalRows] = useState([]);
+  const [subpartRows, setSubpartRows] = useState([]);
   const [error, setError] = useState(false);
+
+  const addFinalRow = addRow(finalRows, setFinalRows);
+  const handleFinalInputChange = handleInputChange(finalRows, setFinalRows);
+  const handleFinalDrop = handleDrop(finalRows, setFinalRows);
+  const handleFinalFileSelect = handleFileSelect(finalRows, setFinalRows);
+
+  const addSubpartRow = addRow(subpartRows, setSubpartRows);
+  const handleSubpartInputChange = handleInputChange(subpartRows, setSubpartRows);
+  const handleSubpartDrop = handleDrop(subpartRows, setSubpartRows);
+  const handleSubpartFileSelect = handleFileSelect(subpartRows, setSubpartRows);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const formData = await getFormById(id);
+        console.log("Fetched form data: ", formData);  // Log the fetched form data
         setForm(formData);
       } catch (error) {
+        console.error("Error fetching form: ", error);  // Log the error if there is one
         setError(true);
       }
     };
     fetchData();
   }, [id]);
-  
-  useEffect(() => {
-    if (formSaved) {
-      const fetchData = async () => {
-        try {
-          const formData = await getFormById(id);
-          setForm(formData);
-          setFormSaved(false);
-        } catch (error) {
-          setError(true);
-        }
-      };
-      fetchData();
-    }
-  }, [formSaved, id]);
-  
+
   useEffect(() => {
     if (form) {
-      const finalPartMeasurementStep = form.steps.find(
-        (step) => step.name === 'Final Part Measurement'
+      const activeStep = form.steps.find(
+        (step) => step.name === segments[activeSegment - 1].name
       );
-      if (finalPartMeasurementStep) {
-        setRows(finalPartMeasurementStep.substeps);
+      console.log("Active step: ", activeStep);  // Log the active step
+      if (activeStep && activeStep.substeps) {
+        // Here you should separate rows into finalRows and subpartRows based on some condition
+        console.log("Active step substeps: ", activeStep.substeps);  // Log substeps before setting
+        setFinalRows(activeStep.substeps || []);
+        setSubpartRows(activeStep.substeps || []);
       }
     }
-  }, [form]);
+}, [form, activeSegment]);
+
 
   const handleSegmentClick = (order) => {
     setActiveSegment(order);
@@ -79,13 +81,19 @@ const FormEdit = () => {
             {renderSegmentContent({
               activeSegment,
               form,
-              rows: rows.sort((a, b) => parseInt(a.row_number, 10) - parseInt(b.row_number, 10)), // sort rows just before they are rendered
-              handleInputChange: handleInputChange(rows, setRows),
+              finalRows,
+              subpartRows,
+              handleFinalInputChange,
+              handleSubpartInputChange,
               handleDragOver,
-              handleDrop: handleDrop(rows, setRows),
-              handleFileSelect: handleFileSelect(rows, setRows),
-              addRow: addRow(rows, setRows),
-              saveForm: saveForm(form, rows),
+              handleFinalDrop,
+              handleSubpartDrop,
+              handleFinalFileSelect,
+              handleSubpartFileSelect,
+              addFinalRow,
+              addSubpartRow,
+              saveSubForm: saveForm(form, subpartRows, 0),
+              saveFinalForm: saveForm(form, finalRows, 1),
             })}
           </div>
         </div>
