@@ -185,7 +185,6 @@ const InspectionUI = ({
                     ))}
                   </select>
                 </td>
-
                 <td>
                   <input
                     type="date"

@@ -100,3 +100,7 @@ export const handleDescriptionChange = (event, planId, descriptionControls, setD
   setDescriptionControls(updatedDescriptions);
 };
 
+export const getUserNameById = (users, id) => {
+  const user = users.find(user => user.id.toString() === id.toString());
+  return user ? user.name : '';
+}
