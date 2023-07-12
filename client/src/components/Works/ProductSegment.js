@@ -53,7 +53,7 @@ const ProductSegment = ({ product, vendorId, work_id }) => {
       const formDetails = await getQualityControlEntriesByFormId(form.form.id, work_id);
       setFormDetail(formDetails);
     }
-  }, [vendorId, product.id]);
+  }, [vendorId, product.odooid]);
 
   useEffect(() => {
     fetchForm();
