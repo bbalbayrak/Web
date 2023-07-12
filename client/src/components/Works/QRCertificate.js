@@ -32,7 +32,7 @@ const QRCertificate = () => {
             const product = await getProductByOdooId(productData.product_id);
             const form = await getFormByVendorIdAndProductId(workData.data.vendor_id, product.data.odooid);
       
-            if (!form || !form.form) {
+            if (!form ) {
               setHasNoFormInfo(true);
               return product.data;
             }
