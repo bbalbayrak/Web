@@ -1,6 +1,6 @@
 const Product = require("../models/product");
 const Customer = require("../models/customer");
-const { uploadFile } = require("../utils/upload_azure");
+const { uploadFile, uploadOdooFile } = require("../utils/upload_azure");
 
 exports.createProduct = async (request) => {
   try {
@@ -103,13 +103,17 @@ exports.getProductsByName = async (req, res) => {
     }
   };
 
-exports.uploadTechnicalDrawing = async (request) => {
+  exports.uploadTechnicalDrawing = async (request) => {
     try {
-      const { odooid } = request.body;
+      const { odooid, product_name } = request.body;
       const technicaldrawingfile = request.body.technical_drawing;
       
+      // folderPath'ı ve dosya adını ayarla
+      const folderPath = `${product_name}`;
+      const filename = `${product_name}_technicaldrawing.${technicaldrawingfile.originalname.split('.').pop()}`;
+      
       const technical_drawing_url = technicaldrawingfile
-        ? await uploadFile(technicaldrawingfile.buffer, technicaldrawingfile.originalname)
+        ? await uploadOdooFile(technicaldrawingfile.buffer, filename, folderPath)
         : null;
   
       return {
@@ -117,6 +121,8 @@ exports.uploadTechnicalDrawing = async (request) => {
         statusCode: 201,
         data: {
           odooid,
+          folderPath,
+          product_name,
           technical_drawing_url,
         },
       };
@@ -124,5 +130,4 @@ exports.uploadTechnicalDrawing = async (request) => {
       console.error(err);
       throw err;
     }
-  };
-  
+  };  
