@@ -102,3 +102,27 @@ exports.getProductsByName = async (req, res) => {
       });
     }
   };
+
+exports.uploadTechnicalDrawing = async (request) => {
+    try {
+      const { odooid } = request.body;
+      const technicaldrawingfile = request.body.technical_drawing;
+      
+      const technical_drawing_url = technicaldrawingfile
+        ? await uploadFile(technicaldrawingfile.buffer, technicaldrawingfile.originalname)
+        : null;
+  
+      return {
+        status: "success",
+        statusCode: 201,
+        data: {
+          odooid,
+          technical_drawing_url,
+        },
+      };
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+  

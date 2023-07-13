@@ -31,7 +31,28 @@ const routes = (fastify, options, done) => {
   fastify.get("/api/products", productControllers.getAllProducts);
   fastify.get("/api/products/search", productControllers.getProductsByName);
   fastify.get("/api/products/:odooid", productControllers.getProductByOdooId);
-  // Diğer CRUD işlemleri (güncelleme, silme vb.) için gerekli yolları buraya ekleyebilirsin.
+  
+  fastify.post(
+    "/api/technicaldrawings",
+    { preHandler: upload.fields([{ name: "technical_drawing", maxCount: 1 }]) },
+    async (request, reply) => {
+      try {
+        const technical_drawing = request.files.technical_drawing ? request.files.technical_drawing[0] : null;
+    
+        // Add the file to the request object
+        request.body.technical_drawing = technical_drawing;
+    
+        const result = await productControllers.uploadTechnicalDrawing(request);
+        reply.code(201).send(result);
+      } catch (err) {
+        console.error(err);
+        reply.code(500).send({
+          status: "error",
+          message: "Teknik çizim yüklenirken bir hata oluştu.",
+        });
+      }
+    }
+  );
 
   done();
 };
