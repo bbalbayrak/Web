@@ -36,7 +36,8 @@ const menuItems = [
         name: 'Inspection Plan', 
         subItems: [
           { name: 'All Inspection', href: '/inspection-plan', icon: ChartPieIcon },
-          { name: 'Open Inspection', href: '/open-inspection', icon: CursorArrowRaysIcon },
+          { name: 'Draft Inspection', href: '/draft-inspection', icon: CursorArrowRaysIcon },
+          { name: 'Waiting Inspection', href: '/waiting-inspection', icon: CursorArrowRaysIcon },
           { name: 'Close Inspection', href: '/closed-inspection', icon: FingerPrintIcon },
         ],
         icon: ArrowPathIcon

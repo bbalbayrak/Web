@@ -19,10 +19,10 @@ async function uploadFile(fileData, fileName) {
   return blockBlobClient.url;
 }
 
-async function uploadOdooFile(fileData, fileName, folderPath) {
+async function uploadOdooFile(fileData, fileName) {
   const containerClient = blobServiceClient.getContainerClient(AZURE_STORAGE_ODOO_CONTAINER_NAME);
   await containerClient.createIfNotExists();
-  const blockBlobClient = containerClient.getBlockBlobClient(`${folderPath}${fileName}`);
+  const blockBlobClient = containerClient.getBlockBlobClient(fileName);
 
   await blockBlobClient.uploadData(fileData);
   return blockBlobClient.url;

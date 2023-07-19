@@ -108,12 +108,10 @@ exports.getProductsByName = async (req, res) => {
       const { odooid, product_name } = request.body;
       const technicaldrawingfile = request.body.technical_drawing;
       
-      // folderPath'ı ve dosya adını ayarla
-      const folderPath = `${product_name}`;
-      const filename = `${product_name}_technicaldrawing.${technicaldrawingfile.originalname.split('.').pop()}`;
+      const filename = `${product_name}/${product_name}_technicaldrawing.${technicaldrawingfile.originalname.split('.').pop()}`;
       
       const technical_drawing_url = technicaldrawingfile
-        ? await uploadOdooFile(technicaldrawingfile.buffer, filename, folderPath)
+        ? await uploadOdooFile(technicaldrawingfile.buffer, filename)
         : null;
   
       return {
@@ -121,7 +119,6 @@ exports.getProductsByName = async (req, res) => {
         statusCode: 201,
         data: {
           odooid,
-          folderPath,
           product_name,
           technical_drawing_url,
         },

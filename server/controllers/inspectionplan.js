@@ -27,15 +27,24 @@ exports.getAllInspectionPlans = async (req, res) => {
     }
   };
   
-  exports.getOpenInspectionPlans = async (req, res) => {
+  exports.getOpenDraftInspectionPlans = async (req, res) => {
     try {
-      const inspectionPlans = await InspectionPlan.getByState("Open");
+      const inspectionPlans = await InspectionPlan.getByStateAndStatus("Open", "Draft");
       res.status(200).send({ inspectionPlans });
     } catch (error) {
-      res.status(500).send({ message: "Error getting Open InspectionPlans", error: error.message });
+      res.status(500).send({ message: "Error getting Open and Draft InspectionPlans", error: error.message });
     }
-  };
-  
+  }; 
+
+  exports.getOpenWaitingInspectionPlans = async (req, res) => {
+    try {
+      const inspectionPlans = await InspectionPlan.getByStateAndStatus("Open", "Waiting");
+      res.status(200).send({ inspectionPlans });
+    } catch (error) {
+      res.status(500).send({ message: "Error getting Open and Draft InspectionPlans", error: error.message });
+    }
+  }; 
+
   exports.getClosedInspectionPlans = async (req, res) => {
     try {
       const inspectionPlans = await InspectionPlan.getByState("Closed");

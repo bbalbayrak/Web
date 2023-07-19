@@ -16,11 +16,16 @@ const InspectionPlan = {
     return result;
   },
   
+  getByStateAndStatus: async (state, status) => {
+    const result = await db.any(`SELECT * FROM ${InspectionPlan.tableName} WHERE state = $1 AND status = $2`, [state, status]);
+    return result;
+  },
+  
   getByState: async (state) => {
     const result = await db.any(`SELECT * FROM ${InspectionPlan.tableName} WHERE state = $1`, [state]);
     return result;
   },
-  
+
   delete: async (id) => {
     await db.none(`DELETE FROM ${InspectionPlan.tableName} WHERE id = $1`, [id]);
   },

@@ -13,8 +13,13 @@ const routes = [
   },
   {
     method: "GET",
-    path: "/api/inspectionplans/open",
-    handler: inspectionPlanController.getOpenInspectionPlans,
+    path: "/api/inspectionplans/opendraft",
+    handler: inspectionPlanController.getOpenDraftInspectionPlans,
+  },
+  {
+    method: "GET",
+    path: "/api/inspectionplans/openwaiting",
+    handler: inspectionPlanController.getOpenWaitingInspectionPlans,
   },
   {
     method: "GET",
