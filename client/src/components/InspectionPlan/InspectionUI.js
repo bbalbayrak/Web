@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toLowerTurkish, toUpperTurkish } from './turkishHelpers';
 import { columns, control_type, control_method } from './enumerated_inspection';
 import {
   handleControlResponsibleChange,
@@ -45,20 +46,16 @@ const InspectionUI = ({
     return inspectionPlans.filter(plan => {
       for (let i = 0; i < filters.length; i++) {
         const { column, query } = filters[i];
-
-        // if there's no column or query, this filter doesn't affect the result
+  
         if (!column || !query) continue;
-
+  
         const columnValue = plan[column];
-        // if the column doesn't exist in the plan, this filter is not met
         if (!columnValue) return false;
-
-        // if the column value doesn't match the query, this filter is not met
-        if (!columnValue.toString().toLowerCase().includes(query.toLowerCase()))
+  
+        if (!toLowerTurkish(columnValue.toString()).includes(toLowerTurkish(query)))
           return false;
       }
-
-      // if we made it here, all filters are met
+  
       return true;
     });
   };
