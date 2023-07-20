@@ -1,33 +1,36 @@
-import React, { useState } from 'react';
-import { toLowerTurkish, toUpperTurkish } from './turkishHelpers';
-import { columns, control_type, control_method } from './enumerated_inspection';
+import React, { useState, useEffect } from 'react';
+import './Inspection.css';
+import { columns, control_type } from './enumerated_inspection';
 import {
+  getOpenWaitingInspectionPlans,
+  getAllUsers,
+  getUserRole,
+  getDescriptionControl,
+} from './inspectionapi';
+import MultipleFilter from '../../functions/MultipleFilter';
+import ButtonPopup from './ButtonPopup';
+
+import {
+  fetchItems,
   handleControlResponsibleChange,
   handleDateChange,
-  handleControlMethod,
   handleControlTypeChange,
   handleDescriptionChange,
   handleUpdateClick,
   handleApproveClick,
   handleRejectClick,
-  handleDeleteClick,
-  getStateStyle,
+  handleDeleteClick, 
+  getStateStyle, 
   getStatusStyle
 } from './inspection_utils';
-import MultipleFilter from '../../functions/MultipleFilter';
-import ButtonPopup from './ButtonPopup';
 
-const InspectionUI = ({
-  inspectionPlans,
-  setInspectionPlans,
-  users,
-  currentUserRole,
-  currentUserId,
-  updateTrigger,
-  setUpdateTrigger,
-  descriptionControls,
-  setDescriptionControls,
-}) => {
+const Inspection = () => {
+  const [inspectionPlans, setInspectionPlans] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [currentUserRole, setCurrentUserRole] = useState('');
+  const [currentUserId, setCurrentUserId] = useState('');
+  const [updateTrigger, setUpdateTrigger] = useState(false);
+  const [descriptionControls, setDescriptionControls] = useState({});
   const [filters, setFilters] = useState([]);
 
   const addNewFilter = () => {
@@ -49,19 +52,40 @@ const InspectionUI = ({
     return inspectionPlans.filter(plan => {
       for (let i = 0; i < filters.length; i++) {
         const { column, query } = filters[i];
-  
+
         if (!column || !query) continue;
-  
+
         const columnValue = plan[column];
         if (!columnValue) return false;
-  
-        if (!toLowerTurkish(columnValue.toString()).includes(toLowerTurkish(query)))
+
+        if (!columnValue.toString().toLowerCase().includes(query.toLowerCase()))
           return false;
       }
-  
+
       return true;
     });
   };
+
+  useEffect(() => {
+    fetchItems(getOpenWaitingInspectionPlans, async data => {
+      data.sort((a, b) => a.order_number.localeCompare(b.order_number));
+
+      const descriptionData = await getDescriptionControl();
+      const descriptionControls = {};
+      for (let desc of descriptionData.data) {
+        descriptionControls[desc.inspectionplan_id] = desc.description;
+      }
+
+      setDescriptionControls(descriptionControls);
+      setInspectionPlans(data);
+    });
+
+    fetchItems(getAllUsers, setUsers);
+
+    const userRole = getUserRole();
+    setCurrentUserRole(userRole.role);
+    setCurrentUserId(userRole.user_id);
+  }, [updateTrigger]);
 
   const filteredPlans = applyFilters();
 
@@ -97,25 +121,6 @@ const InspectionUI = ({
                 <td>{plan.order_number}</td>
                 <td>{plan.project_number}</td>
                 <td>{plan.quantity}</td>
-                <td>
-                  <select
-                    value={plan.control_method || ''}
-                    onChange={event =>
-                      handleControlMethod(
-                        event,
-                        plan.id,
-                        setInspectionPlans
-                      )
-                    }
-                  >
-                    <option value="">Select Control Method</option>
-                    {control_method.map((method, index) => (
-                      <option key={index} value={method}>
-                        {method}
-                      </option>
-                    ))}
-                  </select>
-                </td>
                 <td>
                   <select
                     value={plan.control_type || ''}
@@ -156,6 +161,7 @@ const InspectionUI = ({
                     ))}
                   </select>
                 </td>
+
                 <td>
                   <input
                     type="date"
@@ -208,7 +214,7 @@ const InspectionUI = ({
                 </td>
                 <td>
                   <button
-                    className={"w-20 bg-blue-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-sm"}
+                    className="inspection-button"
                     onClick={() => {
                       handleUpdateClick(
                         plan.id,
@@ -219,12 +225,10 @@ const InspectionUI = ({
                       );
                       setUpdateTrigger(prev => !prev);
                     }}
-                    // butonun görünürlüğünü kontrol et
-                    style={{visibility: plan.state === 'Closed' ? 'hidden' : 'visible'}}
                   >
                     Update
                   </button>
-                    {currentUserRole === 'Quality Manager' && plan.state !== 'Closed' &&(
+                    {currentUserRole === 'Quality Manager' && (
                         <>
                         <ButtonPopup
                           triggerText="Approve"
@@ -279,4 +283,4 @@ const InspectionUI = ({
   );
 };
 
-export default InspectionUI;
+export default Inspection;

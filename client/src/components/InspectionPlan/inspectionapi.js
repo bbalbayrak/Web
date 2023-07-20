@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-const API_URL = 'https://portal-test.yenaengineering.nl/api';
+const API_URL = 'http://localhost:3001/api';
 
 export const getAllInspectionPlans = async () => {
   try {
@@ -12,9 +12,18 @@ export const getAllInspectionPlans = async () => {
   }
 };
 
-export const getOpenInspectionPlans = async () => {
+export const getOpenDraftInspectionPlans = async () => {
   try {
-    const response = await axios.get(`${API_URL}/inspectionplans/open`);
+    const response = await axios.get(`${API_URL}/inspectionplans/opendraft`);
+    return response.data.inspectionPlans; 
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getOpenWaitingInspectionPlans = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/inspectionplans/openwaiting`);
     return response.data.inspectionPlans; 
   } catch (error) {
     throw error;

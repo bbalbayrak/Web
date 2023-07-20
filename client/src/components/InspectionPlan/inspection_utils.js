@@ -25,35 +25,31 @@ export const handleUpdateClick = async (id, inspectionPlans, descriptions, curre
   setUpdateTrigger(prevState => !prevState);
 };
 
-export const handleApproveClick = async (planId, inspectionPlans, description, currentUserId, setUpdateTrigger) => {
+export const handleApproveClick = (planId, inspectionPlans, description, currentUserId, setUpdateTrigger) => (continueApproval) => async () => {
   const plan = inspectionPlans.find(plan => plan.id === planId);
 
   if (description || plan.documents) {
     await createDescriptionControl(plan, plan.documents, description, currentUserId); 
   }
 
-  const continueApproval = window.confirm("Do you want to continue or finish? Click 'OK' to continue, 'Cancel' to finish");
   await approveInspectionPlan(plan, description, continueApproval);
   setUpdateTrigger(prev => !prev);
 };
 
-export const handleRejectClick = async (planId, inspectionPlans, description, currentUserId, setUpdateTrigger) => {
+export const handleRejectClick = (planId, inspectionPlans, description, currentUserId, setUpdateTrigger) => (continueApproval) => async () => {
   const plan = inspectionPlans.find(plan => plan.id === planId);
 
   if (description || plan.documents) {
     await createDescriptionControl(plan, plan.documents, description, currentUserId); 
   }
 
-  const continueApproval = window.confirm("Do you want to continue or finish? Click 'OK' to continue, 'Cancel' to finish");
   await rejectInspectionPlan(plan, description, continueApproval);
   setUpdateTrigger(prev => !prev);
 };
 
-export const handleCrossClick = async (id, setInspectionPlans) => {
-  if (window.confirm('Silmek istediğinize emin misiniz?')) {
-    deleteInspectionPlan(id);
-    setInspectionPlans(prevPlans => prevPlans.filter(plan => plan.id !== id));
-  }
+export const handleDeleteClick = async (id, setInspectionPlans) => {
+  deleteInspectionPlan(id);
+  setInspectionPlans(prevPlans => prevPlans.filter(plan => plan.id !== id));
 };
 
 export const handleDateChange = (event, id, setInspectionPlans) => {
@@ -104,3 +100,33 @@ export const getUserNameById = (users, id) => {
   const user = users.find(user => user.id.toString() === id.toString());
   return user ? user.name : '';
 }
+
+export const getStatusStyle = status => {
+  switch (status.toLowerCase()) {
+    case 'approved':
+      return 'inline-block text-white bg-green-600 px-2 py-1 rounded-full border border-green-800';
+    case 'rejected':
+      return 'inline-block text-white bg-red-600 px-2 py-1 rounded-full border border-red-800';
+    case 'draft':
+      return 'inline-block text-white bg-gray-600 px-2 py-1 rounded-full border border-gray-800';
+    case 'waiting':
+      return 'inline-block text-white bg-blue-600 px-2 py-1 rounded-full border border-blue-800';
+    default:
+      return 'inline-block text-black px-2 py-1 rounded-full border border-black';
+  }
+};
+
+export const getStateStyle = state => {
+  switch (state.toLowerCase()) {
+    case 'open':
+      return 'inline-block text-white bg-green-600 px-2 py-1 rounded-full border border-green-800';
+    case 'closed':
+      return 'inline-block text-white bg-red-600 px-2 py-1 rounded-full border border-red-800';
+    case 'in progress':
+      return 'inline-block text-white bg-yellow-600 px-2 py-1 rounded-full border border-yellow-800';
+    case 'awaiting approval':
+      return 'inline-block text-white bg-blue-600 px-2 py-1 rounded-full border border-blue-800';
+    default:
+      return 'inline-block text-black px-2 py-1 rounded-full border border-black';
+  }
+};

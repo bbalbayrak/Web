@@ -10,7 +10,9 @@ import MultipleFilter from '../../functions/MultipleFilter';
 
 import {
   fetchItems,
-  getUserNameById
+  getUserNameById,
+  getStateStyle, 
+  getStatusStyle
   } from './inspection_utils';
 
 const Inspection = () => {
@@ -119,8 +121,20 @@ const Inspection = () => {
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
                     : ''}
                 </td>
-                <td>{plan.status}</td>
-                <td>{plan.state}</td>
+                <td>
+                  <div className="flex items-center justify-center h-full">
+                    <span className={getStatusStyle(plan.status)}>
+                      {plan.status}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div className="flex items-center justify-center h-full">
+                    <span className={getStateStyle(plan.state)}>
+                      {plan.state}
+                    </span>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
