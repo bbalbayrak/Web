@@ -200,6 +200,7 @@ const InspectionUI = ({
                   </div>
                 </td>
                 <td>
+                  
                   <div className="flex items-center justify-center h-full">
                     <span className={getStateStyle(plan.state)}>
                       {plan.state}
