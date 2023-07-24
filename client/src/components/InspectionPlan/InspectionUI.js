@@ -17,6 +17,8 @@ import {
 import MultipleFilter from '../../functions/MultipleFilter';
 import ButtonPopup from './ButtonPopup';
 
+
+
 const InspectionUI = ({
   inspectionPlans,
   setInspectionPlans,
