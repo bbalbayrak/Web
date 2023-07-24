@@ -117,17 +117,20 @@ const Inspection = () => {
                 <td>{plan.customer_name.substring(0, 12)}</td>
                 <td>{plan.product_name}</td>
                 <td>{plan.order_number}</td>
-                <td>{plan.project_number}</td>
+                <td>
+                  <a
+                    target="blank"
+                    href="https://yenacelik.sharepoint.com/sites/receivedjobs/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2Freceivedjobs%2FShared%20Documents%2FGeneral%2F2022%20to&viewid=bf734293%2Df159%2D4420%2D8a84%2Dd4a48c39ba81"
+                  >
+                    {plan.project_number}
+                  </a>
+                </td>
                 <td>{plan.quantity}</td>
                 <td>
                   <select
                     value={plan.control_method || ''}
                     onChange={event =>
-                      handleControlMethod(
-                        event,
-                        plan.id,
-                        setInspectionPlans
-                      )
+                      handleControlMethod(event, plan.id, setInspectionPlans)
                     }
                   >
                     <option value="">Select Control Method</option>
@@ -178,7 +181,6 @@ const Inspection = () => {
                     ))}
                   </select>
                 </td>
-
                 <td>
                   <input
                     type="date"
