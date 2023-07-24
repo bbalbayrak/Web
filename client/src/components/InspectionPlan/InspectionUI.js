@@ -205,6 +205,7 @@ const InspectionUI = ({
                       {plan.state}
                     </span>
                   </div>
+                  
                 </td>
                 <td>
                   <button
