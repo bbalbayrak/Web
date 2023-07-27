@@ -19,8 +19,8 @@ import {
   handleUpdateClick,
   handleApproveClick,
   handleRejectClick,
-  handleDeleteClick, 
-  getStateStyle, 
+  handleDeleteClick,
+  getStateStyle,
   getStatusStyle,
   handleControlMethod,
 } from './inspection_utils';
@@ -120,17 +120,20 @@ const Inspection = () => {
                 <td>{plan.customer_name.substring(0, 12)}</td>
                 <td>{plan.product_name}</td>
                 <td>{plan.order_number}</td>
-                <td>{plan.project_number}</td>
+                <td>
+                  <a
+                    target="blank"
+                    href="https://yenacelik.sharepoint.com/sites/receivedjobs/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2Freceivedjobs%2FShared%20Documents%2FGeneral%2F2022%20to&viewid=bf734293%2Df159%2D4420%2D8a84%2Dd4a48c39ba81"
+                  >
+                    {plan.project_number}
+                  </a>
+                </td>
                 <td>{plan.quantity}</td>
                 <td>
                   <select
                     value={plan.control_method || ''}
                     onChange={event =>
-                      handleControlMethod(
-                        event,
-                        plan.id,
-                        setInspectionPlans
-                      )
+                      handleControlMethod(event, plan.id, setInspectionPlans)
                     }
                   >
                     <option value="">Select Control Method</option>
@@ -181,7 +184,6 @@ const Inspection = () => {
                     ))}
                   </select>
                 </td>
-
                 <td>
                   <input
                     type="date"
@@ -248,51 +250,78 @@ const Inspection = () => {
                   >
                     Update
                   </button>
-                    {currentUserRole === 'Quality Manager' && (
-                        <>
-                        <ButtonPopup
-                          triggerText="Approve"
-                          triggerButtonStyle="w-20 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-sm"
-                          title="Choose one of the actions below."
-                          buttons={[
-                            {
-                              label: "Close Inspection",
-                              action: () => handleApproveClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger)(false)()
-                            },
-                            {
-                              label: "Continue Inspection",
-                              action: () => handleApproveClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger)(true)()
-                            },
-                          ]}
-                        />
-                        <ButtonPopup
-                          triggerText="Reject"
-                          triggerButtonStyle="w-20 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-                          title="Choose one of the actions below."
-                          buttons={[
-                            {
-                              label: "Close Inspection",
-                              action: handleRejectClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger)(false)
-                            },
-                            {
-                              label: "Continue Inspection",
-                              action: handleRejectClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger)(true)
-                            },
-                          ]}
-                        />
-                        <ButtonPopup
-                          triggerText="Delete"
-                          triggerButtonStyle="w-20 bg-red-600 hover:bg-red-800 text-white font-bold py-1 px-2 rounded text-sm"
-                          title="Are you sure you want to delete?"
-                          buttons={[
-                            {
-                              label: "Delete",
-                              action: () => handleDeleteClick(plan.id, setInspectionPlans)
-                            }
-                          ]}
-                        />
-                      </>
-                    )}
+                  {currentUserRole === 'Quality Manager' && (
+                    <>
+                      <ButtonPopup
+                        triggerText="Approve"
+                        triggerButtonStyle="w-20 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-sm"
+                        title="Choose one of the actions below."
+                        buttons={[
+                          {
+                            label: 'Close Inspection',
+                            action: () =>
+                              handleApproveClick(
+                                plan.id,
+                                inspectionPlans,
+                                descriptionControls[plan.id],
+                                currentUserId,
+                                setUpdateTrigger
+                              )(false)(),
+                          },
+                          {
+                            label: 'Continue Inspection',
+                            action: () =>
+                              handleApproveClick(
+                                plan.id,
+                                inspectionPlans,
+                                descriptionControls[plan.id],
+                                currentUserId,
+                                setUpdateTrigger
+                              )(true)(),
+                          },
+                        ]}
+                      />
+                      <ButtonPopup
+                        triggerText="Reject"
+                        triggerButtonStyle="w-20 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                        title="Choose one of the actions below."
+                        buttons={[
+                          {
+                            label: 'Close Inspection',
+                            action: handleRejectClick(
+                              plan.id,
+                              inspectionPlans,
+                              descriptionControls[plan.id],
+                              currentUserId,
+                              setUpdateTrigger
+                            )(false),
+                          },
+                          {
+                            label: 'Continue Inspection',
+                            action: handleRejectClick(
+                              plan.id,
+                              inspectionPlans,
+                              descriptionControls[plan.id],
+                              currentUserId,
+                              setUpdateTrigger
+                            )(true),
+                          },
+                        ]}
+                      />
+                      <ButtonPopup
+                        triggerText="Delete"
+                        triggerButtonStyle="w-20 bg-red-600 hover:bg-red-800 text-white font-bold py-1 px-2 rounded text-sm"
+                        title="Are you sure you want to delete?"
+                        buttons={[
+                          {
+                            label: 'Delete',
+                            action: () =>
+                              handleDeleteClick(plan.id, setInspectionPlans),
+                          },
+                        ]}
+                      />
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

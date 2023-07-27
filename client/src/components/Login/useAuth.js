@@ -2,6 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = process.env.API_URL
+
 export const useAuth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +14,7 @@ export const useAuth = () => {
     event.preventDefault();
 
     axios
-      .post('https://portal-test.yenaengineering.nl/api/login', { email, password })
+      .post(`${API_URL}/login`, { email, password })
       .then((response) => {
         setMessage(response.data.msg);
         if (response.status === 200) {

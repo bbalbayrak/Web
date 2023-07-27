@@ -1,13 +1,10 @@
 import axios from 'axios';
 
-const FORMS_API_URL = 'https://portal-test.yenaengineering.nl/api/forms';
-const PRODUCTS_API_URL = 'https://portal-test.yenaengineering.nl/api/products'; // Change this to the correct URL for fetching products
-const API_URL = "https://portal-test.yenaengineering.nl/api";
-
+const API_URL = process.env.API_URL
 
 export const getFormstable = async () => {
   try {
-    const response = await axios.get(FORMS_API_URL);
+    const response = await axios.get(`${API_URL}/allforms`);
     return response.data.data;
   } catch (error) {
     // console.error('Error fetching forms:', error);
@@ -15,11 +12,10 @@ export const getFormstable = async () => {
   }
 };
 
-const FORMS_API_URL2 = 'https://portal-test.yenaengineering.nl/api/allforms';
 
 export const getFormById = async (id) => {
   try {
-    const response = await axios.get(`${FORMS_API_URL2}/${id}`);
+    const response = await axios.get(`${API_URL}forms/${id}`);
     return response.data;
   } catch (error) {
     // console.error('Error fetching form:', error);
@@ -28,7 +24,7 @@ export const getFormById = async (id) => {
 };
 
 export const createOrUpdateForm = async (formData) => {
-  const apiUrl = 'https://portal-test.yenaengineering.nl/api/forms';
+  const apiUrl = `${API_URL}/forms`;
   
   const body = {
     ...formData,
@@ -80,7 +76,7 @@ export const getVendors = async () => {
 
 export const getProducts = async () => {
   try {
-    const response = await axios.get(PRODUCTS_API_URL);
+    const response = await axios.get(`${API_URL}/products`);
     return response.data;
   } catch (error) {
     // console.error(`Error fetching products: ${error.message}`);
@@ -89,7 +85,7 @@ export const getProducts = async () => {
 };
 
 export const uploadImageToAzure = async (fileData, fileName) => {
-  const apiUrl = 'https://portal-test.yenaengineering.nl/api/forms/upload';
+  const apiUrl = `${API_URL}/forms/upload`;
 
   const formData = new FormData();
   formData.append('file', fileData, fileName);

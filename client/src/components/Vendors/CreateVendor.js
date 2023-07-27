@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./CreateVendor.css";
 
+const API_URL = process.env.API_URL
+
 const CreateVendor = () => {
   const [name, setName] = useState("");
   const [odooid, setOdooid] = useState("");
@@ -10,7 +12,7 @@ const CreateVendor = () => {
     e.preventDefault();
 
     try {
-      await axios.post("https://portal-test.yenaengineering.nl/api/vendors", { name, odooid });
+      await axios.post(`${API_URL}/vendors`, { name, odooid });
       setName("");
       setOdooid("");
     } catch (error) {
