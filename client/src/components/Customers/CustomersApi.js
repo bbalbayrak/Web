@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const API_URL = process.env.API_URL;
+
 export const fetchCustomers = async () => {
   try {
-    const res = await axios.get('https://portal-test.yenaengineering.nl/api/customers');
+    const res = await axios.get(`${API_URL}/customers`);
     return res.data.data;
   } catch (error) {
     console.error("Error fetching customers, mate:", error);
@@ -12,7 +14,7 @@ export const fetchCustomers = async () => {
 
 export const createCustomer = async (name, odooid) => {
     try {
-      await axios.post('https://portal-test.yenaengineering.nl/api/customers', { name, odooid });
+      await axios.post(`${API_URL}/customers`, { name, odooid });
     } catch (error) {
       console.error("There was a bloody error while adding the customer:", error);
     }

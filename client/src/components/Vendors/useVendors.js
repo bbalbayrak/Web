@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
+const API_URL = process.env.API_URL
+
 const useVendors = () => {
   const [vendors, setVendors] = useState([]);
   let navigate = useNavigate();
@@ -9,7 +11,7 @@ const useVendors = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await axios.get("https://portal-test.yenaengineering.nl/api/vendors");
+        const response = await axios.get(`${API_URL}/vendors`);
         setVendors(response.data.data);
       } catch (error) {
         // console.error("Tedarikçiler alınırken hata oluştu:", error);

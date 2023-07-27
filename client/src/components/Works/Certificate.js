@@ -4,6 +4,7 @@ import {  getWorkById, createWorkStep,  updateWorkStepStatus,  getQRQuestionsByW
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Certificate.css';
 
+const API_URL = process.env.API_URL;
 
 const Certificate = () => {
   const [files, setFiles] = useState([]);
@@ -58,7 +59,7 @@ const Certificate = () => {
         formData.append('step_id', step_id);
   
         try {
-          await axios.post('https://portal-test.yenaengineering.nl/api/certificates', formData, {
+          await axios.post(`${API_URL}/certificates`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
           });
         } catch (error) {

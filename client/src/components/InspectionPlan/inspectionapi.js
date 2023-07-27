@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-const API_URL = 'https://portal-test.yenaengineering.nl/api';
+const API_URL = process.env.API_URL
 
 export const getAllInspectionPlans = async () => {
   try {

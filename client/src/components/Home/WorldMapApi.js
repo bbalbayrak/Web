@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "https://portal-test.yenaengineering.nl/api";
+const API_URL = process.env.API_URL
 
 // Son lokasyonları almak için endpoint
 export const getLatestLocations = () => {

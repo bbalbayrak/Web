@@ -5,6 +5,8 @@ import './WorkOrders.css';
 import { getWorkById, getVendors, getUsers } from './worksapi';
 import Filter from '../../functions/Filter';
 
+const API_URL = process.env.API_URL;
+
 const WorkOrders = () => {
   const [workOrders, setWorkOrders] = useState([]);
   const [vendors, setVendors] = useState([]);
@@ -48,7 +50,7 @@ const WorkOrders = () => {
   const fetchWorkOrders = async () => {
     try {
       const response = await axios.get(
-        'https://portal-test.yenaengineering.nl/api/worksteps/Open'
+        `${API_URL}/worksteps/Open`
       );
       const workOrdersData = await Promise.all(
         response.data.data.map(async workOrder => {
