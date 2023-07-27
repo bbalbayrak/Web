@@ -4,7 +4,7 @@ import {  getWorkById, createWorkStep,  updateWorkStepStatus,  getQRQuestionsByW
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Certificate.css';
 
-const API_URL = process.env.API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
 const Certificate = () => {
   const [files, setFiles] = useState([]);
