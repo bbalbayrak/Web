@@ -1,4 +1,5 @@
-const API_URL = "https://portal-test.yenaengineering.nl/api";
+
+const API_URL = process.env.API_URL;
 
 export const createWork = async (workData) => {
   const response = await fetch(`${API_URL}/works`, {

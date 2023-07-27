@@ -4,16 +4,16 @@ import { columns } from './enumerated_inspection';
 import {
   getCloseInspectionPlans,
   getDescriptionControl,
-  getAllUsers 
+  getAllUsers,
 } from './inspectionapi';
 import MultipleFilter from '../../functions/MultipleFilter';
 
 import {
   fetchItems,
   getUserNameById,
-  getStateStyle, 
-  getStatusStyle
-  } from './inspection_utils';
+  getStateStyle,
+  getStatusStyle,
+} from './inspection_utils';
 
 const Inspection = () => {
   const [inspectionPlans, setInspectionPlans] = useState([]);
@@ -55,7 +55,7 @@ const Inspection = () => {
   };
 
   useEffect(() => {
-    fetchItems(getCloseInspectionPlans, async (data) => {
+    fetchItems(getCloseInspectionPlans, async data => {
       data.sort((a, b) => a.order_number.localeCompare(b.order_number));
 
       const descriptionData = await getDescriptionControl();
@@ -63,8 +63,8 @@ const Inspection = () => {
       for (let desc of descriptionData.data) {
         descriptionControls[desc.inspectionplan_id] = desc.description;
       }
-  
-      setDescriptionControls(descriptionControls); 
+
+      setDescriptionControls(descriptionControls);
       setInspectionPlans(data);
 
       const usersData = await getAllUsers();
@@ -73,7 +73,7 @@ const Inspection = () => {
   }, []);
 
   const filteredPlans = applyFilters();
-  
+
   return (
     <div className="inspection-container">
       <h1 className="inspection-title">Inspection Plan</h1>
@@ -87,7 +87,7 @@ const Inspection = () => {
         />
       ))}
       <button onClick={addNewFilter}>Add filter</button>
-      
+
       <div className="inspection-table-container">
         <table className="inspection-table">
           <thead>
@@ -104,7 +104,14 @@ const Inspection = () => {
                 <td>{plan.customer_name.substring(0, 12)}</td>
                 <td>{plan.product_name}</td>
                 <td>{plan.order_number}</td>
-                <td>{plan.project_number}</td>
+                <td>
+                  <a
+                    target="blank"
+                    href="https://yenacelik.sharepoint.com/sites/receivedjobs/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2Freceivedjobs%2FShared%20Documents%2FGeneral%2F2022%20to&viewid=bf734293%2Df159%2D4420%2D8a84%2Dd4a48c39ba81"
+                  >
+                    {plan.project_number}
+                  </a>
+                </td>
                 <td>{plan.quantity}</td>
                 <td>{plan.control_method}</td>
                 <td>{plan.control_type}</td>
@@ -115,7 +122,7 @@ const Inspection = () => {
                     : ''}
                 </td>
                 <td>{plan.note}</td>
-                <td>{descriptionControls[plan.id] }</td>
+                <td>{descriptionControls[plan.id]}</td>
                 <td>
                   {plan.delivery_date
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')

@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const API_URL = process.env.API_URL
+
 export const updateImageStatusrejected = async (id) => {
   try {
-    const response = await axios.put(`https://portal-test.yenaengineering.nl/api/images/${id}`, {
+    const response = await axios.put(`${API_URL}/images/${id}`, {
       id: id,
       status: 'rejected'
     });
@@ -15,7 +17,7 @@ export const updateImageStatusrejected = async (id) => {
 
 export const updateImageStatusapproved = async (id) => {
   try {
-    const response = await axios.put(`https://portal-test.yenaengineering.nl/api/images/${id}`, {
+    const response = await axios.put(`${API_URL}/images/${id}`, {
       id: id,
       status: "approved"
     });

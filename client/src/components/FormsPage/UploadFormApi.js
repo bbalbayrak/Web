@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export const useApi = () => {
   const [response, setResponse] = useState(null);
   const [customers, setCustomers] = useState([]);
@@ -10,28 +12,30 @@ export const useApi = () => {
 
   const fetchCustomers = async () => {
     try {
-      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/customers');
+      const { data } = await axios.get(`${API_URL}/customers`);
       setCustomers(data.data);
     } catch (error) {
       console.error('Error fetching customers:', error);
     }
   };
-
+  
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get('https://portal-test.yenaengineering.nl/api/products');
+      const { data } = await axios.get(`${API_URL}/products`);
       setProducts(data.data);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
 
+  console.log("API_URL",API_URL)
+  console.log(process.env);
   const submitProduct = async (formData) => {
-    try {
-      const { data } = await axios.post('https://portal-test.yenaengineering.nl/api/products', formData, {
+    try { 
+      const { data } = await axios.post(`${API_URL}/products`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-        },
+        },   
       });
       setResponse(data);
       setSuccessMessage('Ürün başarıyla eklendi.');
