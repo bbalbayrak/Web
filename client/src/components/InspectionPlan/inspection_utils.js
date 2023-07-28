@@ -15,15 +15,16 @@ export const fetchItems = async (getter, setter) => {
   }
 };
 
-export const handleUpdateClick = async (id, inspectionPlans, descriptions, currentUserId, setUpdateTrigger) => {
+export const handleUpdateClick = async (id, inspectionPlans, descriptions, currentUserId, uploadedFiles, setUpdateTrigger) => {
   const plan = inspectionPlans.find(plan => plan.id === id);
 
-  if (descriptions || plan.documents) {
-    await createDescriptionControl(plan, plan.documents, descriptions, currentUserId); 
+  if (descriptions || plan.documents || uploadedFiles[id]) {
+    await createDescriptionControl(plan, uploadedFiles[id], descriptions, currentUserId); 
   }
   await updateInspectionPlan(plan);
   setUpdateTrigger(prevState => !prevState);
 };
+
 
 export const handleApproveClick = (planId, inspectionPlans, description, currentUserId, setUpdateTrigger) => (continueApproval) => async () => {
   const plan = inspectionPlans.find(plan => plan.id === planId);
@@ -94,6 +95,12 @@ export const handleDescriptionChange = (event, planId, descriptionControls, setD
     [planId]: event.target.value
   };
   setDescriptionControls(updatedDescriptions);
+};
+
+export const handleFileUpload = (event, planId, setUploadedFiles) => {
+  setUploadedFiles(prevFiles => {
+    return { ...prevFiles, [planId]: event.target.files[0] };
+  });
 };
 
 export const getUserNameById = (users, id) => {

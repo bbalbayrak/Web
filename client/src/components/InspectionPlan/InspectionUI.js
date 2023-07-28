@@ -13,6 +13,7 @@ import {
   handleDeleteClick,
   getStateStyle,
   getStatusStyle,
+  handleFileUpload
 } from './inspection_utils';
 import MultipleFilter from '../../functions/MultipleFilter';
 import ButtonPopup from './ButtonPopup';
@@ -30,6 +31,7 @@ const InspectionUI = ({
   setDescriptionControls,
 }) => {
   const [filters, setFilters] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState({});
 
   const addNewFilter = () => {
     setFilters(prevFilters => [
@@ -217,6 +219,13 @@ const InspectionUI = ({
                   />
                 </td>
                 <td>
+                  <input 
+                    type="file" 
+                    onChange={(e) => handleFileUpload(e, plan.id, setUploadedFiles)} 
+                    style={{ width: '85%' }}
+                  />
+                </td>
+                <td>
                   {plan.delivery_date
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
                     : ''}
@@ -247,8 +256,9 @@ const InspectionUI = ({
                         inspectionPlans,
                         descriptionControls[plan.id],
                         currentUserId,
+                        uploadedFiles,
                         setUpdateTrigger
-                      );
+                      )
                       setUpdateTrigger(prev => !prev);
                     }}
                     // butonun görünürlüğünü kontrol et
