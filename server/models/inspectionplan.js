@@ -10,7 +10,7 @@ const InspectionPlan = {
     );
     return result;
   },
-
+  
   getAll: async () => {
     const result = await db.any(`SELECT * FROM ${InspectionPlan.tableName}`);
     return result;

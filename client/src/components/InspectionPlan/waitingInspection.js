@@ -9,6 +9,7 @@ import {
 } from './inspectionapi';
 import MultipleFilter from '../../functions/MultipleFilter';
 import ButtonPopup from './ButtonPopup';
+import Select from 'react-select';
 
 import {
   fetchItems,
@@ -164,25 +165,25 @@ const Inspection = () => {
                   </select>
                 </td>
                 <td>
-                  <select
-                    value={plan.control_responsible || 'unselected'}
-                    onChange={event =>
-                      handleControlResponsibleChange(
-                        event,
-                        plan.id,
-                        setInspectionPlans
-                      )
-                    }
-                  >
-                    <option value="unselected">
-                      Select Control Responsible
-                    </option>
-                    {users.map((user, index) => (
-                      <option key={index} value={user.id}>
-                        {user.name}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="cwo-form-group">
+                    <Select
+                      name="control_responsible"
+                      id="control_responsible"
+                      onChange={selectedOptions => handleControlResponsibleChange(selectedOptions, plan.id, setInspectionPlans)}
+                      options={users.map(user => ({
+                        value: user.id,
+                        label: user.name,
+                      }))}
+                      value={plan.control_responsible ? plan.control_responsible.map(userId => {
+                        const user = users.find(user => user.id === Number(userId));
+                        return user ? { value: user.id, label: user.name } : null;
+                      }).filter(Boolean) : []}
+                      
+                      placeholder="Select Control Responsible"
+                      isMulti
+                      isSearchable
+                    />
+                  </div>
                 </td>
                 <td>
                   <input
