@@ -5,7 +5,7 @@ import './WorkOrders.css';
 import { getWorkById, getVendors, getUsers } from './worksapi';
 import Filter from '../../functions/Filter';
 
-const API_URL = process.env.API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
 const WorkOrders = () => {
   const [workOrders, setWorkOrders] = useState([]);

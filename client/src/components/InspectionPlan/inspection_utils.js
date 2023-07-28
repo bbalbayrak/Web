@@ -79,11 +79,11 @@ export const handleControlMethod = (event, id, setInspectionPlans) => {
   );
 };
 
-export const handleControlResponsibleChange = (event, id, setInspectionPlans) => {
-  const newControlResponsible = event.target.value;
+export const handleControlResponsibleChange = (selectedOptions, id, setInspectionPlans) => {
+  const selectedUserIds = selectedOptions.map(option => option.value);
   setInspectionPlans(prevPlans =>
     prevPlans.map(plan =>
-      plan.id === id ? { ...plan, control_responsible: newControlResponsible } : plan
+      plan.id === id ? { ...plan, control_responsible: selectedUserIds } : plan
     )
   );
 };
