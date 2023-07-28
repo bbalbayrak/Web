@@ -178,6 +178,28 @@ const InspectionUI = ({
                     }
                   />
                 </td>
+                {/* <td>
+                  <input
+                    type="date"
+                    value={
+                      plan.control_date
+                        ? new Date(plan.control_date)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                    max={
+                      plan.delivery_date
+                        ? new Date(plan.delivery_date)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                    onChange={date =>
+                      handleDateChange(date, plan.id, setInspectionPlans)
+                    }
+                  />
+                </td> */}
                 <td>{plan.note}</td>
                 <td>
                   <textarea
