@@ -73,7 +73,7 @@ export const updateInspectionPlan = async plan => {
   // Email data
   const emailData = {
     to: emails.join(', '),
-    // cc: 'quality@yenaengineering.nl',
+    cc: 'quality@yenaengineering.nl',
     subject: 'Inspection Plan Güncelleme',
     text: `Proje numarası ${plan.project_number} olan siparişin ${plan.product_name} numaralı ürünü, ${plan.control_date} tarihinde ${plan.control_method} şeklinde ${plan.control_type} yapılacaktır. Bilginize.`,
   };

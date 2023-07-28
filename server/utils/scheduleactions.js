@@ -36,8 +36,8 @@ const checkDatabaseAndSendEmails = async () => {
 
 const startSchedule = async () => {
 
-    // Saat 14:58'te checkDatabaseAndSendEmails fonksiyonunu çalıştıracak bir schedule belirliyoruz.
-    schedule.scheduleJob('34 16 * * *', () => {
+    // Saat 09:05'te checkDatabaseAndSendEmails fonksiyonunu çalıştıracak bir schedule belirliyoruz.
+    schedule.scheduleJob('5 9 * * *', () => {
       checkDatabaseAndSendEmails();
     });
   };

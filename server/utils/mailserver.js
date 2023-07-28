@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, cc, subject, text) => {
   // E-posta hizmeti sağlayıcınızın SMTP ayarlarını kullanarak bir Nodemailer taşıyıcı oluşturun
   const transporter = nodemailer.createTransport({
     host: 'smtp-mail.outlook.com',
@@ -16,6 +16,7 @@ const sendEmail = async (to, subject, text) => {
   const InspectionMailOptions = {
     from: 'info_yena@yenaengineering.nl', // sender address
     to: to, // list of receivers
+    cc: cc,
     subject: subject, // Subject line
     text: text, // plain text body
   };
