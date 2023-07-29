@@ -160,3 +160,12 @@ export const getDescriptionControl = async () => {
     throw error;
   }
 };
+
+export const getDescriptionControlByInspectionPlanId = async inspectionplan_id => {
+  try {
+    const response = await axios.get(`${API_URL}/description_controls/${inspectionplan_id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

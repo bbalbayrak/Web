@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { toLowerTurkish, toUpperTurkish } from './turkishHelpers';
 import { columns, control_type, control_method } from './enumerated_inspection';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import {
   handleControlResponsibleChange,
   handleDateChange,
@@ -29,6 +31,8 @@ const InspectionUI = ({
   setUpdateTrigger,
   descriptionControls,
   setDescriptionControls,
+  setDescriptionControlsDocuments,
+  descriptionControlsDocuments
 }) => {
   const [filters, setFilters] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState({});
@@ -222,8 +226,13 @@ const InspectionUI = ({
                   <input 
                     type="file" 
                     onChange={(e) => handleFileUpload(e, plan.id, setUploadedFiles)} 
-                    style={{ width: '85%' }}
+                    style={{ width: '34%' }}
                   />
+                </td>
+                <td>
+                  <a href={descriptionControlsDocuments[plan.id]} target="_blank" rel="noreferrer">
+                    <FontAwesomeIcon icon={faExternalLinkAlt} />
+                  </a>
                 </td>
                 <td>
                   {plan.delivery_date
@@ -261,7 +270,6 @@ const InspectionUI = ({
                       )
                       setUpdateTrigger(prev => !prev);
                     }}
-                    // butonun görünürlüğünü kontrol et
                     style={{
                       visibility:
                         plan.state === 'Closed' ? 'hidden' : 'visible',

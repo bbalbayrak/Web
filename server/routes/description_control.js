@@ -42,6 +42,22 @@ const routes = (fastify, options, done) => {
     }
   );
 
+  fastify.get(
+    "/api/description_controls/:inspectionplan_id",
+    async (request, reply) => {
+      try {
+        const result = await descriptionControlControllers.getDescriptionControlByInspectionPlanId(request, reply);
+        reply.send(result);
+      } catch (err) {
+        console.error(err);
+        reply.code(500).send({
+          status: "error",
+          message: "Açıklama kontrolü getirilirken bir hata oluştu.",
+        });
+      }
+    }
+  );  
+
   done();
 };
 

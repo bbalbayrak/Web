@@ -12,6 +12,7 @@ export const columns = [
     'Note',
     'Description',
     'Document',
+    '',
     'Delivery Date',
     'Status',
     'State',
