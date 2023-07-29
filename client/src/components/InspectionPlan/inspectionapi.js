@@ -48,6 +48,15 @@ export const getAllUsers = async () => {
   }
 };
 
+export const getEmailById = async id => {
+  try {
+    const response = await axios.get(`${API_URL}/users/${id}`);
+    return response.data.data.email;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateInspectionPlan = async plan => {
   const data = {
     control_method: plan.control_method,
@@ -57,6 +66,20 @@ export const updateInspectionPlan = async plan => {
     status: 'Waiting',
   };
   await axios.put(`${API_URL}/inspectionplans/${plan.id}`, data);
+
+  // Get emails by id
+  const emails = await Promise.all(plan.control_responsible.map(getEmailById));
+
+  // Email data
+  const emailData = {
+    to: emails.join(', '),
+    cc: 'quality@yenaengineering.nl',
+    subject: 'Inspection Plan Güncelleme',
+    text: `Proje numarası ${plan.project_number} olan siparişin ${plan.product_name} numaralı ürünü, ${plan.control_date} tarihinde ${plan.control_method} şeklinde ${plan.control_type} yapılacaktır. Bilginize.`,
+  };
+
+  // Send the email
+  await axios.post(`${API_URL}/send-email`, emailData);
 };
 
 export const approveInspectionPlan = async (plan, description, continueApproval) => {
@@ -132,6 +155,15 @@ export const createDescriptionControl = async (plan, file, description, currentU
 export const getDescriptionControl = async () => {
   try {
     const response = await axios.get(`${API_URL}/description_controls`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getDescriptionControlByInspectionPlanId = async inspectionplan_id => {
+  try {
+    const response = await axios.get(`${API_URL}/description_controls/${inspectionplan_id}`);
     return response.data;
   } catch (error) {
     throw error;

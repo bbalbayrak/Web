@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { toLowerTurkish, toUpperTurkish } from './turkishHelpers';
 import { columns, control_type, control_method } from './enumerated_inspection';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import {
   handleControlResponsibleChange,
   handleDateChange,
@@ -13,6 +15,7 @@ import {
   handleDeleteClick,
   getStateStyle,
   getStatusStyle,
+  handleFileUpload
 } from './inspection_utils';
 import MultipleFilter from '../../functions/MultipleFilter';
 import ButtonPopup from './ButtonPopup';
@@ -28,8 +31,11 @@ const InspectionUI = ({
   setUpdateTrigger,
   descriptionControls,
   setDescriptionControls,
+  setDescriptionControlsDocuments,
+  descriptionControlsDocuments
 }) => {
   const [filters, setFilters] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState({});
 
   const addNewFilter = () => {
     setFilters(prevFilters => [
@@ -178,6 +184,28 @@ const InspectionUI = ({
                     }
                   />
                 </td>
+                {/* <td>
+                  <input
+                    type="date"
+                    value={
+                      plan.control_date
+                        ? new Date(plan.control_date)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                    max={
+                      plan.delivery_date
+                        ? new Date(plan.delivery_date)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                    onChange={date =>
+                      handleDateChange(date, plan.id, setInspectionPlans)
+                    }
+                  />
+                </td> */}
                 <td>{plan.note}</td>
                 <td>
                   <textarea
@@ -193,6 +221,18 @@ const InspectionUI = ({
                       )
                     }
                   />
+                </td>
+                <td>
+                  <input 
+                    type="file" 
+                    onChange={(e) => handleFileUpload(e, plan.id, setUploadedFiles)} 
+                    style={{ width: '34%' }}
+                  />
+                </td>
+                <td>
+                  <a href={descriptionControlsDocuments[plan.id]} target="_blank" rel="noreferrer">
+                    <FontAwesomeIcon icon={faExternalLinkAlt} />
+                  </a>
                 </td>
                 <td>
                   {plan.delivery_date
@@ -225,11 +265,11 @@ const InspectionUI = ({
                         inspectionPlans,
                         descriptionControls[plan.id],
                         currentUserId,
+                        uploadedFiles,
                         setUpdateTrigger
-                      );
+                      )
                       setUpdateTrigger(prev => !prev);
                     }}
-                    // butonun görünürlüğünü kontrol et
                     style={{
                       visibility:
                         plan.state === 'Closed' ? 'hidden' : 'visible',

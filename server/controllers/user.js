@@ -60,6 +60,21 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+exports.getUserByID = async (req, res) => {
+  try {
+    const user = await User.findByID(req.params.id);
+    if (user) {
+      res.status(200).send({ status: 'success', data: user });
+    } else {
+      res.status(404).send({ status: 'fail', msg: 'User not found' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ status: 'error', msg: 'Server error.' });
+  }
+};
+
+
 // ------------------------------------------------------------------
 exports.login = async (req, res) => {
   try {

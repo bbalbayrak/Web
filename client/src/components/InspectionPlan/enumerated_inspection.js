@@ -11,6 +11,8 @@ export const columns = [
     'Control Date',
     'Note',
     'Description',
+    'Document',
+    '',
     'Delivery Date',
     'Status',
     'State',

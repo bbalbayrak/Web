@@ -1,4 +1,5 @@
 require("dotenv").config();
+const startSchedule = require('./utils/scheduleactions');
 const fastify = require("fastify")({ logger: true });
 const fastifyCors = require("@fastify/cors");
 const PORT = process.env.PORT || 3001;
@@ -18,8 +19,11 @@ const locationRoutes = require("./routes/location");
 const odootowebRoutes = require("./routes/odootoweb")
 const inspectionPlanRoutes = require("./routes/inspectionplan")
 const descriptionControlRoutes =require("./routes/description_control")
+const emailRoutes = require("./utils/mailserverendpoint")
 
 const db = require('./config/db');
+
+startSchedule();
 
 db.connect()
   .then((obj) => {
@@ -90,6 +94,8 @@ inspectionPlanRoutes.forEach((route) => {
 });
 
 fastify.register(descriptionControlRoutes);
+
+fastify.register(emailRoutes);
 
 const start = async () => {
   try {
