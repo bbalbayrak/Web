@@ -21,9 +21,9 @@ import {
   handleUpdateClick,
   handleApproveClick,
   handleRejectClick,
-  handleDeleteClick, 
-  getStateStyle, 
-  getStatusStyle 
+  handleDeleteClick,
+  getStateStyle,
+  getStatusStyle,
 } from './inspection_utils';
 
 const Inspection = () => {
@@ -92,8 +92,8 @@ const Inspection = () => {
   const filteredPlans = applyFilters();
 
   return (
-    <div className="inspection-container">
-      <h1 className="inspection-title">Inspection Plan</h1>
+    <div className="items-center p-5 font-sans">
+      <h1 className="text-2xl text-gray-700 mb-5">Inspection Plan</h1>
 
       {filters.map(filter => (
         <MultipleFilter
@@ -103,35 +103,45 @@ const Inspection = () => {
           onFilterChange={handleFilterChange}
         />
       ))}
-      <button onClick={addNewFilter}>Add filter</button>
-
-      <div className="inspection-table-container">
-        <table className="inspection-table">
+      <button
+        className="bg-gray-700 text-white text-lg py-2 px-5 rounded cursor-pointer mb-5 hover:bg-gray-500"
+        onClick={addNewFilter}
+      >
+        Add filter
+      </button>
+      <div className="w-full">
+        <table className="w-1/12 border-collapse">
           <thead>
             <tr>
               {columns.map(column => (
-                <th key={column}>{column}</th>
+                <th
+                  className="bg-gray-700 text-white px-1 text-center font-bold w-1/12"
+                  key={column}
+                >
+                  {column}
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="px-3 w-1/24">
             {filteredPlans.map(plan => (
-              <tr key={plan.id}>
-                <td>{plan.vendor_name.substring(0, 12)}</td>
-                <td>{plan.customer_name.substring(0, 12)}</td>
-                <td>{plan.product_name}</td>
-                <td>{plan.order_number}</td>
-                <td>{plan.project_number}</td>
-                <td>{plan.quantity}</td>
-                <td>
+              <tr className="px-3 w-1/24" key={plan.id}>
+                <td className="px-3 w-1/24">
+                  {plan.vendor_name.substring(0, 12)}
+                </td>
+                <td className="px-3 w-1/24">
+                  {plan.customer_name.substring(0, 12)}
+                </td>
+                <td className="px-3 w-1/24">{plan.product_name}</td>
+                <td className="px-3 w-1/24">{plan.order_number}</td>
+                <td className="px-3 w-1/24">{plan.project_number}</td>
+                <td className="px-3 w-1/24">{plan.quantity}</td>
+                <td className="px-3 w-1/24">
                   <select
+                    className="w-11/12"
                     value={plan.control_method || ''}
                     onChange={event =>
-                      handleControlMethod(
-                        event,
-                        plan.id,
-                        setInspectionPlans
-                      )
+                      handleControlMethod(event, plan.id, setInspectionPlans)
                     }
                   >
                     <option value="">Select Control Method</option>
@@ -142,8 +152,9 @@ const Inspection = () => {
                     ))}
                   </select>
                 </td>
-                <td>
+                <td className="px-3">
                   <select
+                    className="w-11/12"
                     value={plan.control_type || ''}
                     onChange={event =>
                       handleControlTypeChange(
@@ -161,28 +172,49 @@ const Inspection = () => {
                     ))}
                   </select>
                 </td>
-                <td>
-                  <div className="cwo-form-group">
+                <td className="px-3">
+                  <div className="w-full">
                     <Select
+                      styles={{
+                        control: base => ({
+                          ...base,
+                          width: '10rem',
+                        }),
+                      }}
                       name="control_responsible"
                       id="control_responsible"
-                      onChange={selectedOptions => handleControlResponsibleChange(selectedOptions, plan.id, setInspectionPlans)}
+                      onChange={selectedOptions =>
+                        handleControlResponsibleChange(
+                          selectedOptions,
+                          plan.id,
+                          setInspectionPlans
+                        )
+                      }
                       options={users.map(user => ({
                         value: user.id,
                         label: user.name,
                       }))}
-                      value={plan.control_responsible ? plan.control_responsible.map(userId => {
-                        const user = users.find(user => user.id === Number(userId));
-                        return user ? { value: user.id, label: user.name } : null;
-                      }).filter(Boolean) : []}
-                      
+                      value={
+                        plan.control_responsible
+                          ? plan.control_responsible
+                              .map(userId => {
+                                const user = users.find(
+                                  user => user.id === Number(userId)
+                                );
+                                return user
+                                  ? { value: user.id, label: user.name }
+                                  : null;
+                              })
+                              .filter(Boolean)
+                          : []
+                      }
                       placeholder="Select Control Responsible"
                       isMulti
                       isSearchable
                     />
                   </div>
                 </td>
-                <td>
+                <td className="px-3">
                   <input
                     type="date"
                     value={
@@ -197,8 +229,8 @@ const Inspection = () => {
                     }
                   />
                 </td>
-                <td>{plan.note}</td>
-                <td>
+                <td className="px-3">{plan.note}</td>
+                <td className="px-3">
                   <textarea
                     placeholder="Description"
                     style={{ resize: 'vertical' }}
@@ -234,7 +266,8 @@ const Inspection = () => {
                 </td>
                 <td>
                   <button
-                    className="inspection-button"
+                    className="                      'w-20 bg-blue-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-sm'
+                    "
                     onClick={() => {
                       handleUpdateClick(
                         plan.id,
@@ -248,51 +281,78 @@ const Inspection = () => {
                   >
                     Update
                   </button>
-                    {currentUserRole === 'Quality Manager' && (
-                        <>
-                        <ButtonPopup
-                          triggerText="Approve"
-                          triggerButtonStyle="w-20 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-sm"
-                          title="Choose one of the actions below."
-                          buttons={[
-                            {
-                              label: "Close Inspection",
-                              action: () => handleApproveClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger)(false)()
-                            },
-                            {
-                              label: "Continue Inspection",
-                              action: () => handleApproveClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger)(true)()
-                            },
-                          ]}
-                        />
-                        <ButtonPopup
-                          triggerText="Reject"
-                          triggerButtonStyle="w-20 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-                          title="Choose one of the actions below."
-                          buttons={[
-                            {
-                              label: "Close Inspection",
-                              action: handleRejectClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger)(false)
-                            },
-                            {
-                              label: "Continue Inspection",
-                              action: handleRejectClick(plan.id, inspectionPlans, descriptionControls[plan.id], currentUserId, setUpdateTrigger)(true)
-                            },
-                          ]}
-                        />
-                        <ButtonPopup
-                          triggerText="Delete"
-                          triggerButtonStyle="w-20 bg-red-600 hover:bg-red-800 text-white font-bold py-1 px-2 rounded text-sm"
-                          title="Are you sure you want to delete?"
-                          buttons={[
-                            {
-                              label: "Delete",
-                              action: () => handleDeleteClick(plan.id, setInspectionPlans)
-                            }
-                          ]}
-                        />
-                      </>
-                    )}
+                  {currentUserRole === 'Quality Manager' && (
+                    <>
+                      <ButtonPopup
+                        triggerText="Approve"
+                        triggerButtonStyle="w-20 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-sm"
+                        title="Choose one of the actions below."
+                        buttons={[
+                          {
+                            label: 'Close Inspection',
+                            action: () =>
+                              handleApproveClick(
+                                plan.id,
+                                inspectionPlans,
+                                descriptionControls[plan.id],
+                                currentUserId,
+                                setUpdateTrigger
+                              )(false)(),
+                          },
+                          {
+                            label: 'Continue Inspection',
+                            action: () =>
+                              handleApproveClick(
+                                plan.id,
+                                inspectionPlans,
+                                descriptionControls[plan.id],
+                                currentUserId,
+                                setUpdateTrigger
+                              )(true)(),
+                          },
+                        ]}
+                      />
+                      <ButtonPopup
+                        triggerText="Reject"
+                        triggerButtonStyle="w-20 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                        title="Choose one of the actions below."
+                        buttons={[
+                          {
+                            label: 'Close Inspection',
+                            action: handleRejectClick(
+                              plan.id,
+                              inspectionPlans,
+                              descriptionControls[plan.id],
+                              currentUserId,
+                              setUpdateTrigger
+                            )(false),
+                          },
+                          {
+                            label: 'Continue Inspection',
+                            action: handleRejectClick(
+                              plan.id,
+                              inspectionPlans,
+                              descriptionControls[plan.id],
+                              currentUserId,
+                              setUpdateTrigger
+                            )(true),
+                          },
+                        ]}
+                      />
+                      <ButtonPopup
+                        triggerText="Delete"
+                        triggerButtonStyle="w-20 bg-red-600 hover:bg-red-800 text-white font-bold py-1 px-2 rounded text-sm"
+                        title="Are you sure you want to delete?"
+                        buttons={[
+                          {
+                            label: 'Delete',
+                            action: () =>
+                              handleDeleteClick(plan.id, setInspectionPlans),
+                          },
+                        ]}
+                      />
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

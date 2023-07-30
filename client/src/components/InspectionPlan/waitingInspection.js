@@ -92,8 +92,8 @@ const Inspection = () => {
   const filteredPlans = applyFilters();
 
   return (
-    <div className="inspection-container">
-      <h1 className="inspection-title">Inspection Plan</h1>
+    <div className="items-center p-5 font-sans">
+      <h1 className="text-2xl text-gray-700 mb-5">Inspection Plan</h1>
 
       {filters.map(filter => (
         <MultipleFilter
@@ -103,25 +103,39 @@ const Inspection = () => {
           onFilterChange={handleFilterChange}
         />
       ))}
-      <button onClick={addNewFilter}>Add filter</button>
+      <button
+        className="bg-gray-700 text-white text-lg py-2 px-5 rounded cursor-pointer mb-5 hover:bg-gray-500"
+        onClick={addNewFilter}
+      >
+        Add filter
+      </button>
 
-      <div className="inspection-table-container">
-        <table className="inspection-table">
+      <div className="w-full">
+        <table className="w-1/12 border-collapse">
           <thead>
             <tr>
               {columns.map(column => (
-                <th key={column}>{column}</th>
+                <th
+                  className="bg-gray-700 text-white px-1 text-center font-bold w-1/12"
+                  key={column}
+                >
+                  {column}
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="px-3 w-1/24">
             {filteredPlans.map(plan => (
-              <tr key={plan.id}>
-                <td>{plan.vendor_name.substring(0, 12)}</td>
-                <td>{plan.customer_name.substring(0, 12)}</td>
-                <td>{plan.product_name}</td>
-                <td>{plan.order_number}</td>
-                <td>
+              <tr className="px-3 w-1/24" key={plan.id}>
+                <td className="px-3 w-1/24">
+                  {plan.vendor_name.substring(0, 12)}
+                </td>
+                <td className="px-3 w-1/24">
+                  {plan.customer_name.substring(0, 12)}
+                </td>
+                <td className="px-3 w-1/24">{plan.product_name}</td>
+                <td className="px-3 w-1/24">{plan.order_number}</td>
+                <td className="px-3">
                   <a
                     target="blank"
                     href="https://yenacelik.sharepoint.com/sites/receivedjobs/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2Freceivedjobs%2FShared%20Documents%2FGeneral%2F2022%20to&viewid=bf734293%2Df159%2D4420%2D8a84%2Dd4a48c39ba81"
@@ -129,9 +143,10 @@ const Inspection = () => {
                     {plan.project_number}
                   </a>
                 </td>
-                <td>{plan.quantity}</td>
-                <td>
+                <td className="px-3">{plan.quantity}</td>
+                <td className="px-3">
                   <select
+                    className="w-11/12"
                     value={plan.control_method || ''}
                     onChange={event =>
                       handleControlMethod(event, plan.id, setInspectionPlans)
@@ -145,8 +160,9 @@ const Inspection = () => {
                     ))}
                   </select>
                 </td>
-                <td>
+                <td className="px-3">
                   <select
+                    className="w-11/12"
                     value={plan.control_type || ''}
                     onChange={event =>
                       handleControlTypeChange(
@@ -164,28 +180,43 @@ const Inspection = () => {
                     ))}
                   </select>
                 </td>
-                <td>
+                <td className="px-3">
                   <div className="cwo-form-group">
                     <Select
                       name="control_responsible"
                       id="control_responsible"
-                      onChange={selectedOptions => handleControlResponsibleChange(selectedOptions, plan.id, setInspectionPlans)}
+                      onChange={selectedOptions =>
+                        handleControlResponsibleChange(
+                          selectedOptions,
+                          plan.id,
+                          setInspectionPlans
+                        )
+                      }
                       options={users.map(user => ({
                         value: user.id,
                         label: user.name,
                       }))}
-                      value={plan.control_responsible ? plan.control_responsible.map(userId => {
-                        const user = users.find(user => user.id === Number(userId));
-                        return user ? { value: user.id, label: user.name } : null;
-                      }).filter(Boolean) : []}
-                      
+                      value={
+                        plan.control_responsible
+                          ? plan.control_responsible
+                              .map(userId => {
+                                const user = users.find(
+                                  user => user.id === Number(userId)
+                                );
+                                return user
+                                  ? { value: user.id, label: user.name }
+                                  : null;
+                              })
+                              .filter(Boolean)
+                          : []
+                      }
                       placeholder="Select Control Responsible"
                       isMulti
                       isSearchable
                     />
                   </div>
                 </td>
-                <td>
+                <td className="px-3">
                   <input
                     type="date"
                     value={
@@ -200,8 +231,8 @@ const Inspection = () => {
                     }
                   />
                 </td>
-                <td>{plan.note}</td>
-                <td>
+                <td className="px-3">{plan.note}</td>
+                <td className="px-3">
                   <textarea
                     placeholder="Description"
                     style={{ resize: 'vertical' }}
@@ -216,7 +247,7 @@ const Inspection = () => {
                     }
                   />
                 </td>
-                <td>
+                <td className="px-3">
                   {plan.delivery_date
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
                     : ''}

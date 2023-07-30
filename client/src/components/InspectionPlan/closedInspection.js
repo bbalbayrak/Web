@@ -75,8 +75,8 @@ const Inspection = () => {
   const filteredPlans = applyFilters();
 
   return (
-    <div className="inspection-container">
-      <h1 className="inspection-title">Inspection Plan</h1>
+    <div className="items-center p-5 font-sans">
+      <h1 className="text-2xl text-gray-700 mb-5">Inspection Plan</h1>
 
       {filters.map(filter => (
         <MultipleFilter
@@ -86,10 +86,15 @@ const Inspection = () => {
           onFilterChange={handleFilterChange}
         />
       ))}
-      <button onClick={addNewFilter}>Add filter</button>
+      <button
+        className="bg-gray-700 text-white text-lg py-2 px-5 rounded cursor-pointer mb-5 hover:bg-gray-500"
+        onClick={addNewFilter}
+      >
+        Add filter
+      </button>
 
-      <div className="inspection-table-container">
-        <table className="inspection-table">
+      <div className="w-full">
+        <table className="w-1/12 border-collapse">
           <thead>
             <tr>
               {columns.map(column => (
@@ -112,17 +117,19 @@ const Inspection = () => {
                     {plan.project_number}
                   </a>
                 </td>
-                <td>{plan.quantity}</td>
-                <td>{plan.control_method}</td>
-                <td>{plan.control_type}</td>
-                <td>{getUserNameById(users, plan.control_responsible)}</td>
-                <td>
+                <td className="px-3 w-1/24">{plan.quantity}</td>
+                <td className="px-3 w-1/24">{plan.control_method}</td>
+                <td className="px-3 w-1/24">{plan.control_type}</td>
+                <td className="px-3 w-1/24">
+                  {getUserNameById(users, plan.control_responsible)}
+                </td>
+                <td className="px-3 w-1/24">
                   {plan.control_date
                     ? new Date(plan.control_date).toLocaleDateString('tr-TR')
                     : ''}
                 </td>
-                <td>{plan.note}</td>
-                <td>{descriptionControls[plan.id]}</td>
+                <td className="px-3">{plan.note}</td>
+                <td className="px-3">{descriptionControls[plan.id]}</td>
                 <td>
                   {plan.delivery_date
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
