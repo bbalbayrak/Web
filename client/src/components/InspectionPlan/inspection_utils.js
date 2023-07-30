@@ -103,9 +103,16 @@ export const handleFileUpload = (event, planId, setUploadedFiles) => {
   });
 };
 
-export const getUserNameById = (users, id) => {
-  const user = users.find(user => user.id.toString() === id.toString());
-  return user ? user.name : '';
+export const getUserNamesByIds = (users, ids) => {
+  if (!Array.isArray(ids)) return '';
+
+  return ids
+    .map(id => {
+      const user = users.find(user => user.id.toString() === id.toString());
+      return user ? user.name : null;
+    })
+    .filter(Boolean) // Bu, map işlemi sonucunda null olanları filtreler
+    .join(', '); // Bu, kullanıcı adlarını virgülle birleştirir
 }
 
 export const getStatusStyle = status => {

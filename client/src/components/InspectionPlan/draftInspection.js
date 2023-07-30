@@ -10,6 +10,8 @@ import {
 import MultipleFilter from '../../functions/MultipleFilter';
 import ButtonPopup from './ButtonPopup';
 import Select from 'react-select';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 import {
   fetchItems,
@@ -22,6 +24,7 @@ import {
   handleApproveClick,
   handleRejectClick,
   handleDeleteClick,
+  handleFileUpload,
   getStateStyle,
   getStatusStyle,
 } from './inspection_utils';
@@ -34,6 +37,9 @@ const Inspection = () => {
   const [updateTrigger, setUpdateTrigger] = useState(false);
   const [descriptionControls, setDescriptionControls] = useState({});
   const [filters, setFilters] = useState([]);
+  const [descriptionControlsDocuments, setDescriptionControlsDocuments] = useState({});
+  const [uploadedFiles, setUploadedFiles] = useState({});
+
 
   const addNewFilter = () => {
     setFilters(prevFilters => [
@@ -76,8 +82,10 @@ const Inspection = () => {
       const descriptionControls = {};
       for (let desc of descriptionData.data) {
         descriptionControls[desc.inspectionplan_id] = desc.description;
+        descriptionControlsDocuments[desc.inspectionplan_id] = desc.documents
       }
 
+      setDescriptionControlsDocuments(descriptionControlsDocuments);
       setDescriptionControls(descriptionControls);
       setInspectionPlans(data);
     });
@@ -109,6 +117,7 @@ const Inspection = () => {
       >
         Add filter
       </button>
+
       <div className="w-full">
         <table className="w-1/12 border-collapse">
           <thead>
@@ -134,9 +143,16 @@ const Inspection = () => {
                 </td>
                 <td className="px-3 w-1/24">{plan.product_name}</td>
                 <td className="px-3 w-1/24">{plan.order_number}</td>
-                <td className="px-3 w-1/24">{plan.project_number}</td>
-                <td className="px-3 w-1/24">{plan.quantity}</td>
-                <td className="px-3 w-1/24">
+                <td className="px-3">
+                  <a
+                    target="blank"
+                    href="https://yenacelik.sharepoint.com/sites/receivedjobs/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2Freceivedjobs%2FShared%20Documents%2FGeneral%2F2022%20to&viewid=bf734293%2Df159%2D4420%2D8a84%2Dd4a48c39ba81"
+                  >
+                    {plan.project_number}
+                  </a>
+                </td>
+                <td className="px-3">{plan.quantity}</td>
+                <td className="px-3">
                   <select
                     value={plan.control_method || ''}
                     onChange={event =>
@@ -151,7 +167,7 @@ const Inspection = () => {
                     ))}
                   </select>
                 </td>
-                <td className="px-3">
+                <td>
                   <select
                     value={plan.control_type || ''}
                     onChange={event =>
@@ -171,14 +187,14 @@ const Inspection = () => {
                   </select>
                 </td>
                 <td className="px-3">
-                  <div className="w-full">
+                  <div className="cwo-form-group">
                     <Select
-                      styles={{
-                        control: base => ({
-                          ...base,
-                          width: '10rem',
-                        }),
-                      }}
+                        styles={{
+                          control: base => ({
+                            ...base,
+                            width: '15rem',
+                          }),
+                        }}
                       name="control_responsible"
                       id="control_responsible"
                       onChange={selectedOptions =>
@@ -227,6 +243,28 @@ const Inspection = () => {
                     }
                   />
                 </td>
+                {/* <td>
+                  <input
+                    type="date"
+                    value={
+                      plan.control_date
+                        ? new Date(plan.control_date)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                    max={
+                      plan.delivery_date
+                        ? new Date(plan.delivery_date)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                    onChange={date =>
+                      handleDateChange(date, plan.id, setInspectionPlans)
+                    }
+                  />
+                </td> */}
                 <td className="px-3">{plan.note}</td>
                 <td className="px-3">
                   <textarea
@@ -243,7 +281,26 @@ const Inspection = () => {
                     }
                   />
                 </td>
-                <td>
+                <td className="px-3">
+                  <input
+                    className="w-11/12"
+                    type="file"
+                    onChange={e =>
+                      handleFileUpload(e, plan.id, setUploadedFiles)
+                    }
+                    style={{ width: '150%' }}
+                  />
+                </td>
+                <td className="px-3">
+                  <a
+                    href={descriptionControlsDocuments[plan.id]}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                  <FontAwesomeIcon className="pl-3" icon={faExternalLinkAlt} />
+                  </a>
+                </td>
+                <td className="px-3">
                   {plan.delivery_date
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
                     : ''}
@@ -255,23 +312,23 @@ const Inspection = () => {
                     </span>
                   </div>
                 </td>
-                <td>
+                {/* <td>
                   <div className="flex items-center justify-center h-full">
                     <span className={getStateStyle(plan.state)}>
                       {plan.state}
                     </span>
                   </div>
-                </td>
+                </td> */}
                 <td>
                   <button
-                    className="                      'w-20 bg-blue-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-sm'
-                    "
+                    className="inspection-button"
                     onClick={() => {
                       handleUpdateClick(
                         plan.id,
                         inspectionPlans,
                         descriptionControls[plan.id],
                         currentUserId,
+                        uploadedFiles,
                         setUpdateTrigger
                       );
                       setUpdateTrigger(prev => !prev);

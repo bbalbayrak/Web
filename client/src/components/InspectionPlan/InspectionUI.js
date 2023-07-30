@@ -174,7 +174,7 @@ const InspectionUI = ({
                       styles={{
                         control: base => ({
                           ...base,
-                          height: '3rem',
+                          width: '15rem',
                         }),
                       }}
                       name="control_responsible"
