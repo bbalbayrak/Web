@@ -138,13 +138,12 @@ const Inspection = () => {
                 <td className="px-3 w-1/24">{plan.quantity}</td>
                 <td className="px-3 w-1/24">
                   <select
-                    className="w-11/12"
                     value={plan.control_method || ''}
                     onChange={event =>
                       handleControlMethod(event, plan.id, setInspectionPlans)
                     }
                   >
-                    <option value="">Select Control Method</option>
+                    <option value="">Select</option>
                     {control_method.map((method, index) => (
                       <option key={index} value={method}>
                         {method}
@@ -154,7 +153,6 @@ const Inspection = () => {
                 </td>
                 <td className="px-3">
                   <select
-                    className="w-11/12"
                     value={plan.control_type || ''}
                     onChange={event =>
                       handleControlTypeChange(
@@ -164,7 +162,7 @@ const Inspection = () => {
                       )
                     }
                   >
-                    <option value="">Select Control Type</option>
+                    <option value="">Select</option>
                     {control_type.map((type, index) => (
                       <option key={index} value={type}>
                         {type}

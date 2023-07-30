@@ -36,6 +36,7 @@ const InspectionUI = ({
 }) => {
   const [filters, setFilters] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState({});
+  const [uploadedFileName, setUploadedFileName] = useState("");
 
   const addNewFilter = () => {
     setFilters(prevFilters => [
@@ -131,15 +132,14 @@ const InspectionUI = ({
                   </a>
                 </td>
                 <td className="px-3">{plan.quantity}</td>
-                <td className="px-3">
+                <td>
                   <select
-                    className="w-11/12"
                     value={plan.control_method || ''}
                     onChange={event =>
                       handleControlMethod(event, plan.id, setInspectionPlans)
                     }
                   >
-                    <option value="">Select Control Method</option>
+                    <option value="">Select</option>
                     {control_method.map((method, index) => (
                       <option key={index} value={method}>
                         {method}
@@ -147,10 +147,9 @@ const InspectionUI = ({
                     ))}
                   </select>
                 </td>
-                <td className="px-3">
+                <td>
                   <select
                     value={plan.control_type || ''}
-                    className="w-11/12"
                     onChange={event =>
                       handleControlTypeChange(
                         event,
@@ -159,7 +158,9 @@ const InspectionUI = ({
                       )
                     }
                   >
-                    <option value="">Select Control Type</option>
+                    <option value="">
+                      Select
+                    </option>
                     {control_type.map((type, index) => (
                       <option key={index} value={type}>
                         {type}
@@ -264,6 +265,7 @@ const InspectionUI = ({
                 </td>
                 <td className="px-3">
                   <input
+                    className="w-11/12"
                     type="file"
                     onChange={e =>
                       handleFileUpload(e, plan.id, setUploadedFiles)
@@ -277,9 +279,11 @@ const InspectionUI = ({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <FontAwesomeIcon icon={faExternalLinkAlt} />
+                  <FontAwesomeIcon className="pl-3" icon={faExternalLinkAlt} />
                   </a>
+                  
                 </td>
+                
                 <td className="px-3">
                   {plan.delivery_date
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
@@ -292,13 +296,13 @@ const InspectionUI = ({
                     </span>
                   </div>
                 </td>
-                <td className="px-3">
+                {/* <td className="px-3">
                   <div className="flex items-center justify-center h-full">
                     <span className={getStateStyle(plan.state)}>
                       {plan.state}
                     </span>
                   </div>
-                </td>
+                </td> */}
                 <td className="px-3">
                   <button
                     className={
@@ -312,7 +316,7 @@ const InspectionUI = ({
                         currentUserId,
                         uploadedFiles,
                         setUpdateTrigger
-                      )
+                      );
                       setUpdateTrigger(prev => !prev);
                     }}
                     style={{

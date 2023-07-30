@@ -4,7 +4,7 @@ export const columns = [
     'Product Name',
     'Order Number',
     'Project Number',
-    'Quantity',
+    'Qty',
     'Method',
     'Control Type',
     'Control Responsible',
@@ -15,7 +15,7 @@ export const columns = [
     '',
     'Delivery Date',
     'Status',
-    'State',
+    // 'State',
   ];
 
 export const control_type = [
