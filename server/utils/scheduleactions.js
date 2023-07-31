@@ -24,13 +24,25 @@ const checkDatabaseAndSendEmails = async () => {
   for (const entry of entries) {
     const emails = await Promise.all(entry.control_responsible.map(idToEmail));
 
-    const emailData = {
-      to: emails.join(', '),
-      subject: 'Inspection Plan Hatırlatma',
-      text: `Proje numarası ${entry.project_number} olan siparişin ${entry.product_name} numaralı ürünü, ${entry.control_date} tarihinde ${entry.control_method} şeklinde ${entry.control_type} yapılacaktır. Bilginize.`,
-    };
+    const htmlContent = `
+    <h1>Inspection Plan Güncelleme</h1>
+    <div><strong>Quality Responsible:</strong> ${emails.join(', ')}</div>
+    <div><strong>Vendor:</strong> ${plan.vendor_name}</div>
+    <div><strong>Date:</strong> ${formatDate(plan.control_date)}</div>
+    <p>Proje numarası ${plan.project_number} olan siparişin ${plan.product_name} numaralı ürünü, ${formatDate(plan.control_date)} tarihinde ${plan.control_method} şeklinde ${plan.control_type} yapılacaktır.</p>
+    <p>Bilginize.</p>
+  `;
+  
+  console.log(htmlContent); // Log the HTML content
+  
+  const emailData = {
+    to: emails.join(', '),
+    cc: 'quality@yenaengineering.nl',
+    subject: 'Inspection Plan Güncelleme',
+    html: htmlContent,
+  };
 
-    await sendEmail(emailData.to, emailData.subject, emailData.text);
+    await sendEmail(emailData.to, emailData.cc, emailData.subject, emailData.text, emailData.html);
   }
 };
 
