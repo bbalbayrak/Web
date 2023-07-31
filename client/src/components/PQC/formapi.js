@@ -14,7 +14,7 @@ export const getFormstable = async () => {
 
 export const getFormById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}forms/${id}`);
+    const response = await axios.get(`${API_URL}/allforms/${id}`);
     return response.data;
   } catch (error) {
     // console.error('Error fetching form:', error);
