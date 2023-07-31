@@ -70,12 +70,36 @@ export const updateInspectionPlan = async plan => {
   // Get emails by id
   const emails = await Promise.all(plan.control_responsible.map(getEmailById));
 
-  // Email data
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+  
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+  
+    return [day, month, year].join('-');
+  }
+  
+  const htmlContent = `
+    <h1>Inspection Plan Güncelleme</h1>
+    <div><strong>Quality Responsible:</strong> ${emails.join(', ')}</div>
+    <div><strong>Vendor:</strong> ${plan.vendor_name}</div>
+    <div><strong>Date:</strong> ${formatDate(plan.control_date)}</div>
+    <p>Proje numarası ${plan.project_number} olan siparişin ${plan.product_name} numaralı ürünü, ${formatDate(plan.control_date)} tarihinde ${plan.control_method} şeklinde ${plan.control_type} yapılacaktır.</p>
+    <p>Bilginize.</p>
+  `;
+  
+  console.log(htmlContent); // Log the HTML content
+  
   const emailData = {
     to: emails.join(', '),
     cc: 'quality@yenaengineering.nl',
     subject: 'Inspection Plan Güncelleme',
-    text: `Proje numarası ${plan.project_number} olan siparişin ${plan.product_name} numaralı ürünü, ${plan.control_date} tarihinde ${plan.control_method} şeklinde ${plan.control_type} yapılacaktır. Bilginize.`,
+    html: htmlContent,
   };
 
   // Send the email
