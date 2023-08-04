@@ -16,6 +16,12 @@ const routes = [
         path: "/api/login",
         handler: userControllers.login,
     },
+    {
+        method: "GET",
+        path: "/api/users/:id",
+        handler: userControllers.getUserByID,
+    },
+    
 ];
 
 module.exports = routes;

@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_URL = process.env.API_URL
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const getFormstable = async () => {
   try {
-    const response = await axios.get(`${API_URL}/allforms`);
+    const response = await axios.get(`${API_URL}/forms`);
     return response.data.data;
   } catch (error) {
     // console.error('Error fetching forms:', error);
@@ -12,10 +12,9 @@ export const getFormstable = async () => {
   }
 };
 
-
 export const getFormById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}forms/${id}`);
+    const response = await axios.get(`${API_URL}/allforms/${id}`);
     return response.data;
   } catch (error) {
     // console.error('Error fetching form:', error);

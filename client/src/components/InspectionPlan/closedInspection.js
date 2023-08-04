@@ -7,10 +7,12 @@ import {
   getAllUsers,
 } from './inspectionapi';
 import MultipleFilter from '../../functions/MultipleFilter';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 import {
   fetchItems,
-  getUserNameById,
+  getUserNamesByIds,
   getStateStyle,
   getStatusStyle,
 } from './inspection_utils';
@@ -20,6 +22,7 @@ const Inspection = () => {
   const [descriptionControls, setDescriptionControls] = useState({});
   const [filters, setFilters] = useState([]);
   const [users, setUsers] = useState([]);
+  const [descriptionControlsDocuments, setDescriptionControlsDocuments] = useState({});
 
   const addNewFilter = () => {
     setFilters(prevFilters => [
@@ -62,8 +65,10 @@ const Inspection = () => {
       const descriptionControls = {};
       for (let desc of descriptionData.data) {
         descriptionControls[desc.inspectionplan_id] = desc.description;
+        descriptionControlsDocuments[desc.inspectionplan_id] = desc.documents
       }
 
+      setDescriptionControlsDocuments(descriptionControlsDocuments);
       setDescriptionControls(descriptionControls);
       setInspectionPlans(data);
 
@@ -75,8 +80,8 @@ const Inspection = () => {
   const filteredPlans = applyFilters();
 
   return (
-    <div className="inspection-container">
-      <h1 className="inspection-title">Inspection Plan</h1>
+    <div className="items-center p-5 font-sans">
+      <h1 className="text-2xl text-gray-700 mb-5">Inspection Plan</h1>
 
       {filters.map(filter => (
         <MultipleFilter
@@ -86,10 +91,15 @@ const Inspection = () => {
           onFilterChange={handleFilterChange}
         />
       ))}
-      <button onClick={addNewFilter}>Add filter</button>
+      <button
+        className="bg-gray-700 text-white text-lg py-2 px-5 rounded cursor-pointer mb-5 hover:bg-gray-500"
+        onClick={addNewFilter}
+      >
+        Add filter
+      </button>
 
-      <div className="inspection-table-container">
-        <table className="inspection-table">
+      <div className="w-full">
+        <table className="w-1/12 border-collapse">
           <thead>
             <tr>
               {columns.map(column => (
@@ -112,17 +122,31 @@ const Inspection = () => {
                     {plan.project_number}
                   </a>
                 </td>
-                <td>{plan.quantity}</td>
-                <td>{plan.control_method}</td>
-                <td>{plan.control_type}</td>
-                <td>{getUserNameById(users, plan.control_responsible)}</td>
-                <td>
+                <td className="px-3 w-1/24">{plan.quantity}</td>
+                <td className="px-3 w-1/24">{plan.control_method}</td>
+                <td className="px-3 w-1/24">{plan.control_type}</td>
+                <td className="px-3 w-1/24">
+                  {getUserNamesByIds(users, plan.control_responsible)}
+                </td>
+                <td className="px-3 w-1/24">
                   {plan.control_date
                     ? new Date(plan.control_date).toLocaleDateString('tr-TR')
                     : ''}
                 </td>
-                <td>{plan.note}</td>
-                <td>{descriptionControls[plan.id]}</td>
+                <td className="px-3">{plan.note}</td>
+                <td className="px-3">{descriptionControls[plan.id]}</td>
+                <td>
+
+                </td>
+                <td className="px-3">
+                  <a
+                    href={descriptionControlsDocuments[plan.id]}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                  <FontAwesomeIcon className="pl-3" icon={faExternalLinkAlt} />
+                  </a>
+                </td>
                 <td>
                   {plan.delivery_date
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
@@ -135,13 +159,13 @@ const Inspection = () => {
                     </span>
                   </div>
                 </td>
-                <td>
+                {/* <td>
                   <div className="flex items-center justify-center h-full">
                     <span className={getStateStyle(plan.state)}>
                       {plan.state}
                     </span>
                   </div>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

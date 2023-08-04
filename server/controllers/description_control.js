@@ -46,3 +46,33 @@ exports.getDescriptionControl = async () => {
     throw err;
   }
 };
+
+exports.getDescriptionControlByInspectionPlanId = async (request, reply) => {
+  try {
+    const { inspectionplan_id } = request.params;
+
+    const result = await DescriptionControl.getByInspectionPlanId(inspectionplan_id);
+
+    if (result) {
+      return reply.code(200).send({
+        status: "success",
+        statusCode: 200,
+        data: result,
+      });
+    } else {
+      return reply.code(404).send({
+        status: "error",
+        statusCode: 404,
+        message: "Belirtilen inspectionplan_id ile bir kayıt bulunamadı",
+      });
+    }
+
+  } catch (err) {
+    console.error(err);
+    return reply.code(500).send({
+      status: "error",
+      message: "Açıklama kontrolü getirilirken bir hata oluştu.",
+    });
+  }
+};
+

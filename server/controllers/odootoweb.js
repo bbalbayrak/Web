@@ -4,7 +4,7 @@ const OdooToWebWork = require("../models/odootoweb");
 const Vendor = require("../models/vendor");
 const Customer = require("../models/customer");
 const Product = require("../models/product");
-const API_URL = process.env.API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
 exports.createWork = async (req, reply) => {
   try {

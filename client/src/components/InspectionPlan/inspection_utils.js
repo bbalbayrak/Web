@@ -15,15 +15,16 @@ export const fetchItems = async (getter, setter) => {
   }
 };
 
-export const handleUpdateClick = async (id, inspectionPlans, descriptions, currentUserId, setUpdateTrigger) => {
+export const handleUpdateClick = async (id, inspectionPlans, descriptions, currentUserId, uploadedFiles, setUpdateTrigger) => {
   const plan = inspectionPlans.find(plan => plan.id === id);
 
-  if (descriptions || plan.documents) {
-    await createDescriptionControl(plan, plan.documents, descriptions, currentUserId); 
+  if (descriptions || plan.documents || uploadedFiles[id]) {
+    await createDescriptionControl(plan, uploadedFiles[id], descriptions, currentUserId); 
   }
   await updateInspectionPlan(plan);
   setUpdateTrigger(prevState => !prevState);
 };
+
 
 export const handleApproveClick = (planId, inspectionPlans, description, currentUserId, setUpdateTrigger) => (continueApproval) => async () => {
   const plan = inspectionPlans.find(plan => plan.id === planId);
@@ -79,11 +80,11 @@ export const handleControlMethod = (event, id, setInspectionPlans) => {
   );
 };
 
-export const handleControlResponsibleChange = (event, id, setInspectionPlans) => {
-  const newControlResponsible = event.target.value;
+export const handleControlResponsibleChange = (selectedOptions, id, setInspectionPlans) => {
+  const selectedUserIds = selectedOptions.map(option => option.value);
   setInspectionPlans(prevPlans =>
     prevPlans.map(plan =>
-      plan.id === id ? { ...plan, control_responsible: newControlResponsible } : plan
+      plan.id === id ? { ...plan, control_responsible: selectedUserIds } : plan
     )
   );
 };
@@ -96,9 +97,22 @@ export const handleDescriptionChange = (event, planId, descriptionControls, setD
   setDescriptionControls(updatedDescriptions);
 };
 
-export const getUserNameById = (users, id) => {
-  const user = users.find(user => user.id.toString() === id.toString());
-  return user ? user.name : '';
+export const handleFileUpload = (event, planId, setUploadedFiles) => {
+  setUploadedFiles(prevFiles => {
+    return { ...prevFiles, [planId]: event.target.files[0] };
+  });
+};
+
+export const getUserNamesByIds = (users, ids) => {
+  if (!Array.isArray(ids)) return '';
+
+  return ids
+    .map(id => {
+      const user = users.find(user => user.id.toString() === id.toString());
+      return user ? user.name : null;
+    })
+    .filter(Boolean) // Bu, map işlemi sonucunda null olanları filtreler
+    .join(', '); // Bu, kullanıcı adlarını virgülle birleştirir
 }
 
 export const getStatusStyle = status => {

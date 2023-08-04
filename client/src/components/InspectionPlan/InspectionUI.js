@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { toLowerTurkish, toUpperTurkish } from './turkishHelpers';
 import { columns, control_type, control_method } from './enumerated_inspection';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import {
   handleControlResponsibleChange,
   handleDateChange,
@@ -13,10 +15,12 @@ import {
   handleDeleteClick,
   getStateStyle,
   getStatusStyle,
+  handleFileUpload,
 } from './inspection_utils';
 import MultipleFilter from '../../functions/MultipleFilter';
 import ButtonPopup from './ButtonPopup';
-
+import Select from 'react-select';
+import './Inspection.css';
 const InspectionUI = ({
   inspectionPlans,
   setInspectionPlans,
@@ -27,8 +31,12 @@ const InspectionUI = ({
   setUpdateTrigger,
   descriptionControls,
   setDescriptionControls,
+  setDescriptionControlsDocuments,
+  descriptionControlsDocuments,
 }) => {
   const [filters, setFilters] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState({});
+  const [uploadedFileName, setUploadedFileName] = useState("");
 
   const addNewFilter = () => {
     setFilters(prevFilters => [
@@ -70,8 +78,8 @@ const InspectionUI = ({
   const filteredPlans = applyFilters();
 
   return (
-    <div className="inspection-container">
-      <h1 className="inspection-title">Inspection Plan</h1>
+    <div className="items-center p-5 font-sans">
+      <h1 className="text-2xl text-gray-700 mb-5">Inspection Plan</h1>
 
       {filters.map(filter => (
         <MultipleFilter
@@ -81,33 +89,49 @@ const InspectionUI = ({
           onFilterChange={handleFilterChange}
         />
       ))}
-      <button onClick={addNewFilter}>Add filter</button>
+      <button
+        className="bg-gray-700 text-white text-lg py-2 px-5 rounded cursor-pointer mb-5 hover:bg-gray-500"
+        onClick={addNewFilter}
+      >
+        Add filter
+      </button>
 
-      <div className="inspection-table-container">
-        <table className="inspection-table">
+      <div className="w-full">
+        <table className="w-1/12 border-collapse">
           <thead>
             <tr>
               {columns.map(column => (
-                <th key={column}>{column}</th>
+                <th
+                  className="bg-gray-700 text-white px-1 text-center font-bold w-1/12"
+                  key={column}
+                  title={column}
+                >
+                  {column}
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="px-3 w-1/24">
             {filteredPlans.map(plan => (
-              <tr key={plan.id}>
-                <td>{plan.vendor_name.substring(0, 12)}</td>
-                <td>{plan.customer_name.substring(0, 12)}</td>
-                <td>{plan.product_name}</td>
-                <td>{plan.order_number}</td>
-                <td>
+              <tr key={plan.id} className="px-3 w-1/24">
+                {' '}
+                <td className="px-3 w-1/24">
+                  {plan.vendor_name.substring(0, 12)}
+                </td>
+                <td className="px-3 w-1/24">
+                  {plan.customer_name.substring(0, 12)}
+                </td>
+                <td className="px-1 w-1/24">{plan.product_name}</td>
+                <td className="px-3 w-1/24">{plan.order_number}</td>
+                <td className="px-3">
                   <a
                     target="blank"
                     href="https://yenacelik.sharepoint.com/sites/receivedjobs/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2Freceivedjobs%2FShared%20Documents%2FGeneral%2F2022%20to&viewid=bf734293%2Df159%2D4420%2D8a84%2Dd4a48c39ba81"
                   >
                     {plan.project_number}
                   </a>
-                </td>{' '}
-                <td>{plan.quantity}</td>
+                </td>
+                <td className="px-3">{plan.quantity}</td>
                 <td>
                   <select
                     value={plan.control_method || ''}
@@ -115,7 +139,7 @@ const InspectionUI = ({
                       handleControlMethod(event, plan.id, setInspectionPlans)
                     }
                   >
-                    <option value="">Select Control Method</option>
+                    <option value="">Select</option>
                     {control_method.map((method, index) => (
                       <option key={index} value={method}>
                         {method}
@@ -134,7 +158,9 @@ const InspectionUI = ({
                       )
                     }
                   >
-                    <option value="">Select Control Type</option>
+                    <option value="">
+                      Select
+                    </option>
                     {control_type.map((type, index) => (
                       <option key={index} value={type}>
                         {type}
@@ -142,28 +168,49 @@ const InspectionUI = ({
                     ))}
                   </select>
                 </td>
-                <td>
-                  <select
-                    value={plan.control_responsible || 'unselected'}
-                    onChange={event =>
-                      handleControlResponsibleChange(
-                        event,
-                        plan.id,
-                        setInspectionPlans
-                      )
-                    }
-                  >
-                    <option value="unselected">
-                      Select Control Responsible
-                    </option>
-                    {users.map((user, index) => (
-                      <option key={index} value={user.id}>
-                        {user.name}
-                      </option>
-                    ))}
-                  </select>
+                <td className="px-3">
+                  <div>
+                    <Select
+                      styles={{
+                        control: base => ({
+                          ...base,
+                          width: '15rem',
+                        }),
+                      }}
+                      name="control_responsible"
+                      id="control_responsible"
+                      onChange={selectedOptions =>
+                        handleControlResponsibleChange(
+                          selectedOptions,
+                          plan.id,
+                          setInspectionPlans
+                        )
+                      }
+                      options={users.map(user => ({
+                        value: user.id,
+                        label: user.name,
+                      }))}
+                      value={
+                        plan.control_responsible
+                          ? plan.control_responsible
+                              .map(userId => {
+                                const user = users.find(
+                                  user => user.id === Number(userId)
+                                );
+                                return user
+                                  ? { value: user.id, label: user.name }
+                                  : null;
+                              })
+                              .filter(Boolean)
+                          : []
+                      }
+                      placeholder="Select Control Responsible"
+                      isMulti
+                      isSearchable
+                    />
+                  </div>
                 </td>
-                <td>
+                <td className="px-3">
                   <input
                     type="date"
                     value={
@@ -178,8 +225,30 @@ const InspectionUI = ({
                     }
                   />
                 </td>
-                <td>{plan.note}</td>
-                <td>
+                {/* <td>
+                  <input
+                    type="date"
+                    value={
+                      plan.control_date
+                        ? new Date(plan.control_date)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                    max={
+                      plan.delivery_date
+                        ? new Date(plan.delivery_date)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                    onChange={date =>
+                      handleDateChange(date, plan.id, setInspectionPlans)
+                    }
+                  />
+                </td> */}
+                <td className="px-3">{plan.note}</td>
+                <td className="px-3">
                   <textarea
                     placeholder="Description"
                     style={{ resize: 'vertical' }}
@@ -194,27 +263,47 @@ const InspectionUI = ({
                     }
                   />
                 </td>
-                <td>
+                <td className="px-3">
+                  <input
+                    className="w-11/12"
+                    type="file"
+                    onChange={e =>
+                      handleFileUpload(e, plan.id, setUploadedFiles)
+                    }
+                    style={{ width: '150%' }}
+                  />
+                </td>
+                <td className="px-3">
+                  <a
+                    href={descriptionControlsDocuments[plan.id]}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                  <FontAwesomeIcon className="pl-3" icon={faExternalLinkAlt} />
+                  </a>
+                  
+                </td>
+                
+                <td className="px-3">
                   {plan.delivery_date
                     ? new Date(plan.delivery_date).toLocaleDateString('tr-TR')
                     : ''}
                 </td>
-                <td>
+                <td className="px-3">
                   <div className="flex items-center justify-center h-full">
                     <span className={getStatusStyle(plan.status)}>
                       {plan.status}
                     </span>
                   </div>
                 </td>
-                <td>
+                {/* <td className="px-3">
                   <div className="flex items-center justify-center h-full">
                     <span className={getStateStyle(plan.state)}>
                       {plan.state}
                     </span>
                   </div>
-                  
-                </td>
-                <td>
+                </td> */}
+                <td className="px-3">
                   <button
                     className={
                       'w-20 bg-blue-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-sm'
@@ -225,11 +314,11 @@ const InspectionUI = ({
                         inspectionPlans,
                         descriptionControls[plan.id],
                         currentUserId,
+                        uploadedFiles,
                         setUpdateTrigger
                       );
                       setUpdateTrigger(prev => !prev);
                     }}
-                    // butonun görünürlüğünü kontrol et
                     style={{
                       visibility:
                         plan.state === 'Closed' ? 'hidden' : 'visible',

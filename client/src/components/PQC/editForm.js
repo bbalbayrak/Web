@@ -13,6 +13,9 @@ const FormEdit = () => {
   const [activeSegment, setActiveSegment] = useState(1);
   const [finalRows, setFinalRows] = useState([]);
   const [subpartRows, setSubpartRows] = useState([]);
+  const [paintRows, setPaintRows] = useState([]);
+  const [coatingRows, setCoatingRows] = useState([]);
+  const [productPackingRows, setProductRows] = useState([])
   const [error, setError] = useState(false);
 
   const addFinalRow = addRow(finalRows, setFinalRows);
@@ -25,9 +28,23 @@ const FormEdit = () => {
   const handleSubpartDrop = handleDrop(subpartRows, setSubpartRows);
   const handleSubpartFileSelect = handleFileSelect(subpartRows, setSubpartRows);
 
+  const addPaintRow = addRow(paintRows, setPaintRows);
+  const handlePaintInputChange = handleInputChange(paintRows, setPaintRows);
+  const handlePaintDrop = handleDrop(paintRows, setPaintRows);
+  const handlePaintFileSelect = handleFileSelect(paintRows, setPaintRows);
+
+  const addCoatingRow = addRow(coatingRows, setCoatingRows);
+  const handleCoatingInputChange = handleInputChange(coatingRows, setCoatingRows);
+  const handleCoatingDrop = handleDrop(coatingRows, setCoatingRows);
+  const handleCoatingFileSelect = handleFileSelect(coatingRows, setCoatingRows)
+
+  const addProductPackingRow = addRow(productPackingRows, setProductRows);
+  const handleProductPackingInputChange = handleInputChange(productPackingRows, setProductRows);
+  const handleProductPackingDrop = handleDrop(productPackingRows, setProductRows);
+  const handleProductPackingFileSelect = handleFileSelect(productPackingRows, setProductRows)
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
+    const fetchData = async () => {      try {
         const formData = await getFormById(id);
         console.log("Fetched form data: ", formData);  // Log the fetched form data
         setForm(formData);
@@ -46,13 +63,29 @@ const FormEdit = () => {
       );
       console.log("Active step: ", activeStep);  // Log the active step
       if (activeStep && activeStep.substeps) {
-        // Here you should separate rows into finalRows and subpartRows based on some condition
         console.log("Active step substeps: ", activeStep.substeps);  // Log substeps before setting
-        setFinalRows(activeStep.substeps || []);
-        setSubpartRows(activeStep.substeps || []);
+        switch(activeSegment) {
+          case 1:
+            setFinalRows(activeStep.substeps);
+            break;
+          case 2:
+            setSubpartRows(activeStep.substeps);
+            break;
+          case 3:
+            setPaintRows(activeStep.substeps);
+            break;
+          case 4:
+            setCoatingRows(activeStep.substeps);
+            break;
+          case 5:
+            setProductRows(activeStep.substeps);
+            break;
+          default:
+            break;
+        }
       }
     }
-}, [form, activeSegment]);
+  }, [form, activeSegment]);
 
 
   const handleSegmentClick = (order) => {
@@ -83,17 +116,35 @@ const FormEdit = () => {
               form,
               finalRows,
               subpartRows,
+              paintRows,
+              coatingRows,
+              productPackingRows,
               handleFinalInputChange,
               handleSubpartInputChange,
+              handlePaintInputChange,
+              handleCoatingInputChange,
+              handleProductPackingInputChange,
               handleDragOver,
               handleFinalDrop,
               handleSubpartDrop,
+              handlePaintDrop,
+              handleCoatingDrop,
+              handleProductPackingDrop,
               handleFinalFileSelect,
               handleSubpartFileSelect,
+              handlePaintFileSelect,
+              handleCoatingFileSelect,
+              handleProductPackingFileSelect,
               addFinalRow,
               addSubpartRow,
+              addPaintRow,
+              addCoatingRow,  
+              addProductPackingRow,
               saveSubForm: saveForm(form, subpartRows, 0),
               saveFinalForm: saveForm(form, finalRows, 1),
+              savePaintForm: saveForm(form, paintRows, 2),
+              saveCoatingForm: saveForm(form, coatingRows, 3),
+              saveProductPackingForm: saveForm(form, productPackingRows, 4)
             })}
           </div>
         </div>

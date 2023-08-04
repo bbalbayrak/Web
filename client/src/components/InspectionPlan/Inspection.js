@@ -20,6 +20,7 @@ const Inspection = () => {
   const [currentUserId, setCurrentUserId] = useState('');
   const [updateTrigger, setUpdateTrigger] = useState(false);
   const [descriptionControls, setDescriptionControls] = useState({});
+  const [descriptionControlsDocuments, setDescriptionControlsDocuments] = useState({});
 
   useEffect(() => {
     fetchItems(getAllInspectionPlans, async (data) => {
@@ -29,8 +30,9 @@ const Inspection = () => {
       const descriptionControls = {};
       for (let desc of descriptionData.data) {
         descriptionControls[desc.inspectionplan_id] = desc.description;
+        descriptionControlsDocuments[desc.inspectionplan_id] = desc.documents
       }
-      
+      setDescriptionControlsDocuments(descriptionControlsDocuments);
       setDescriptionControls(descriptionControls); 
       setInspectionPlans(data);
     });
@@ -42,7 +44,7 @@ const Inspection = () => {
     setCurrentUserId(userRole.user_id);
 
   }, [updateTrigger]);
-  
+
   return (
     <InspectionUI 
       inspectionPlans={inspectionPlans} 
@@ -54,6 +56,8 @@ const Inspection = () => {
       setUpdateTrigger={setUpdateTrigger} 
       descriptionControls={descriptionControls} 
       setDescriptionControls={setDescriptionControls}
+      setDescriptionControlsDocuments={setDescriptionControlsDocuments}
+      descriptionControlsDocuments={descriptionControlsDocuments}
     />
   );
 };

@@ -4,16 +4,18 @@ export const columns = [
     'Product Name',
     'Order Number',
     'Project Number',
-    'Quantity',
+    'Qty',
     'Method',
     'Control Type',
     'Control Responsible',
     'Control Date',
     'Note',
     'Description',
+    'Document',
+    '',
     'Delivery Date',
     'Status',
-    'State',
+    // 'State',
   ];
 
 export const control_type = [

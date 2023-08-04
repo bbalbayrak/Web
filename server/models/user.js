@@ -44,6 +44,15 @@ const User = {
     });
     return result;
   },
+  
+  findByID: async (id) => {
+    const result = await db.oneOrNone("SELECT * FROM ${table:name} WHERE id = ${id}", {
+      table: User.tableName,
+      id,
+    });
+    return result;
+  },
+
 };
 
 module.exports = User;
