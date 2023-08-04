@@ -24,6 +24,9 @@ const FormCreate = () => {
   const [activeSegment, setActiveSegment] = useState(1);
   const [finalRows, setFinalRows] = useState([]);
   const [subpartRows, setSubpartRows] = useState([]);
+  const [paintRows, setPaintRows] = useState([]);
+  const [coatingRows, setCoatingRows] = useState([]);
+  const [productPackingRows, setProductRows] = useState([])
 
   const addFinalRow = addRow(finalRows, setFinalRows);
   const handleFinalInputChange = handleInputChange(finalRows, setFinalRows);
@@ -34,6 +37,21 @@ const FormCreate = () => {
   const handleSubpartInputChange = handleInputChange(subpartRows, setSubpartRows);
   const handleSubpartDrop = handleDrop(subpartRows, setSubpartRows);
   const handleSubpartFileSelect = handleFileSelect(subpartRows, setSubpartRows);
+
+  const addPaintRow = addRow(paintRows, setPaintRows);
+  const handlePaintInputChange = handleInputChange(paintRows, setPaintRows);
+  const handlePaintDrop = handleDrop(paintRows, setPaintRows);
+  const handlePaintFileSelect = handleFileSelect(paintRows, setPaintRows);
+
+  const addCoatingRow = addRow(coatingRows, setCoatingRows);
+  const handleCoatingInputChange = handleInputChange(coatingRows, setCoatingRows);
+  const handleCoatingDrop = handleDrop(coatingRows, setCoatingRows);
+  const handleCoatingFileSelect = handleFileSelect(coatingRows, setCoatingRows)
+
+  const addProductPackingRow = addRow(productPackingRows, setProductRows);
+  const handleProductPackingInputChange = handleInputChange(productPackingRows, setProductRows);
+  const handleProductPackingDrop = handleDrop(productPackingRows, setProductRows);
+  const handleProductPackingFileSelect = handleFileSelect(productPackingRows, setProductRows)
 
   useEffect(() => {
     fetchItems(getVendors, setVendors);
@@ -104,17 +122,35 @@ const FormCreate = () => {
             form,
             finalRows,
             subpartRows,
+            paintRows,
+            coatingRows,
+            productPackingRows,
             handleFinalInputChange,
             handleSubpartInputChange,
+            handlePaintInputChange,
+            handleCoatingInputChange,
+            handleProductPackingInputChange,
             handleDragOver,
             handleFinalDrop,
             handleSubpartDrop,
+            handlePaintDrop,
+            handleCoatingDrop,
+            handleProductPackingDrop,
             handleFinalFileSelect,
             handleSubpartFileSelect,
+            handlePaintFileSelect,
+            handleCoatingFileSelect,
+            handleProductPackingFileSelect,
             addFinalRow,
             addSubpartRow,
+            addPaintRow,
+            addCoatingRow,  
+            addProductPackingRow,
             saveSubForm: saveForm(form, subpartRows, 0),
             saveFinalForm: saveForm(form, finalRows, 1),
+            savePaintForm: saveForm(form, paintRows, 2),
+            saveCoatingForm: saveForm(form, coatingRows, 3),
+            saveProductPackingForm: saveForm(form, productPackingRows, 4)
           })}
         </div>
       </form>

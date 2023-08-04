@@ -1,17 +1,16 @@
 import './renderFinalPartMeasurement.css'
 
-export const renderPaintReport = ({
+export const renderCoatingReport = ({
   form,
-  paintRows,
+  coatingRows,
   handleInputChange,
   handleDragOver,
   handleDrop,
   handleFileSelect,
   addRow,
-  savePaintForm,
+  saveCoatingForm,
 }) => {
   if (!form) return null;
-  console.log("renderPaint", paintRows)
   return (
     <div>
       <table className="measurement-table">
@@ -30,7 +29,7 @@ export const renderPaintReport = ({
           </tr>
         </thead>
         <tbody>
-          {paintRows.map(row => (
+          {coatingRows.map(row => (
             <tr key={row.row_number}>
               <td>{row.row_number}</td>
               <td>
@@ -136,7 +135,7 @@ export const renderPaintReport = ({
       <button type="button" className='addRow-button' onClick={addRow}>
         Satır Ekle
       </button>
-      <button type="button" onClick={() => savePaintForm(form, paintRows, 2)} className='submit-button'>
+      <button type="button" onClick={() => saveCoatingForm(form, coatingRows, 3)} className='submit-button'>
         Kaydet
       </button>
     </div>

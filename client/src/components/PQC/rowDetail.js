@@ -16,6 +16,38 @@ export const addRow = (rows, setRows) => () => {
   setRows([...rows, newRow]);
 };
 
+export const addPaintRow = (rows, setPaintRows) => () => {
+  const newRow = {
+    row_number: rows.length + 1,
+    name: '',
+    technical_drawing_numbering: '',
+    tools: '',
+    description: '',
+    actual_dimension: '',
+    lower_tolerance: '',
+    upper_tolerance: '',
+    sample_quantity: '',
+    example_visual_url: '',
+  }
+  setPaintRows([...rows, newRow]);
+}
+
+export const addCoatingRow = (rows, setCoatingRows) => () => {
+  const newRow = {
+    row_number: rows.length + 1,
+    name: '',
+    technical_drawing_numbering: '',
+    tools: '',
+    description: '',
+    actual_dimension: '',
+    lower_tolerance: '',
+    upper_tolerance: '',
+    sample_quantity: '',
+    example_visual_url: '',
+  }
+  setCoatingRows([...rows, newRow]);
+}
+
 export const handleInputChange = (rows, setRows) => (e, rowNumber, key) => {
   const newRows = rows.map(row => {
     if (row.row_number === rowNumber) {
