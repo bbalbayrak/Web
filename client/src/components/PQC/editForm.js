@@ -66,10 +66,10 @@ const FormEdit = () => {
         console.log("Active step substeps: ", activeStep.substeps);  // Log substeps before setting
         switch(activeSegment) {
           case 1:
-            setFinalRows(activeStep.substeps);
+            setSubpartRows(activeStep.substeps);
             break;
           case 2:
-            setSubpartRows(activeStep.substeps);
+            setFinalRows(activeStep.substeps);
             break;
           case 3:
             setPaintRows(activeStep.substeps);
