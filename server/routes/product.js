@@ -54,6 +54,30 @@ const routes = (fastify, options, done) => {
     }
   );
 
+  fastify.post(
+    "/api/qualitydocuments",
+    { preHandler: upload.fields([{ name: "quality_documents", maxCount: 1 }]) },
+    async (request, reply) => {
+      try {
+        const quality_documents = request.files.quality_documents ? request.files.quality_documents[0] : null;
+	console.log("Received file:", quality_documents);    
+        // Add the file to the request object
+        request.body.quality_documents = quality_documents;
+
+        const result = await productControllers.uploadOdooCertificate(request);
+        reply.code(201).send(result);
+
+      } catch (err) {
+        console.error(err);
+        reply.code(500).send({
+
+          status: "error",
+          message: "Sertifika yüklenirken bir hata oluştu.",
+        });
+      }
+    }
+  );
+
   done();
 };
 

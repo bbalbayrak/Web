@@ -1,6 +1,6 @@
 const Product = require("../models/product");
 const Customer = require("../models/customer");
-const { uploadFile, uploadOdooFile, uploadOdooQualityFile } = require("../utils/upload_azure");
+const { uploadFile, uploadOdooFile } = require("../utils/upload_azure");
 
 exports.createProduct = async (request) => {
   try {
@@ -103,22 +103,43 @@ exports.getProductsByName = async (req, res) => {
     }
   };
 
-  exports.uploadTechnicalDrawing = async (request) => {
+    exports.uploadTechnicalDrawing = async (request) => {
+
     try {
+
         const { odooid, product_name, original_filename } = request.body; // original_filename'i alın
+
         const technicaldrawingfile = request.body.technical_drawing;
+
+
+
         // Dosya adını, orijinal dosya adına "_technicaldrawingfile" ekleyerek oluşturun
-        const filename = `${product_name}/${original_filename}`;
+
+        const filename = `${product_name}/${original_filename}_technicaldrawing.${technicaldrawingfile.originalname.split('.').pop()}`;
+
+
+
         const technical_drawing_url = technicaldrawingfile
+
             ? await uploadOdooFile(technicaldrawingfile.buffer, filename)
+
             : null;
+
+
+
         return {
+
             status: "success",
+
             statusCode: 201,
+
             data: {
-                odooid,
+                odoid,
+
                 product_name,
+
                 technical_drawing_url,
+
             },
         };
     } catch (err) {
@@ -126,28 +147,3 @@ exports.getProductsByName = async (req, res) => {
         throw err;
     }
 };
-
-  exports.uploadOdooCertificate = async (request) => {
-    try {
-      const { purchase } = request.body;
-      const certificatefile = request.files.quality_documents ? request.files.quality_documents[0] : null;
-      console.log("Certificate file info:", certificatefile);
-      const filename = `${purchase}/${certificatefile.originalname}`;
-      
-      const certificate_url = certificatefile
-        ? await uploadOdooQualityFile(certificatefile.buffer, filename)
-        : null;
-      console.log("Generated certificate URL:", certificate_url);
-      return {
-        status: "success",
-        statusCode: 201,
-        data: {
-          purchase,
-          certificate_url,
-        },
-      };
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  };  
